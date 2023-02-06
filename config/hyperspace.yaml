@@ -1,0 +1,8 @@
+rpc_addr: "https://api.hyperspace.node.glif.io/rpc/v1"
+chain_id: 3141
+liquid_staking: "0xc740192CD9d6DBFF71f59AD2Ee25DFbEE24c77B3"
+collateral: "0xFE5fc48a62Ed2B1B314Ba6140b332F37b3Af6807"
+registry: "0x37151c20ec22B47B65c2B7f4F62BAB4C6E445598"
+pledge_oracle: "0x5C45838965514236AB58BFd1305fCA21718B1200"
+allocationLimit: 2000
+maxPeriod: 1000000
