@@ -20,13 +20,13 @@ type StorageProvider struct {
 }
 
 func (c *LotusClient) Register(miner []byte, targetPool common.Address, allocationLimit *big.Int, period *big.Int, send bool) (*types.Transaction, error) {
-	var opts = c.signer
+	var opts = c.Signer
 
 	if !send {
 		opts.NoSend = true
 	}
 
-	tx, err := c.registry.Register(opts, miner, targetPool, allocationLimit, period)
+	tx, err := c.Registry.Register(opts, miner, targetPool, allocationLimit, period)
 
 	if err != nil {
 		panic(err)
@@ -36,13 +36,13 @@ func (c *LotusClient) Register(miner []byte, targetPool common.Address, allocati
 }
 
 func (c *LotusClient) ChangeBeneficiaryAddress(beneficiaryAddress common.Address, send bool) (*types.Transaction, error) {
-	var opts = c.signer
+	var opts = c.Signer
 
 	if !send {
 		opts.NoSend = true
 	}
 
-	tx, err := c.registry.ChangeBeneficiaryAddress(opts, beneficiaryAddress)
+	tx, err := c.Registry.ChangeBeneficiaryAddress(opts, beneficiaryAddress)
 
 	if err != nil {
 		panic(err)
@@ -55,7 +55,7 @@ func (c *LotusClient) GetStorageProvider(provider []byte) (StorageProvider, erro
 	var sp StorageProvider
 	var opts = &bind.CallOpts{}
 
-	isActive, targetPool, miner, allocation, usedAllocation, accruedRewards, lockedRewards, maxRedeemablePeriod, err := c.registry.StorageProviderRegistryCaller.GetStorageProvider(opts, provider)
+	isActive, targetPool, miner, allocation, usedAllocation, accruedRewards, lockedRewards, maxRedeemablePeriod, err := c.Registry.StorageProviderRegistryCaller.GetStorageProvider(opts, provider)
 	if err != nil {
 		panic(err)
 	}
@@ -75,7 +75,7 @@ func (c *LotusClient) GetStorageProvider(provider []byte) (StorageProvider, erro
 func (c *LotusClient) IsActiveProvider(provider []byte) (bool, error) {
 	var opts = &bind.CallOpts{}
 
-	isActive, err := c.registry.IsActiveProvider(opts, provider)
+	isActive, err := c.Registry.IsActiveProvider(opts, provider)
 	if err != nil {
 		panic(err)
 	}

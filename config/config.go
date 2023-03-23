@@ -16,6 +16,8 @@ type Config struct {
 	HDDerivationPath          string `mapstructure:"hd_derivation_path"`
 	LiquidStaking             string `mapstructure:"liquid_staking"`
 	PledgeOracle              string `mapstructure:"pledge_oracle"`
+	TestContract              string `mapstructure:"test_contract"`
+	FSKeyStoreDir             string `mapstructure:"dir"`
 	StorageProviderRegistry   string `mapstructure:"registry"`
 	StorageProviderCollateral string `mapstructure:"collateral"`
 	AllocationLimit           int64  `mapstructure:"allocation_limit"`

@@ -13,7 +13,7 @@ type Collateral struct {
 }
 
 func (c *LotusClient) Deposit(amount *big.Int, send bool) (*types.Transaction, error) {
-	var opts = c.signer
+	var opts = c.Signer
 
 	if !send {
 		opts.NoSend = true
@@ -23,7 +23,7 @@ func (c *LotusClient) Deposit(amount *big.Int, send bool) (*types.Transaction, e
 		opts.Value = amount
 	}
 
-	tx, err := c.collateral.Deposit(opts)
+	tx, err := c.Collateral.Deposit(opts)
 
 	if err != nil {
 		panic(err)
@@ -33,7 +33,7 @@ func (c *LotusClient) Deposit(amount *big.Int, send bool) (*types.Transaction, e
 }
 
 func (c *LotusClient) Withdraw(amount *big.Int, send bool) (*types.Transaction, error) {
-	var opts = c.signer
+	var opts = c.Signer
 
 	if !send {
 		opts.NoSend = true
@@ -41,7 +41,7 @@ func (c *LotusClient) Withdraw(amount *big.Int, send bool) (*types.Transaction, 
 		opts.NoSend = false
 	}
 
-	tx, err := c.collateral.Withdraw(opts, amount)
+	tx, err := c.Collateral.Withdraw(opts, amount)
 
 	if err != nil {
 		panic(err)
@@ -51,7 +51,7 @@ func (c *LotusClient) Withdraw(amount *big.Int, send bool) (*types.Transaction, 
 }
 
 func (c *LotusClient) GetCollateral(provider []byte) (*big.Int, *big.Int, error) {
-	availableCollateral, lockedCollateral, err := c.collateral.GetCollateral(&bind.CallOpts{}, provider)
+	availableCollateral, lockedCollateral, err := c.Collateral.GetCollateral(&bind.CallOpts{}, provider)
 	if err != nil {
 		panic(err)
 	}
@@ -60,9 +60,9 @@ func (c *LotusClient) GetCollateral(provider []byte) (*big.Int, *big.Int, error)
 }
 
 func (c *LotusClient) GetLockedCollateral(provider []byte) (*big.Int, error) {
-	return c.collateral.GetLockedCollateral(&bind.CallOpts{}, provider)
+	return c.Collateral.GetLockedCollateral(&bind.CallOpts{}, provider)
 }
 
 func (c *LotusClient) GetAvailableCollateral(provider []byte) (*big.Int, error) {
-	return c.collateral.GetAvailableCollateral(&bind.CallOpts{}, provider)
+	return c.Collateral.GetAvailableCollateral(&bind.CallOpts{}, provider)
 }

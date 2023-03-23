@@ -4,6 +4,7 @@ import (
 	"collective-go-sdk/config"
 	"collective-go-sdk/fvm"
 	"collective-go-sdk/utils"
+	"context"
 	"fmt"
 	"math/big"
 
@@ -24,7 +25,12 @@ func withdrawBalance(miner string, amount int64, run bool) (string, error) {
 		return "", err
 	}
 
-	client, err := fvm.NewLotusClient(config)
+	ctx := context.Background()
+	client, err := fvm.NewLotusClient(ctx, config, fvm.FSKeyStore)
+	if err != nil {
+		return "", err
+	}
+
 	tx, err := client.WithdrawBalance(bytesAddr, withdrawAmt, run)
 
 	if err != nil {

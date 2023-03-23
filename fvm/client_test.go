@@ -17,13 +17,16 @@ func TestNewLotusClient(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(config)
+	client, err := NewLotusClient(ctx, config, MemoryKeyStore)
+	if err != nil {
+		assert.Error(t, err)
+	}
 
-	chainId, err := client.client.ChainID(ctx)
+	chainId, err := client.Client.ChainID(ctx)
 	if err != nil {
 		assert.Error(t, err)
 	}
 
 	assert.Equal(t, big.NewInt(3141), chainId)
-	assert.Equal(t, config.RPCAddress, client.host)
+	assert.Equal(t, config.RPCAddress, client.Host)
 }

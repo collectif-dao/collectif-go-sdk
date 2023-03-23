@@ -3,9 +3,9 @@ package collateral
 import (
 	"collective-go-sdk/config"
 	"collective-go-sdk/fvm"
+	"context"
+	"encoding/hex"
 	"fmt"
-
-	"math/big"
 
 	"github.com/spf13/cobra"
 )
@@ -16,21 +16,34 @@ var (
 )
 
 func depositCollateral(amount int, run bool) (string, error) {
-	depositAmt := big.NewInt(int64(amount))
+	// depositAmt := big.NewInt(int64(amount))
 
 	config, err := config.LoadConfig("./config")
 	if err != nil {
 		return "", err
 	}
 
-	client, err := fvm.NewLotusClient(config)
-
-	tx, err := client.Deposit(depositAmt, run)
+	ctx := context.Background()
+	client, err := fvm.NewLotusClient(ctx, config, fvm.FSKeyStore)
 	if err != nil {
 		return "", err
 	}
 
-	return tx.Hash().Hex(), nil
+	abi, err := client.CollateralABI.GetAbi()
+	if err != nil {
+		return "", err
+	}
+
+	callData, err := abi.Pack("deposit")
+
+	return hex.EncodeToString(callData), nil
+
+	// tx, err := client.Deposit(depositAmt, run)
+	// if err != nil {
+	// 	return "", err
+	// }
+
+	// return tx.Hash().Hex(), nil
 }
 
 var depositCmd = &cobra.Command{

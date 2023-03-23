@@ -4,6 +4,8 @@ import (
 	"collective-go-sdk/config"
 	"collective-go-sdk/fvm"
 	"collective-go-sdk/utils"
+	"context"
+	"encoding/hex"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -15,20 +17,25 @@ var (
 
 func getCollateral(address string) (string, string, error) {
 	bytesAddr := utils.ConvertAddress(address)
+	fmt.Println("Miner Address in bytes: ", hex.EncodeToString(bytesAddr))
 
 	config, err := config.LoadConfig("./config")
 	if err != nil {
 		return "", "", err
 	}
 
-	client, err := fvm.NewLotusClient(config)
-
-	available, locked, err := client.GetCollateral(bytesAddr)
+	ctx := context.Background()
+	client, err := fvm.NewLotusClient(ctx, config, fvm.FSKeyStore)
 	if err != nil {
 		return "", "", err
 	}
 
-	return available.String(), locked.String(), nil
+	available, err := client.GetAvailableCollateral(bytesAddr)
+	if err != nil {
+		return "", "", err
+	}
+
+	return available.String(), "0", nil
 }
 
 var getCollateralCmd = &cobra.Command{

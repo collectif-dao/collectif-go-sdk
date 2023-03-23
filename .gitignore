@@ -19,3 +19,12 @@
 .env
 .bootstrap_privkey
 .db
+
+# Keystore
+keystore/data
+keystore/test-data
+
+#Compiled binaries
+sdk
+collectif-go-sdk
+filecoin-ffi

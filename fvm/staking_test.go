@@ -2,6 +2,7 @@ package fvm
 
 import (
 	"collective-go-sdk/config"
+	"context"
 	"testing"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -9,15 +10,19 @@ import (
 )
 
 func TestSymbol(t *testing.T) {
+	ctx := context.Background()
 	config, err := config.LoadConfig("../config")
 
 	if err != nil {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(config)
+	client, err := NewLotusClient(ctx, config, MemoryKeyStore)
+	if err != nil {
+		assert.Error(t, err)
+	}
 
-	symbol, err := client.staking.Symbol(&bind.CallOpts{})
+	symbol, err := client.Staking.Symbol(&bind.CallOpts{})
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -26,15 +31,19 @@ func TestSymbol(t *testing.T) {
 }
 
 func TestName(t *testing.T) {
+	ctx := context.Background()
 	config, err := config.LoadConfig("../config")
 
 	if err != nil {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(config)
+	client, err := NewLotusClient(ctx, config, MemoryKeyStore)
+	if err != nil {
+		assert.Error(t, err)
+	}
 
-	symbol, err := client.staking.Name(&bind.CallOpts{})
+	symbol, err := client.Staking.Name(&bind.CallOpts{})
 	if err != nil {
 		assert.Error(t, err)
 	}

@@ -3,6 +3,8 @@ package staking
 import (
 	"collective-go-sdk/config"
 	"collective-go-sdk/fvm"
+	"context"
+	"encoding/hex"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -21,14 +23,28 @@ func pledge(sector uint64, proof string, run bool) (string, error) {
 		return "", err
 	}
 
-	client, err := fvm.NewLotusClient(config)
-	tx, err := client.Pledge(sector, proofBytes, run)
-
+	ctx := context.Background()
+	client, err := fvm.NewLotusClient(ctx, config, fvm.FSKeyStore)
 	if err != nil {
 		return "", err
 	}
 
-	return tx.Hash().Hex(), nil
+	abi, err := client.StakingABI.GetAbi()
+	if err != nil {
+		return "", err
+	}
+
+	callData, err := abi.Pack("pledge", sector, proofBytes)
+
+	return hex.EncodeToString(callData), nil
+
+	// tx, err := client.Pledge(sector, proofBytes, run)
+
+	// if err != nil {
+	// 	return "", err
+	// }
+
+	// return tx.Hash().Hex(), nil
 }
 
 var pledgeCmd = &cobra.Command{

@@ -4,6 +4,8 @@ import (
 	"collective-go-sdk/config"
 	"collective-go-sdk/fvm"
 	"collective-go-sdk/utils"
+	"context"
+	"encoding/hex"
 	"fmt"
 	"math/big"
 
@@ -24,6 +26,8 @@ func registerStorageProvider(miner string, pool string, limit int64, period int6
 	var poolAddr common.Address
 	var allocationLimit *big.Int
 	var maxPeriod *big.Int
+	var attoFIL = big.NewInt(10)
+	var fil = attoFIL.Exp(attoFIL, big.NewInt(18), big.NewInt(0))
 
 	config, err := config.LoadConfig("./config")
 	if err != nil {
@@ -39,7 +43,8 @@ func registerStorageProvider(miner string, pool string, limit int64, period int6
 	if limit == 0 {
 		allocationLimit = big.NewInt(config.AllocationLimit)
 	} else {
-		allocationLimit = big.NewInt(limit)
+		// allocationLimit = attoFIL.Exp(big.NewInt(limit), big.NewInt(18), big.NewInt(0))
+		allocationLimit = fil.Mul(big.NewInt(limit), fil)
 	}
 
 	if period == 0 {
@@ -48,14 +53,27 @@ func registerStorageProvider(miner string, pool string, limit int64, period int6
 		maxPeriod = big.NewInt(period)
 	}
 
-	client, err := fvm.NewLotusClient(config)
-
-	tx, err := client.Register(bytesAddr, poolAddr, allocationLimit, maxPeriod, run)
+	ctx := context.Background()
+	client, err := fvm.NewLotusClient(ctx, config, fvm.FSKeyStore)
 	if err != nil {
 		return "", err
 	}
 
-	return tx.Hash().Hex(), nil
+	abi, err := client.RegistryABI.GetAbi()
+	if err != nil {
+		return "", err
+	}
+
+	callData, err := abi.Pack("register", bytesAddr, poolAddr, allocationLimit, maxPeriod)
+
+	return hex.EncodeToString(callData), nil
+
+	// tx, err := client.Register(bytesAddr, poolAddr, allocationLimit, maxPeriod, run)
+	// if err != nil {
+	// 	return "", err
+	// }
+
+	// return tx.Hash().Hex(), nil
 }
 
 var RegisterCmd = &cobra.Command{

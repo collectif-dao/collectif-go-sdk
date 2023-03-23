@@ -8,7 +8,7 @@ import (
 )
 
 func (c *LotusClient) Pledge(sectorNumber uint64, proof []byte, send bool) (*types.Transaction, error) {
-	var opts = c.signer
+	var opts = c.Signer
 
 	if !send {
 		opts.NoSend = true
@@ -16,7 +16,7 @@ func (c *LotusClient) Pledge(sectorNumber uint64, proof []byte, send bool) (*typ
 		opts.NoSend = false
 	}
 
-	tx, err := c.staking.Pledge(opts, sectorNumber, proof)
+	tx, err := c.Staking.Pledge(opts, sectorNumber, proof)
 
 	if err != nil {
 		panic(err)
@@ -26,7 +26,7 @@ func (c *LotusClient) Pledge(sectorNumber uint64, proof []byte, send bool) (*typ
 }
 
 func (c *LotusClient) PledgeAggregate(sectorNumber []uint64, proof [][]byte, send bool) (*types.Transaction, error) {
-	var opts = c.signer
+	var opts = c.Signer
 
 	if !send {
 		opts.NoSend = true
@@ -34,7 +34,7 @@ func (c *LotusClient) PledgeAggregate(sectorNumber []uint64, proof [][]byte, sen
 		opts.NoSend = false
 	}
 
-	tx, err := c.staking.PledgeAggregate(opts, sectorNumber, proof)
+	tx, err := c.Staking.PledgeAggregate(opts, sectorNumber, proof)
 
 	if err != nil {
 		panic(err)
@@ -44,7 +44,7 @@ func (c *LotusClient) PledgeAggregate(sectorNumber []uint64, proof [][]byte, sen
 }
 
 func (c *LotusClient) WithdrawBalance(miner []byte, amount *big.Int, send bool) (*types.Transaction, error) {
-	var opts = c.signer
+	var opts = c.Signer
 
 	if !send {
 		opts.NoSend = true
@@ -52,7 +52,7 @@ func (c *LotusClient) WithdrawBalance(miner []byte, amount *big.Int, send bool) 
 		opts.NoSend = false
 	}
 
-	tx, err := c.staking.WithdrawRewards(opts, miner, amount)
+	tx, err := c.Staking.WithdrawRewards(opts, miner, amount)
 
 	if err != nil {
 		panic(err)
@@ -62,9 +62,9 @@ func (c *LotusClient) WithdrawBalance(miner []byte, amount *big.Int, send bool) 
 }
 
 func (c *LotusClient) TotalAssets() (*big.Int, error) {
-	return c.staking.TotalAssets(&bind.CallOpts{})
+	return c.Staking.TotalAssets(&bind.CallOpts{})
 }
 
 func (c *LotusClient) TotalFilAvailable() (*big.Int, error) {
-	return c.staking.TotalFilAvailable(&bind.CallOpts{})
+	return c.Staking.TotalFilAvailable(&bind.CallOpts{})
 }

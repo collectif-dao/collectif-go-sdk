@@ -13,7 +13,7 @@ type Record struct {
 }
 
 func (c *LotusClient) UpdateRecord(epoch *big.Int, preCommitDeposit *big.Int, initialPledge *big.Int, send bool) (*types.Transaction, error) {
-	var opts = c.signer
+	var opts = c.Signer
 
 	if send {
 		opts.NoSend = false
@@ -21,7 +21,7 @@ func (c *LotusClient) UpdateRecord(epoch *big.Int, preCommitDeposit *big.Int, in
 		opts.NoSend = true
 	}
 
-	tx, err := c.oracle.UpdateRecord(opts, epoch, preCommitDeposit, initialPledge)
+	tx, err := c.Oracle.UpdateRecord(opts, epoch, preCommitDeposit, initialPledge)
 	if err != nil {
 		panic(err)
 	}
@@ -30,7 +30,7 @@ func (c *LotusClient) UpdateRecord(epoch *big.Int, preCommitDeposit *big.Int, in
 }
 
 func (c *LotusClient) GetLastRecord() (Record, error) {
-	preCommitDeposit, initialPledge, err := c.oracle.GetLastRecord(&bind.CallOpts{})
+	preCommitDeposit, initialPledge, err := c.Oracle.GetLastRecord(&bind.CallOpts{})
 	if err != nil {
 		panic(err)
 	}
@@ -42,5 +42,5 @@ func (c *LotusClient) GetLastRecord() (Record, error) {
 }
 
 func (c *LotusClient) GetPledgeFees() (*big.Int, error) {
-	return c.oracle.GetPledgeFees(&bind.CallOpts{})
+	return c.Oracle.GetPledgeFees(&bind.CallOpts{})
 }

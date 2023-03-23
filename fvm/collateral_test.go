@@ -3,6 +3,7 @@ package fvm
 import (
 	"collective-go-sdk/config"
 	"collective-go-sdk/utils"
+	"context"
 	"math/big"
 	"testing"
 
@@ -59,13 +60,17 @@ var amount = big.NewInt(100)
 // }
 
 func TestGetCollateral(t *testing.T) {
+	ctx := context.Background()
 	config, err := config.LoadConfig("../config")
 
 	if err != nil {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(config)
+	client, err := NewLotusClient(ctx, config, "memory")
+	if err != nil {
+		assert.Error(t, err)
+	}
 
 	available, locked, err := client.GetCollateral(minerAddr)
 	if err != nil {
@@ -77,13 +82,17 @@ func TestGetCollateral(t *testing.T) {
 }
 
 func TestGetLockedCollateral(t *testing.T) {
+	ctx := context.Background()
 	config, err := config.LoadConfig("../config")
 
 	if err != nil {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(config)
+	client, err := NewLotusClient(ctx, config, MemoryKeyStore)
+	if err != nil {
+		assert.Error(t, err)
+	}
 
 	lockedCollateral, err := client.GetLockedCollateral(minerAddr)
 	if err != nil {
@@ -94,13 +103,17 @@ func TestGetLockedCollateral(t *testing.T) {
 }
 
 func TestGetAvailableCollateral(t *testing.T) {
+	ctx := context.Background()
 	config, err := config.LoadConfig("../config")
 
 	if err != nil {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(config)
+	client, err := NewLotusClient(ctx, config, MemoryKeyStore)
+	if err != nil {
+		assert.Error(t, err)
+	}
 
 	availableCollateral, err := client.GetAvailableCollateral(minerAddr)
 	if err != nil {
