@@ -30,6 +30,12 @@ func newWallet(key string) (string, error) {
 		return "", err
 	}
 
+	if isDefault {
+		if err := client.MessageSigner.Wallet.SetDefault(address); err != nil {
+			return "", fmt.Errorf("failed to set default key: %w", err)
+		}
+	}
+
 	return address.String(), nil
 }
 
@@ -49,5 +55,6 @@ var newWalletCmd = &cobra.Command{
 
 func init() {
 	newWalletCmd.Flags().StringVarP(&key, "key", "k", "secp256k1", "Filecoin wallet key type: bls or secp256k1")
+	newWalletCmd.Flags().BoolVarP(&isDefault, "use-default", "d", true, "Set as default")
 	WalletCmd.AddCommand(newWalletCmd)
 }

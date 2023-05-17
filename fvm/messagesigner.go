@@ -24,9 +24,8 @@ func NewMessageSigner(wallet lwallet.LocalWallet) *MessageSigner {
 	}
 }
 
-func (c *LotusClient) NextNonce(addr address.Address) (uint64, error) {
-	nonce, err := c.GetNonce(addr)
-
+func (c *LotusClient) NextNonce(ctx context.Context, addr address.Address) (uint64, error) {
+	nonce, err := c.GetNonce(ctx, addr)
 	if err != nil {
 		return 0, xerrors.Errorf("failed to get nonce from mempool: %w", err)
 	}
@@ -38,12 +37,14 @@ func (c *LotusClient) SignMessage(ctx context.Context, msg *types.Message, spec 
 	c.MessageSigner.lock.Lock()
 	defer c.MessageSigner.lock.Unlock()
 
-	nonce, err := c.NextNonce(msg.From)
-	if err != nil {
-		return nil, xerrors.Errorf("failed to create nonce: %w", err)
-	}
+	if msg.Nonce == 0 {
+		nonce, err := c.NextNonce(ctx, msg.From)
+		if err != nil {
+			return nil, xerrors.Errorf("failed to create nonce: %w", err)
+		}
 
-	msg.Nonce = nonce
+		msg.Nonce = nonce
+	}
 
 	sb, err := SigningBytes(msg, msg.From.Protocol())
 	if err != nil {
@@ -59,7 +60,6 @@ func (c *LotusClient) SignMessage(ctx context.Context, msg *types.Message, spec 
 		Type:  api.MTChainMsg,
 		Extra: mb.RawData(),
 	})
-
 	if err != nil {
 		return nil, xerrors.Errorf("failed to sign message: %w, addr=%s", err, msg.From)
 	}

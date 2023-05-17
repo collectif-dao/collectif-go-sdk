@@ -11,8 +11,6 @@ var C Config
 type Config struct {
 	RPCAddress                string `mapstructure:"rpc_addr"`
 	ChainID                   int    `mapstructure:"chain_id"`
-	PrivateKey                string `mapstructure:"private_key"`
-	MnemonicPhrase            string `mapstructure:"mnemonic_phrase"`
 	HDDerivationPath          string `mapstructure:"hd_derivation_path"`
 	LiquidStaking             string `mapstructure:"liquid_staking"`
 	PledgeOracle              string `mapstructure:"pledge_oracle"`

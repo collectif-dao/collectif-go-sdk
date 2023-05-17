@@ -9,7 +9,7 @@ type RPCRequestBody struct {
 	Jsonrpc string        `json:"jsonrpc"`
 	Method  string        `json:"method"`
 	Params  []interface{} `json:"params"`
-	ID      int           `json:"id"`
+	ID      string        `json:"id"`
 }
 
 type RPCResponseBody struct {
@@ -19,12 +19,11 @@ type RPCResponseBody struct {
 	ID      int64  `json:"id"`
 }
 
-func NewRPCRequestBody(method string) *RPCRequestBody {
-	i := make([]interface{}, 0)
+func NewRPCRequestBody(method string, i []interface{}) *RPCRequestBody {
 	return &RPCRequestBody{
 		Jsonrpc: "2.0",
 		Method:  method,
 		Params:  i,
-		ID:      0,
+		ID:      "0",
 	}
 }

@@ -1,4 +1,4 @@
-rpc_addr: "https://api.hyperspace.node.glif.io/rpc/v1"
+rpc_addr: "https://filecoin-hyperspace.chainstacklabs.com/rpc/v1"
 chain_id: 3141
 liquid_staking: "0xc740192CD9d6DBFF71f59AD2Ee25DFbEE24c77B3"
 collateral: "0xa892bA1068ea9214EF0e579D074ea7092E1e89f7"

@@ -3,38 +3,41 @@ package fvm
 import (
 	"collective-go-sdk/config"
 	"collective-go-sdk/contracts/LiquidStaking"
-	"collective-go-sdk/contracts/PledgeOracle"
 	"collective-go-sdk/contracts/StorageProviderCollateral"
 	"collective-go-sdk/contracts/StorageProviderRegistry"
 	"collective-go-sdk/keystore"
 	"context"
+	"path"
+	"runtime"
 
-	"crypto/ecdsa"
+	"github.com/ybbus/jsonrpc/v3"
+
 	"fmt"
-	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/filecoin-project/go-address"
 	"github.com/filecoin-project/lotus/chain/wallet"
-	hdwallet "github.com/miguelmota/go-ethereum-hdwallet"
+	"github.com/filecoin-project/lotus/chain/wallet/key"
+	"github.com/sirupsen/logrus"
 	"github.com/umbracle/ethgo/contract"
 	"github.com/valyala/fasthttp"
+	"golang.org/x/xerrors"
 )
 
 type LotusClient struct {
 	Host          string
 	Client        *ethclient.Client
 	rpcClient     *fasthttp.HostClient
+	rpcClient2    jsonrpc.RPCClient
 	MessageSigner *MessageSigner
 	Signer        *bind.TransactOpts
-	Address       *common.Address
+	Address       *address.Address
 	Registry      *StorageProviderRegistry.StorageProviderRegistry
 	RegistryABI   *bind.MetaData
 	Staking       *LiquidStaking.LiquidStaking
 	StakingABI    *bind.MetaData
-	Oracle        *PledgeOracle.PledgeOracle
 	Collateral    *StorageProviderCollateral.StorageProviderCollateral
 	CollateralABI *bind.MetaData
 }
@@ -60,42 +63,47 @@ func NewLotusClient(ctx context.Context, cfg *config.Config, cache CacheType) (*
 	}
 
 	c.Client = client
+	c.Host = cfg.RPCAddress
+
 	c.rpcClient = &fasthttp.HostClient{
 		Addr: cfg.RPCAddress,
 	}
-	c.Host = cfg.RPCAddress
 
-	key, err := c.getPrivateKey(cfg)
-	if err != nil {
-		return nil, err
-	}
+	rpcClient := jsonrpc.NewClient(cfg.RPCAddress)
 
-	transactor, err := bind.NewKeyedTransactorWithChainID(key, big.NewInt(int64(cfg.ChainID)))
-	if err != nil {
-		return nil, err
-	}
-
-	c.Signer = transactor
-	c.Address = &c.Signer.From
+	c.rpcClient2 = rpcClient
 
 	ks, err := cache.prepareKeystore(cfg.FSKeyStoreDir)
 	if err != nil {
 		return nil, err
 	}
 
-	wallet, err := wallet.NewWallet(ks)
+	w, err := wallet.NewWallet(ks)
 	if err != nil {
 		return nil, err
 	}
 
-	c.MessageSigner = NewMessageSigner(*wallet)
+	c.MessageSigner = NewMessageSigner(*w)
+
+	addr, err := w.GetDefault()
+	if err != nil {
+		key, err := key.GenerateKey("secp256k1")
+		if err != nil {
+			return nil, err
+		}
+
+		if err := ks.Put(wallet.KNamePrefix+key.Address.String(), key.KeyInfo); err != nil {
+			return nil, xerrors.Errorf("saving to keystore: %w", err)
+		}
+
+		err = ks.Put("default", key.KeyInfo)
+
+		c.Address = &key.Address
+	}
+
+	c.Address = &addr
 
 	registry, err := StorageProviderRegistry.NewStorageProviderRegistry(common.HexToAddress(cfg.StorageProviderRegistry), client)
-	if err != nil {
-		return nil, err
-	}
-
-	oracle, err := PledgeOracle.NewPledgeOracle(common.HexToAddress(cfg.PledgeOracle), client)
 	if err != nil {
 		return nil, err
 	}
@@ -113,50 +121,24 @@ func NewLotusClient(ctx context.Context, cfg *config.Config, cache CacheType) (*
 	c.Registry = registry
 	c.RegistryABI = StorageProviderRegistry.StorageProviderRegistryMetaData
 
-	c.Oracle = oracle
-
 	c.Collateral = collateral
 	c.CollateralABI = StorageProviderCollateral.StorageProviderCollateralMetaData
 
 	c.Staking = staking
 	c.StakingABI = LiquidStaking.LiquidStakingMetaData
 
+	logrus.SetReportCaller(true)
+	logrus.SetFormatter(&logrus.TextFormatter{
+		FullTimestamp: true,
+		CallerPrettyfier: func(f *runtime.Frame) (string, string) {
+			filename := path.Base(f.File)
+			return "", fmt.Sprintf("%s:%d:", filename, f.Line)
+		},
+	})
+
+	logrus.SetLevel(logrus.InfoLevel)
+
 	return c, nil
-}
-
-func (c *LotusClient) getPrivateKey(cfg *config.Config) (*ecdsa.PrivateKey, error) {
-	if cfg.PrivateKey != "" {
-		key, err := crypto.HexToECDSA(cfg.PrivateKey)
-		return key, err
-	}
-
-	if cfg.MnemonicPhrase != "" {
-		wallet, err := hdwallet.NewFromMnemonic(cfg.MnemonicPhrase)
-		if err != nil {
-			return nil, err
-		}
-		path := hdwallet.DefaultBaseDerivationPath
-
-		if cfg.HDDerivationPath != "" {
-			parsedPath, err := hdwallet.ParseDerivationPath(cfg.HDDerivationPath)
-			if err != nil {
-				return nil, err
-			}
-			path = parsedPath
-		}
-
-		account, err := wallet.Derive(path, true)
-		if err != nil {
-			return nil, err
-		}
-		key, err := wallet.PrivateKey(account)
-		if err != nil {
-			return nil, err
-		}
-		return key, nil
-	}
-
-	return nil, fmt.Errorf("private key or mnemonic phrase isn't specified")
 }
 
 func (cache CacheType) prepareKeystore(dir string) (keystore.KeyStore, error) {

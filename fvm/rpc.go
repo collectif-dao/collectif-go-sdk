@@ -2,8 +2,9 @@ package fvm
 
 import (
 	"collective-go-sdk/fvm/types"
-	"encoding/binary"
+	"context"
 	"encoding/json"
+	"fmt"
 
 	"github.com/filecoin-project/go-address"
 	ltypes "github.com/filecoin-project/lotus/chain/types"
@@ -28,16 +29,18 @@ func newCidParam(cid interface{}) []interface{} {
 	return i
 }
 
-func (c *LotusClient) GetNonce(address address.Address) (uint64, error) {
+func (c *LotusClient) GetNonce(ctx context.Context, address address.Address) (uint64, error) {
 	i := make([]interface{}, 0)
 	i = append(i, address)
 
-	res, err := c.HandleRequest("Filecoin.MpoolGetNonce", i)
+	response, _ := c.rpcClient2.Call(ctx, "Filecoin.MpoolGetNonce", i)
+
+	value, err := response.GetInt()
 	if err != nil {
-		return 0, xerrors.Errorf("Failed to marshal request body %v", err)
+		return 0, fmt.Errorf("failed to unmarshal response body: %w", err)
 	}
 
-	return binary.BigEndian.Uint64(res), nil
+	return uint64(value), nil
 }
 
 func (c *LotusClient) PushToMpool(msg *ltypes.SignedMessage) (cid.Cid, error) {
@@ -57,39 +60,42 @@ func (c *LotusClient) PushToMpool(msg *ltypes.SignedMessage) (cid.Cid, error) {
 	return mcid, nil
 }
 
-func (c *LotusClient) VerifyCid(cid string) ([]byte, error) {
+func (c *LotusClient) VerifyCid(ctx context.Context, cid string) (bool, error) {
 	i := newCidParam(cid)
 
-	res, err := c.HandleRequest("Filecoin.ChainHasObj", i)
+	response, _ := c.rpcClient2.Call(ctx, "Filecoin.ChainHasObj", i)
+
+	value, err := response.GetBool()
 	if err != nil {
-		return nil, xerrors.Errorf("Failed to marshal request body %v", err)
+		return false, fmt.Errorf("failed to unmarshal response body: %w", err)
 	}
 
-	return res, nil
+	return value, nil
 }
 
 func (c *LotusClient) HandleRequest(method string, params []interface{}) ([]byte, error) {
-	req := fasthttp.AcquireRequest()
-
-	req.Header.SetMethod("POST")
-	req.Header.SetContentType("application/json")
-
-	requestBody := types.NewRPCRequestBody(method)
-	requestBody.Params = append(requestBody.Params, params...)
+	requestBody := types.NewRPCRequestBody(method, params)
 
 	body, err := json.Marshal(requestBody)
 	if err != nil {
 		return nil, xerrors.Errorf("Failed to marshal request body %v", err)
 	}
 
-	req.AppendBody(body)
+	req := fasthttp.AcquireRequest()
+	defer fasthttp.ReleaseRequest(req)
+
+	req.SetRequestURI(c.rpcClient.Addr)
+	req.Header.SetMethod("POST")
+	req.Header.SetContentType("application/json")
+	req.SetBody(body)
 
 	resp := fasthttp.AcquireResponse()
-	if err = c.rpcClient.Do(req, resp); err != nil {
-		return nil, err
+	defer fasthttp.ReleaseResponse(resp)
+
+	err = fasthttp.Do(req, resp)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
 	}
 
-	bodyBytes := resp.Body()
-
-	return bodyBytes, nil
+	return resp.Body(), nil
 }

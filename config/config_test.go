@@ -14,5 +14,5 @@ func TestLoadConfig(t *testing.T) {
 	}
 
 	assert.Equal(t, 3141, config.ChainID)
-	assert.Equal(t, "https://api.hyperspace.node.glif.io/rpc/v1", config.RPCAddress)
+	assert.Equal(t, "https://filecoin-hyperspace.chainstacklabs.com/rpc/v1", config.RPCAddress)
 }
