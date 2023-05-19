@@ -3,9 +3,8 @@ package collateral
 import (
 	"collective-go-sdk/config"
 	"collective-go-sdk/fvm"
-	"collective-go-sdk/utils"
+	fUtils "collective-go-sdk/fvm/utils"
 	"context"
-	"encoding/hex"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -16,9 +15,6 @@ var (
 )
 
 func getCollateral(address string) (string, string, error) {
-	bytesAddr := utils.ConvertAddress(address)
-	fmt.Println("Miner Address in bytes: ", hex.EncodeToString(bytesAddr))
-
 	config, err := config.LoadConfig("./config")
 	if err != nil {
 		return "", "", err
@@ -30,7 +26,10 @@ func getCollateral(address string) (string, string, error) {
 		return "", "", err
 	}
 
-	available, err := client.GetAvailableCollateral(bytesAddr)
+	idAddr := fUtils.GetIdAddress(ctx, address, client)
+	fmt.Print(idAddr)
+
+	available, err := client.GetAvailableCollateral(idAddr)
 	if err != nil {
 		return "", "", err
 	}

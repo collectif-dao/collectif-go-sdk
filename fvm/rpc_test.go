@@ -81,3 +81,80 @@ func TestGetNonce(t *testing.T) {
 
 	assert.Equal(t, nonce, uint64(5))
 }
+
+func TestLookupId(t *testing.T) {
+	config, err := config.LoadConfig("../config")
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	ctx := context.Background()
+	client, err := NewLotusClient(ctx, config, MemoryKeyStore)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	fAddr := "t410fmiuoet6qvv3jowc33r7bvlvcpgiu25kjec5t2qa"
+
+	addr, err := address.NewFromString(fAddr)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	key, err := client.GetTipSetKey(ctx)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	idAddr, err := client.LookupId(ctx, addr, key)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	id, err := address.IDFromAddress(*idAddr)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	assert.Greater(t, id, 0)
+}
+
+func TestGetChainHead(t *testing.T) {
+	config, err := config.LoadConfig("../config")
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	ctx := context.Background()
+	client, err := NewLotusClient(ctx, config, MemoryKeyStore)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	tipSet, err := client.GetChainHead(ctx)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	assert.NotEmpty(t, tipSet)
+}
+
+func TestGetTipSetKey(t *testing.T) {
+	config, err := config.LoadConfig("../config")
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	ctx := context.Background()
+	client, err := NewLotusClient(ctx, config, MemoryKeyStore)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	key, err := client.GetTipSetKey(ctx)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	assert.NotEmpty(t, key)
+}

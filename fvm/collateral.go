@@ -50,8 +50,8 @@ func (c *LotusClient) Withdraw(amount *big.Int, send bool) (*types.Transaction, 
 	return tx, nil
 }
 
-func (c *LotusClient) GetCollateral(provider []byte) (*big.Int, *big.Int, error) {
-	availableCollateral, lockedCollateral, err := c.Collateral.GetCollateral(&bind.CallOpts{}, provider)
+func (c *LotusClient) GetCollateral(ownerId uint64) (*big.Int, *big.Int, error) {
+	availableCollateral, lockedCollateral, err := c.Collateral.GetCollateral(&bind.CallOpts{}, ownerId)
 	if err != nil {
 		panic(err)
 	}
@@ -59,10 +59,10 @@ func (c *LotusClient) GetCollateral(provider []byte) (*big.Int, *big.Int, error)
 	return availableCollateral, lockedCollateral, nil
 }
 
-func (c *LotusClient) GetLockedCollateral(provider []byte) (*big.Int, error) {
-	return c.Collateral.GetLockedCollateral(&bind.CallOpts{}, provider)
+func (c *LotusClient) GetLockedCollateral(ownerId uint64) (*big.Int, error) {
+	return c.Collateral.GetLockedCollateral(&bind.CallOpts{}, ownerId)
 }
 
-func (c *LotusClient) GetAvailableCollateral(provider []byte) (*big.Int, error) {
-	return c.Collateral.GetAvailableCollateral(&bind.CallOpts{}, provider)
+func (c *LotusClient) GetAvailableCollateral(ownerId uint64) (*big.Int, error) {
+	return c.Collateral.GetAvailableCollateral(&bind.CallOpts{}, ownerId)
 }

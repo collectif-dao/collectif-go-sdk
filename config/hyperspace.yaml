@@ -1,9 +1,8 @@
 rpc_addr: "https://filecoin-hyperspace.chainstacklabs.com/rpc/v1"
 chain_id: 3141
-liquid_staking: "0xc740192CD9d6DBFF71f59AD2Ee25DFbEE24c77B3"
-collateral: "0xa892bA1068ea9214EF0e579D074ea7092E1e89f7"
-registry: "0x37151c20ec22B47B65c2B7f4F62BAB4C6E445598"
-pledge_oracle: "0x5C45838965514236AB58BFd1305fCA21718B1200"
+liquid_staking: "0x33494d4f5976cf95c993DA8e485129702b4086Cb"
+collateral: "0x9396B7D3f0405994C098db756D5B5E65483f40f5"
+registry: "0xe3C24e146b747Fb4B6763c13b386033D83D8e32E"
 allocationLimit: 2000
 maxPeriod: 1000000
 dir: "./keystore/data"

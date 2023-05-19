@@ -7,7 +7,7 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 )
 
-func (c *LotusClient) Pledge(sectorNumber uint64, proof []byte, send bool) (*types.Transaction, error) {
+func (c *LotusClient) Pledge(amount *big.Int, send bool) (*types.Transaction, error) {
 	var opts = c.Signer
 
 	if !send {
@@ -16,43 +16,7 @@ func (c *LotusClient) Pledge(sectorNumber uint64, proof []byte, send bool) (*typ
 		opts.NoSend = false
 	}
 
-	tx, err := c.Staking.Pledge(opts, sectorNumber, proof)
-
-	if err != nil {
-		panic(err)
-	}
-
-	return tx, nil
-}
-
-func (c *LotusClient) PledgeAggregate(sectorNumber []uint64, proof [][]byte, send bool) (*types.Transaction, error) {
-	var opts = c.Signer
-
-	if !send {
-		opts.NoSend = true
-	} else {
-		opts.NoSend = false
-	}
-
-	tx, err := c.Staking.PledgeAggregate(opts, sectorNumber, proof)
-
-	if err != nil {
-		panic(err)
-	}
-
-	return tx, nil
-}
-
-func (c *LotusClient) WithdrawBalance(miner []byte, amount *big.Int, send bool) (*types.Transaction, error) {
-	var opts = c.Signer
-
-	if !send {
-		opts.NoSend = true
-	} else {
-		opts.NoSend = false
-	}
-
-	tx, err := c.Staking.WithdrawRewards(opts, miner, amount)
+	tx, err := c.Staking.Pledge(opts, amount)
 
 	if err != nil {
 		panic(err)

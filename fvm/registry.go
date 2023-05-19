@@ -9,24 +9,20 @@ import (
 )
 
 type StorageProvider struct {
-	isActive            bool
-	targetPool          common.Address
-	miner               []byte
-	allocationLimit     *big.Int
-	usedAllocation      *big.Int
-	accruedRewards      *big.Int
-	lockedRewards       *big.Int
-	maxRedeemablePeriod *big.Int
+	isActive   bool
+	targetPool common.Address
+	minerId    uint64
+	lastEpoch  int64
 }
 
-func (c *LotusClient) Register(miner []byte, targetPool common.Address, allocationLimit *big.Int, period *big.Int, send bool) (*types.Transaction, error) {
+func (c *LotusClient) Register(minerId uint64, allocationLimit *big.Int, dailyAllocation *big.Int, send bool) (*types.Transaction, error) {
 	var opts = c.Signer
 
 	if !send {
 		opts.NoSend = true
 	}
 
-	tx, err := c.Registry.Register(opts, miner, targetPool, allocationLimit, period)
+	tx, err := c.Registry.Register(opts, minerId, allocationLimit, dailyAllocation)
 
 	if err != nil {
 		panic(err)
@@ -35,47 +31,27 @@ func (c *LotusClient) Register(miner []byte, targetPool common.Address, allocati
 	return tx, nil
 }
 
-func (c *LotusClient) ChangeBeneficiaryAddress(beneficiaryAddress common.Address, send bool) (*types.Transaction, error) {
-	var opts = c.Signer
-
-	if !send {
-		opts.NoSend = true
-	}
-
-	tx, err := c.Registry.ChangeBeneficiaryAddress(opts, beneficiaryAddress)
-
-	if err != nil {
-		panic(err)
-	}
-
-	return tx, nil
-}
-
-func (c *LotusClient) GetStorageProvider(provider []byte) (StorageProvider, error) {
+func (c *LotusClient) GetStorageProvider(ownerId uint64) (StorageProvider, error) {
 	var sp StorageProvider
 	var opts = &bind.CallOpts{}
 
-	isActive, targetPool, miner, allocation, usedAllocation, accruedRewards, lockedRewards, maxRedeemablePeriod, err := c.Registry.StorageProviderRegistryCaller.GetStorageProvider(opts, provider)
+	isActive, targetPool, miner, maxRedeemablePeriod, err := c.Registry.StorageProviderRegistryCaller.GetStorageProvider(opts, ownerId)
 	if err != nil {
 		panic(err)
 	}
 
 	sp.isActive = isActive
 	sp.targetPool = targetPool
-	sp.miner = miner
-	sp.allocationLimit = allocation
-	sp.usedAllocation = usedAllocation
-	sp.accruedRewards = accruedRewards
-	sp.lockedRewards = lockedRewards
-	sp.maxRedeemablePeriod = maxRedeemablePeriod
+	sp.minerId = miner
+	sp.lastEpoch = maxRedeemablePeriod
 
 	return sp, nil
 }
 
-func (c *LotusClient) IsActiveProvider(provider []byte) (bool, error) {
+func (c *LotusClient) IsActiveProvider(ownerId uint64) (bool, error) {
 	var opts = &bind.CallOpts{}
 
-	isActive, err := c.Registry.IsActiveProvider(opts, provider)
+	isActive, err := c.Registry.IsActiveProvider(opts, ownerId)
 	if err != nil {
 		panic(err)
 	}

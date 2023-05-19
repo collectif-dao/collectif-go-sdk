@@ -73,6 +73,54 @@ func (c *LotusClient) VerifyCid(ctx context.Context, cid string) (bool, error) {
 	return value, nil
 }
 
+func (c *LotusClient) GetChainHead(ctx context.Context) (*ltypes.TipSet, error) {
+	i := make([]interface{}, 0)
+
+	response, err := c.rpcClient2.Call(ctx, "Filecoin.ChainHead", i)
+	if err != nil {
+		return nil, fmt.Errorf("failed to perform a ChainHead call: %w", err)
+	}
+
+	tipSet := ltypes.TipSet{}
+
+	err = response.GetObject(&tipSet)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response body: %w", err)
+	}
+
+	return &tipSet, nil
+}
+
+func (c *LotusClient) GetTipSetKey(ctx context.Context) (*ltypes.TipSetKey, error) {
+	tipSet, err := c.GetChainHead(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to perform a ChainHead call: %w", err)
+	}
+
+	key := tipSet.Key()
+
+	return &key, nil
+}
+
+func (c *LotusClient) LookupId(ctx context.Context, addr address.Address, key *ltypes.TipSetKey) (*address.Address, error) {
+	i := make([]interface{}, 0)
+	i = append(i, addr, key)
+
+	response, err := c.rpcClient2.Call(ctx, "Filecoin.StateLookupID", i)
+	if err != nil {
+		return nil, fmt.Errorf("failed to perform a StateLookupID call: %w", err)
+	}
+
+	fAddr := address.Address{}
+
+	err = response.GetObject(&fAddr)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response body: %w", err)
+	}
+
+	return &fAddr, nil
+}
+
 func (c *LotusClient) HandleRequest(method string, params []interface{}) ([]byte, error) {
 	requestBody := types.NewRPCRequestBody(method, params)
 

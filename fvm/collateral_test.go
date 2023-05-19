@@ -2,7 +2,6 @@ package fvm
 
 import (
 	"collective-go-sdk/config"
-	"collective-go-sdk/utils"
 	"context"
 	"math/big"
 	"testing"
@@ -10,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var minerAddr = utils.ConvertAddress("t2vb6iahjntzweoxb7ozhond4jalwf5azy2xzk2oa")
+var minerId = uint64(0100)
 var result = big.NewInt(0)
 var amount = big.NewInt(100)
 
@@ -72,7 +71,7 @@ func TestGetCollateral(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	available, locked, err := client.GetCollateral(minerAddr)
+	available, locked, err := client.GetCollateral(minerId)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -94,7 +93,7 @@ func TestGetLockedCollateral(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	lockedCollateral, err := client.GetLockedCollateral(minerAddr)
+	lockedCollateral, err := client.GetLockedCollateral(minerId)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -115,7 +114,7 @@ func TestGetAvailableCollateral(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	availableCollateral, err := client.GetAvailableCollateral(minerAddr)
+	availableCollateral, err := client.GetAvailableCollateral(minerId)
 	if err != nil {
 		assert.Error(t, err)
 	}
