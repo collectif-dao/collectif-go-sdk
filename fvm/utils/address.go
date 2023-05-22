@@ -6,14 +6,22 @@ import (
 	"fmt"
 
 	"github.com/filecoin-project/go-address"
+	"github.com/filecoin-project/lotus/chain/types/ethtypes"
 )
 
 func GetIdAddress(ctx context.Context, addr string, c *fvm.LotusClient) uint64 {
 	var id uint64
+	var err error
+	var fAddr address.Address
 
-	fAddr, err := address.NewFromString(addr)
+	fAddr, err = address.NewFromString(addr)
 	if err != nil {
-		panic(fmt.Sprintf("go-address is unable to initiate Address struct: %v", err))
+		ethAddr, err := ethtypes.ParseEthAddress(addr)
+
+		fAddr, err = ethAddr.ToFilecoinAddress()
+		if err != nil {
+			panic(fmt.Sprintf("unable to get Filecoin address: %v", err))
+		}
 	}
 
 	protocol := fAddr.Protocol()

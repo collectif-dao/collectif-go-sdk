@@ -116,7 +116,7 @@ func TestLookupId(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	assert.Greater(t, id, 0)
+	assert.Greater(t, id, uint64(0))
 }
 
 func TestGetChainHead(t *testing.T) {
