@@ -1,79 +1,44 @@
 package register
 
 import (
-	"collective-go-sdk/config"
 	"collective-go-sdk/fvm"
+	"collective-go-sdk/keystore"
+	"collective-go-sdk/sdk"
 	"collective-go-sdk/utils"
 	"context"
-	"encoding/hex"
 	"fmt"
-	"math/big"
 
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/spf13/cobra"
+	"golang.org/x/xerrors"
 )
 
 var (
-	miner  string
-	pool   string
-	limit  int64
-	period int64
-	run    bool
+	minerId    uint64
+	totalLimit int64
+	dailyLimit int64
+	run        bool
 )
 
-func registerStorageProvider(miner string, pool string, limit int64, period int64, run bool) (string, error) {
-	bytesAddr := utils.ConvertAddress(miner)
-	var poolAddr common.Address
-	var allocationLimit *big.Int
-	var maxPeriod *big.Int
-	var attoFIL = big.NewInt(10)
-	var fil = attoFIL.Exp(attoFIL, big.NewInt(18), big.NewInt(0))
-
-	config, err := config.LoadConfig("./config")
-	if err != nil {
-		return "", err
+func registerStorageProvider(minerId uint64, totalLimit int64, dailyLimit int64, run bool) (*fvm.MessageResponse, error) {
+	if totalLimit == 0 || dailyLimit == 0 {
+		return nil, xerrors.Errorf("Incorrect params for Register transaction")
 	}
 
-	if pool == "" {
-		poolAddr = common.HexToAddress(config.LiquidStaking)
-	} else {
-		poolAddr = common.HexToAddress(pool)
-	}
-
-	if limit == 0 {
-		allocationLimit = big.NewInt(config.AllocationLimit)
-	} else {
-		// allocationLimit = attoFIL.Exp(big.NewInt(limit), big.NewInt(18), big.NewInt(0))
-		allocationLimit = fil.Mul(big.NewInt(limit), fil)
-	}
-
-	if period == 0 {
-		maxPeriod = big.NewInt(config.MaxPeriod)
-	} else {
-		maxPeriod = big.NewInt(period)
-	}
+	dailyAllocation := utils.GetAttoFilFromFIL(dailyLimit)
+	allocationLimit := utils.GetAttoFilFromFIL(totalLimit)
 
 	ctx := context.Background()
-	client, err := fvm.NewLotusClient(ctx, config, fvm.FSKeyStore)
+	sdk, err := sdk.NewCollectifSDK(ctx, fvm.DefaultNetwork, keystore.FSKeyStore, "./")
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	abi, err := client.RegistryABI.GetAbi()
+	msg, err := sdk.Client.Register(ctx, minerId, allocationLimit, dailyAllocation, run)
 	if err != nil {
-		return "", err
+		return msg, err
 	}
 
-	callData, err := abi.Pack("register", bytesAddr, poolAddr, allocationLimit, maxPeriod)
-
-	return hex.EncodeToString(callData), nil
-
-	// tx, err := client.Register(bytesAddr, poolAddr, allocationLimit, maxPeriod, run)
-	// if err != nil {
-	// 	return "", err
-	// }
-
-	// return tx.Hash().Hex(), nil
+	return msg, nil
 }
 
 var RegisterCmd = &cobra.Command{
@@ -82,20 +47,27 @@ var RegisterCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		if resp, err := registerStorageProvider(miner, pool, limit, period, run); err != nil {
+		if msg, err := registerStorageProvider(minerId, totalLimit, dailyLimit, run); err != nil {
 			fmt.Println(err)
+
+			fmt.Println("Message calldata: ", msg.Data)
 		} else {
-			fmt.Println(resp)
+			if run {
+				fmt.Println("Executed message with: ", msg.Message, " CID")
+				fmt.Println("Returned: ", msg.Receipt.Return)
+				fmt.Println("Gas spent: ", msg.Receipt.GasUsed)
+			}
+
+			fmt.Println("Message calldata: ", msg.Data)
 		}
 	},
 }
 
 func init() {
-	RegisterCmd.Flags().StringVarP(&miner, "miner", "m", "", "Storage Provider miner address (filecoin address)")
-	RegisterCmd.Flags().StringVarP(&pool, "staking", "s", "", "Liquid Staking pool address (ethereum address)")
-	RegisterCmd.Flags().Int64VarP(&limit, "limit", "l", 0, "FIL allocation for pledge")
-	RegisterCmd.Flags().Int64VarP(&limit, "period", "p", 0, "Max epoch for pledge operations")
-	RegisterCmd.Flags().BoolVarP(&run, "run", "r", true, "Execute transaction")
+	RegisterCmd.Flags().Uint64VarP(&minerId, "minerId", "m", 0, "Storage Provider miner id (not filecoin address)")
+	RegisterCmd.Flags().Int64VarP(&totalLimit, "allocation-limit", "l", 0, "Total FIL allocation for pledge")
+	RegisterCmd.Flags().Int64VarP(&dailyLimit, "daily-allocation", "d", 0, "Daily FIL allocation for pledge")
+	RegisterCmd.Flags().BoolVarP(&run, "execute", "e", true, "Execute transaction")
 
 	if err := RegisterCmd.MarkFlagRequired("miner"); err != nil {
 		fmt.Println(err)

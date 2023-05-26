@@ -1,16 +1,19 @@
-package fvm
+package messagesigner
 
 import (
 	"bytes"
 	"collective-go-sdk/config"
-	"collective-go-sdk/keystore"
-	"context"
 	"strconv"
+
+	// "collective-go-sdk/fvm"
+	"collective-go-sdk/keystore"
+	"collective-go-sdk/rpc"
+	"context"
 	"testing"
 
 	"github.com/filecoin-project/go-address"
 	"github.com/filecoin-project/go-state-types/abi"
-	builtintypes "github.com/filecoin-project/go-state-types/builtin"
+	"github.com/filecoin-project/go-state-types/builtin"
 	"github.com/filecoin-project/lotus/api"
 	"github.com/filecoin-project/lotus/chain/types"
 	"github.com/filecoin-project/lotus/chain/types/ethtypes"
@@ -31,38 +34,52 @@ func TestNewMessageSigner(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	msigner := NewMessageSigner(*wallet)
-	assert.NotEmpty(t, msigner.Wallet.Get())
+	rpc := rpc.RPCClient{}
 
+	msigner := NewMessageSigner(*wallet, &rpc)
+	assert.NotEmpty(t, msigner.Wallet.Get())
 }
 
 func TestNextNonce(t *testing.T) {
-	config, err := config.LoadConfig("../config")
+	config, err := config.LoadConfig("../")
 	if err != nil {
 		assert.Error(t, err)
 	}
 
+	cache := keystore.MemoryKeyStore
 	ctx := context.Background()
-	client, err := NewLotusClient(ctx, config, MemoryKeyStore)
+	rpcClient := rpc.NewRPCClient(config.RPCAddress)
+
+	ks, err := cache.PrepareKeystore(config.FSKeyStoreDir)
 	if err != nil {
 		assert.Error(t, err)
 	}
 
-	addr, err := client.MessageSigner.Wallet.WalletNew(ctx, "bls")
+	w, err := wallet.NewWallet(ks)
+	if err != nil {
+		assert.Error(t, err)
+	}
 
-	nonce, err := client.NextNonce(ctx, addr)
+	ms := NewMessageSigner(*w, rpcClient)
+
+	addr, err := ms.Wallet.WalletNew(ctx, "bls")
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	nonce, err := ms.NextNonce(ctx, addr)
 	if err != nil {
 		assert.Error(t, err)
 	}
 
 	assert.Equal(t, nonce, uint64(0))
 
-	err = client.MessageSigner.Wallet.WalletDelete(ctx, addr)
+	err = ms.Wallet.WalletDelete(ctx, addr)
 	if err != nil {
 		assert.Error(t, err)
 	}
 
-	status, err := client.MessageSigner.Wallet.WalletHas(ctx, addr)
+	status, err := ms.Wallet.WalletHas(ctx, addr)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -71,16 +88,26 @@ func TestNextNonce(t *testing.T) {
 }
 
 func TestNextNonceForExistingAddress(t *testing.T) {
-	config, err := config.LoadConfig("../config")
+	config, err := config.LoadConfig("../")
 	if err != nil {
 		assert.Error(t, err)
 	}
 
+	cache := keystore.MemoryKeyStore
 	ctx := context.Background()
-	client, err := NewLotusClient(ctx, config, MemoryKeyStore)
+	rpcClient := rpc.NewRPCClient(config.RPCAddress)
+
+	ks, err := cache.PrepareKeystore(config.FSKeyStoreDir)
 	if err != nil {
 		assert.Error(t, err)
 	}
+
+	w, err := wallet.NewWallet(ks)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	ms := NewMessageSigner(*w, rpcClient)
 
 	toAddr, err := address.NewFromString("t410fjtte454usorrzedcbgslfmiwg5yy6i2a2pxoyky")
 
@@ -88,7 +115,7 @@ func TestNextNonceForExistingAddress(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	nonce, err := client.NextNonce(ctx, toAddr)
+	nonce, err := ms.NextNonce(ctx, toAddr)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -100,20 +127,22 @@ func TestSignMessage(t *testing.T) {
 	msgValue, err := strconv.ParseInt("1000", 10, 8)
 	toAddress := "t2indjldhwmnwro4cqiujhnwhva74ndoeagpn4nhi"
 
-	config, err := config.LoadConfig("../config")
+	config, err := config.LoadConfig("../")
 	if err != nil {
 		assert.Error(t, err)
 	}
 
 	ctx := context.Background()
-	client, err := NewLotusClient(ctx, config, MemoryKeyStore)
+	rpcClient := rpc.NewRPCClient(config.RPCAddress)
+
+	w, err := wallet.NewWallet(keystore.NewMemKeystore())
 	if err != nil {
 		assert.Error(t, err)
 	}
 
-	wallet := client.MessageSigner.Wallet
+	ms := NewMessageSigner(*w, rpcClient)
 
-	addr, err := wallet.GetDefault()
+	addr, err := ms.Wallet.WalletNew(ctx, types.KTSecp256k1)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -141,12 +170,12 @@ func TestSignMessage(t *testing.T) {
 		From:   addr,
 		To:     toAddr,
 		Value:  val,
-		Method: builtintypes.MethodsEVM.InvokeContract,
+		Method: builtin.MethodsEVM.InvokeContract,
 		Params: calldata,
 		Nonce:  5,
 	}
 
-	signedMessage, err := client.SignMessage(ctx, message, &api.MessageSendSpec{})
+	signedMessage, err := ms.SignMessage(ctx, message, &api.MessageSendSpec{})
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -161,10 +190,80 @@ func TestSignMessage(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	sig, err := wallet.WalletSign(ctx, message.From, sb, api.MsgMeta{
+	sig, err := ms.Wallet.WalletSign(ctx, message.From, sb, api.MsgMeta{
 		Type:  api.MTChainMsg,
 		Extra: mb.RawData(),
 	})
 
 	assert.Equal(t, sig.Data, signedMessage.Signature.Data)
+}
+
+func TestWallet(t *testing.T) {
+	ctx := context.Background()
+
+	w1, err := wallet.NewWallet(keystore.NewMemKeystore())
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	a1, err := w1.WalletNew(ctx, types.KTSecp256k1)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	exists, err := w1.WalletHas(ctx, a1)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !exists {
+		t.Fatalf("address doesn't exist in wallet")
+	}
+
+	w2, err := wallet.NewWallet(keystore.NewMemKeystore())
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	a2, err := w2.WalletNew(ctx, types.KTSecp256k1)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	a3, err := w2.WalletNew(ctx, types.KTSecp256k1)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	addrs, err := w2.WalletList(ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(addrs) != 2 {
+		t.Fatalf("wrong number of addresses in wallet")
+	}
+
+	err = w2.WalletDelete(ctx, a2)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	exists, err = w2.WalletHas(ctx, a2)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if exists {
+		t.Fatalf("failed to delete wallet address")
+	}
+
+	err = w2.SetDefault(a3)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	def, err := w2.GetDefault()
+	if !assert.Equal(t, a3, def) {
+		t.Fatal(err)
+	}
 }

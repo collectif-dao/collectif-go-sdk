@@ -1,9 +1,10 @@
 package restaking
 
 import (
-	"collective-go-sdk/config"
 	"collective-go-sdk/fvm"
-	fUtils "collective-go-sdk/fvm/utils"
+	"collective-go-sdk/keystore"
+	"collective-go-sdk/sdk"
+	fUtils "collective-go-sdk/utils"
 	"context"
 	"fmt"
 
@@ -14,31 +15,25 @@ var (
 	ownerId string
 )
 
-func getRestakingInfo(ownerId string) (string, string, error) {
-	config, err := config.LoadConfig("./config")
-	if err != nil {
-		return "", "", err
-	}
-
+func getRestakingInfo(ownerId string) (*fvm.SPRestaking, error) {
 	ctx := context.Background()
-	client, err := fvm.NewLotusClient(ctx, config, fvm.FSKeyStore)
+	sdk, err := sdk.NewCollectifSDK(ctx, fvm.DefaultNetwork, keystore.FSKeyStore, "./")
 	if err != nil {
-		return "", "", err
+		return nil, err
 	}
 
 	if ownerId == "" {
-		ownerId = client.Address.String()
+		ownerId = sdk.Client.Address.String()
 	}
 
-	fmt.Print(ownerId)
-	idAddr := fUtils.GetIdAddress(ctx, ownerId, client)
+	idAddr := fUtils.GetIdAddress(ctx, ownerId, sdk.Client)
 
-	restaking, err := client.GetRestaking(idAddr)
+	restaking, err := sdk.Client.GetRestaking(ctx, idAddr)
 	if err != nil {
-		return "", "", err
+		return nil, err
 	}
 
-	return restaking.RestakingRatio.String(), restaking.RestakingAddress.String(), nil
+	return restaking, nil
 }
 
 var getRestaking = &cobra.Command{
@@ -47,11 +42,11 @@ var getRestaking = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		if ratio, addr, err := getRestakingInfo(ownerId); err != nil {
+		if restaking, err := getRestakingInfo(ownerId); err != nil {
 			fmt.Println(err)
 		} else {
-			fmt.Println("Restaking ratio: ", ratio)
-			fmt.Println("Locked collateral: ", addr)
+			fmt.Println("Restaking ratio: ", restaking.RestakingRatio.String())
+			fmt.Println("Locked collateral: ", restaking.RestakingAddress.String())
 		}
 	},
 }

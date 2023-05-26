@@ -42,7 +42,7 @@ func (mk *MemKeystore) Put(name string, k types.KeyInfo) error {
 func (mk *MemKeystore) Get(name string) (types.KeyInfo, error) {
 	k, ok := mk.keys[name]
 	if !ok {
-		return types.KeyInfo{}, ErrNoSuchKey
+		return types.KeyInfo{}, types.ErrKeyInfoNotFound
 	}
 
 	return k, nil

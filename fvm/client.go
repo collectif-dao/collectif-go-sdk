@@ -6,58 +6,68 @@ import (
 	"collective-go-sdk/contracts/StorageProviderCollateral"
 	"collective-go-sdk/contracts/StorageProviderRegistry"
 	"collective-go-sdk/keystore"
+	ms "collective-go-sdk/messagesigner"
+	"collective-go-sdk/rpc"
 	"context"
 	"path"
 	"runtime"
 
-	"github.com/ybbus/jsonrpc/v3"
-
 	"fmt"
 
+	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/filecoin-project/go-address"
+	"github.com/filecoin-project/lotus/chain/types/ethtypes"
 	"github.com/filecoin-project/lotus/chain/wallet"
 	"github.com/filecoin-project/lotus/chain/wallet/key"
 	"github.com/sirupsen/logrus"
-	"github.com/umbracle/ethgo/contract"
-	"github.com/valyala/fasthttp"
 	"golang.org/x/xerrors"
 )
 
+var DefaultNetwork = "hyperspace"
+
 type LotusClient struct {
-	Host          string
-	Client        *ethclient.Client
-	rpcClient     *fasthttp.HostClient
-	rpcClient2    jsonrpc.RPCClient
-	MessageSigner *MessageSigner
-	Signer        *bind.TransactOpts
-	Address       *address.Address
-	Registry      *StorageProviderRegistry.StorageProviderRegistry
-	RegistryABI   *bind.MetaData
-	Staking       *LiquidStaking.LiquidStaking
-	StakingABI    *bind.MetaData
-	Collateral    *StorageProviderCollateral.StorageProviderCollateral
-	CollateralABI *bind.MetaData
+	Host       string
+	Client     *ethclient.Client
+	Signer     *bind.TransactOpts
+	Address    *address.Address
+	EthAddress *common.Address
+
+	RPCClient     *rpc.RPCClient
+	MessageSigner *ms.MessageSigner
+
+	Registry   *Registry
+	Collateral *Collateral
+	Staking    *Staking
 }
 
-type Contract struct {
-	contract.Contract
+type Registry struct {
+	Contract      *StorageProviderRegistry.StorageProviderRegistry
+	Address       ethtypes.EthAddress
+	NativeAddress address.Address
+	ABI           *abi.ABI
 }
 
-type CacheType string
+type Collateral struct {
+	Contract      *StorageProviderCollateral.StorageProviderCollateral
+	Address       ethtypes.EthAddress
+	NativeAddress address.Address
+	ABI           *abi.ABI
+}
 
-const (
-	MemoryKeyStore CacheType = "memory"
-	FSKeyStore     CacheType = "filesystem"
-)
+type Staking struct {
+	Contract      *LiquidStaking.LiquidStaking
+	Address       ethtypes.EthAddress
+	NativeAddress address.Address
+	ABI           *abi.ABI
+}
 
-func NewLotusClient(ctx context.Context, cfg *config.Config, cache CacheType) (*LotusClient, error) {
+func NewLotusClient(ctx context.Context, cfg *config.Config, network string, cache keystore.CacheType) (*LotusClient, error) {
 	c := &LotusClient{}
 
 	client, err := ethclient.Dial(cfg.RPCAddress)
-
 	if err != nil {
 		return nil, err
 	}
@@ -65,15 +75,9 @@ func NewLotusClient(ctx context.Context, cfg *config.Config, cache CacheType) (*
 	c.Client = client
 	c.Host = cfg.RPCAddress
 
-	c.rpcClient = &fasthttp.HostClient{
-		Addr: cfg.RPCAddress,
-	}
+	c.RPCClient = rpc.NewRPCClient(cfg.RPCAddress)
 
-	rpcClient := jsonrpc.NewClient(cfg.RPCAddress)
-
-	c.rpcClient2 = rpcClient
-
-	ks, err := cache.prepareKeystore(cfg.FSKeyStoreDir)
+	ks, err := cache.PrepareKeystore(cfg.FSKeyStoreDir)
 	if err != nil {
 		return nil, err
 	}
@@ -83,7 +87,7 @@ func NewLotusClient(ctx context.Context, cfg *config.Config, cache CacheType) (*
 		return nil, err
 	}
 
-	c.MessageSigner = NewMessageSigner(*w)
+	c.MessageSigner = ms.NewMessageSigner(*w, c.RPCClient)
 
 	addr, err := w.GetDefault()
 	if err != nil {
@@ -99,33 +103,33 @@ func NewLotusClient(ctx context.Context, cfg *config.Config, cache CacheType) (*
 		err = ks.Put("default", key.KeyInfo)
 
 		c.Address = &key.Address
+	} else {
+		c.Address = &addr
 	}
 
-	c.Address = &addr
+	// c.EthAddress, err := c.Address
 
-	registry, err := StorageProviderRegistry.NewStorageProviderRegistry(common.HexToAddress(cfg.StorageProviderRegistry), client)
+	if network == "" {
+		network = DefaultNetwork
+	}
+
+	registry, err := initRegistry(cfg.Addresses[network].StorageProviderRegistry, client)
 	if err != nil {
 		return nil, err
 	}
-
-	collateral, err := StorageProviderCollateral.NewStorageProviderCollateral(common.HexToAddress(cfg.StorageProviderCollateral), client)
-	if err != nil {
-		return nil, err
-	}
-
-	staking, err := LiquidStaking.NewLiquidStaking(common.HexToAddress(cfg.LiquidStaking), client)
-	if err != nil {
-		return nil, err
-	}
-
 	c.Registry = registry
-	c.RegistryABI = StorageProviderRegistry.StorageProviderRegistryMetaData
 
+	collateral, err := initCollateral(cfg.Addresses[network].StorageProviderCollateral, client)
+	if err != nil {
+		return nil, err
+	}
 	c.Collateral = collateral
-	c.CollateralABI = StorageProviderCollateral.StorageProviderCollateralMetaData
 
+	staking, err := initStaking(cfg.Addresses[network].LiquidStaking, client)
+	if err != nil {
+		return nil, err
+	}
 	c.Staking = staking
-	c.StakingABI = LiquidStaking.LiquidStakingMetaData
 
 	logrus.SetReportCaller(true)
 	logrus.SetFormatter(&logrus.TextFormatter{
@@ -141,21 +145,89 @@ func NewLotusClient(ctx context.Context, cfg *config.Config, cache CacheType) (*
 	return c, nil
 }
 
-func (cache CacheType) prepareKeystore(dir string) (keystore.KeyStore, error) {
-	var ks keystore.KeyStore
-	var err error
-
-	switch cache {
-	case MemoryKeyStore:
-		ks = keystore.NewMemKeystore()
-	case FSKeyStore:
-		ks, err = keystore.NewFSKeystore(dir)
-		if err != nil {
-			return nil, err
-		}
-	default:
-		return nil, fmt.Errorf("keystore type isn't specified")
+func initRegistry(addr string, client *ethclient.Client) (*Registry, error) {
+	c, err := StorageProviderRegistry.NewStorageProviderRegistry(common.HexToAddress(addr), client)
+	if err != nil {
+		return nil, err
 	}
 
-	return ks, nil
+	ethAddr, err := ethtypes.ParseEthAddress(addr)
+	if err != nil {
+		return nil, err
+	}
+
+	fAddr, err := ethAddr.ToFilecoinAddress()
+	if err != nil {
+		return nil, err
+	}
+
+	abi, err := StorageProviderRegistry.StorageProviderRegistryMetaData.GetAbi()
+	if err != nil {
+		return nil, err
+	}
+
+	return &Registry{
+		Contract:      c,
+		Address:       ethAddr,
+		NativeAddress: fAddr,
+		ABI:           abi,
+	}, nil
+}
+
+func initCollateral(addr string, client *ethclient.Client) (*Collateral, error) {
+	c, err := StorageProviderCollateral.NewStorageProviderCollateral(common.HexToAddress(addr), client)
+	if err != nil {
+		return nil, err
+	}
+
+	ethAddr, err := ethtypes.ParseEthAddress(addr)
+	if err != nil {
+		return nil, err
+	}
+
+	fAddr, err := ethAddr.ToFilecoinAddress()
+	if err != nil {
+		return nil, err
+	}
+
+	abi, err := StorageProviderCollateral.StorageProviderCollateralMetaData.GetAbi()
+	if err != nil {
+		return nil, err
+	}
+
+	return &Collateral{
+		Contract:      c,
+		Address:       ethAddr,
+		NativeAddress: fAddr,
+		ABI:           abi,
+	}, nil
+}
+
+func initStaking(addr string, client *ethclient.Client) (*Staking, error) {
+	sc, err := LiquidStaking.NewLiquidStaking(common.HexToAddress(addr), client)
+	if err != nil {
+		return nil, err
+	}
+
+	ethAddr, err := ethtypes.ParseEthAddress(addr)
+	if err != nil {
+		return nil, err
+	}
+
+	fAddr, err := ethAddr.ToFilecoinAddress()
+	if err != nil {
+		return nil, err
+	}
+
+	abi, err := LiquidStaking.LiquidStakingMetaData.GetAbi()
+	if err != nil {
+		return nil, err
+	}
+
+	return &Staking{
+		Contract:      sc,
+		Address:       ethAddr,
+		NativeAddress: fAddr,
+		ABI:           abi,
+	}, nil
 }

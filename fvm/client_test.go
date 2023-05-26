@@ -2,6 +2,7 @@ package fvm
 
 import (
 	"collective-go-sdk/config"
+	"collective-go-sdk/keystore"
 	"context"
 	"math/big"
 	"testing"
@@ -11,13 +12,12 @@ import (
 
 func TestNewLotusClient(t *testing.T) {
 	ctx := context.Background()
-	config, err := config.LoadConfig("../config")
-
+	config, err := config.LoadConfig("../")
 	if err != nil {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(ctx, config, MemoryKeyStore)
+	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -29,4 +29,13 @@ func TestNewLotusClient(t *testing.T) {
 
 	assert.Equal(t, big.NewInt(3141), chainId)
 	assert.Equal(t, config.RPCAddress, client.Host)
+
+	client, err = NewLotusClient(ctx, config, "calibration", keystore.MemoryKeyStore)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	assert.Equal(t, client.Collateral.Address.String(), "0x000000000000000000000000000000000000dead")
+	assert.Equal(t, client.Registry.Address.String(), "0x000000000000000000000000000000000000dead")
+	assert.Equal(t, client.Staking.Address.String(), "0x000000000000000000000000000000000000dead")
 }

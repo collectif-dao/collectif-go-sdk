@@ -1,13 +1,13 @@
 package beneficiary
 
 import (
-	"collective-go-sdk/config"
 	"collective-go-sdk/fvm"
+	"collective-go-sdk/keystore"
+	"collective-go-sdk/sdk"
 	"context"
 	"encoding/hex"
 	"fmt"
 
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/spf13/cobra"
 )
 
@@ -16,31 +16,13 @@ var (
 )
 
 func changeBeneficiaryAddress(pool string) (string, error) {
-	var poolAddr common.Address
 	ctx := context.Background()
-
-	config, err := config.LoadConfig("./config")
+	sdk, err := sdk.NewCollectifSDK(ctx, fvm.DefaultNetwork, keystore.FSKeyStore, "./")
 	if err != nil {
 		return "", err
 	}
 
-	if pool == "" {
-		poolAddr = common.HexToAddress(config.LiquidStaking)
-	} else {
-		poolAddr = common.HexToAddress(pool)
-	}
-
-	client, err := fvm.NewLotusClient(ctx, config, fvm.FSKeyStore)
-	if err != nil {
-		return "", err
-	}
-
-	abi, err := client.RegistryABI.GetAbi()
-	if err != nil {
-		return "", err
-	}
-
-	callData, err := abi.Pack("changeBeneficiaryAddress", poolAddr)
+	callData, err := sdk.Client.Registry.ABI.Pack("changeBeneficiaryAddress")
 
 	return hex.EncodeToString(callData), nil
 }

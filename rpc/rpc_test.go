@@ -1,10 +1,8 @@
-package fvm
+package rpc
 
 import (
 	"collective-go-sdk/config"
-	"collective-go-sdk/fvm/types"
 	"context"
-	"encoding/json"
 	"testing"
 
 	"github.com/filecoin-project/go-address"
@@ -12,44 +10,34 @@ import (
 )
 
 func TestVersion(t *testing.T) {
-	config, err := config.LoadConfig("../config")
+	config, err := config.LoadConfig("../")
 	if err != nil {
 		assert.Error(t, err)
 	}
 
 	ctx := context.Background()
-	client, err := NewLotusClient(ctx, config, MemoryKeyStore)
+	rpcClient := NewRPCClient(config.RPCAddress)
+
+	version, err := rpcClient.Version(ctx)
 	if err != nil {
 		assert.Error(t, err)
 	}
 
-	res, err := client.HandleRequest("Filecoin.Version", nil)
-	if err != nil {
-		assert.Error(t, err)
-	}
-
-	rpcRespBody := &types.RPCResponseBody{}
-	err = json.Unmarshal(res, rpcRespBody)
-	if err != nil {
-		assert.Error(t, err)
-	}
-
-	assert.NotEmpty(t, rpcRespBody)
+	assert.NotEmpty(t, version.APIVersion)
+	assert.NotEmpty(t, version.BlockDelay)
+	assert.NotEmpty(t, version.Version)
 }
 
 func TestVerifyCid(t *testing.T) {
-	config, err := config.LoadConfig("../config")
+	config, err := config.LoadConfig("../")
 	if err != nil {
 		assert.Error(t, err)
 	}
 
 	ctx := context.Background()
-	client, err := NewLotusClient(ctx, config, MemoryKeyStore)
-	if err != nil {
-		assert.Error(t, err)
-	}
+	rpcClient := NewRPCClient(config.RPCAddress)
 
-	status, err := client.VerifyCid(ctx, "bafy2bzacedeih423wkxn225h3r356jlu3qqrpmg43s2bcx6bq7kxhftncaiue")
+	status, err := rpcClient.VerifyCid(ctx, "bafy2bzacedeih423wkxn225h3r356jlu3qqrpmg43s2bcx6bq7kxhftncaiue")
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -58,23 +46,20 @@ func TestVerifyCid(t *testing.T) {
 }
 
 func TestGetNonce(t *testing.T) {
-	config, err := config.LoadConfig("../config")
+	config, err := config.LoadConfig("../")
 	if err != nil {
 		assert.Error(t, err)
 	}
 
 	ctx := context.Background()
-	client, err := NewLotusClient(ctx, config, MemoryKeyStore)
-	if err != nil {
-		assert.Error(t, err)
-	}
+	rpcClient := NewRPCClient(config.RPCAddress)
 
 	addr, err := address.NewFromString("t410fjtte454usorrzedcbgslfmiwg5yy6i2a2pxoyky")
 	if err != nil {
 		assert.Error(t, err)
 	}
 
-	nonce, err := client.GetNonce(ctx, addr)
+	nonce, err := rpcClient.GetNonce(ctx, addr)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -83,16 +68,13 @@ func TestGetNonce(t *testing.T) {
 }
 
 func TestLookupId(t *testing.T) {
-	config, err := config.LoadConfig("../config")
+	config, err := config.LoadConfig("../")
 	if err != nil {
 		assert.Error(t, err)
 	}
 
 	ctx := context.Background()
-	client, err := NewLotusClient(ctx, config, MemoryKeyStore)
-	if err != nil {
-		assert.Error(t, err)
-	}
+	rpcClient := NewRPCClient(config.RPCAddress)
 
 	fAddr := "t410fmiuoet6qvv3jowc33r7bvlvcpgiu25kjec5t2qa"
 
@@ -101,12 +83,12 @@ func TestLookupId(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	key, err := client.GetTipSetKey(ctx)
+	key, err := rpcClient.GetTipSetKey(ctx)
 	if err != nil {
 		assert.Error(t, err)
 	}
 
-	idAddr, err := client.LookupId(ctx, addr, key)
+	idAddr, err := rpcClient.LookupId(ctx, addr, key)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -120,18 +102,15 @@ func TestLookupId(t *testing.T) {
 }
 
 func TestGetChainHead(t *testing.T) {
-	config, err := config.LoadConfig("../config")
+	config, err := config.LoadConfig("../")
 	if err != nil {
 		assert.Error(t, err)
 	}
 
 	ctx := context.Background()
-	client, err := NewLotusClient(ctx, config, MemoryKeyStore)
-	if err != nil {
-		assert.Error(t, err)
-	}
+	rpcClient := NewRPCClient(config.RPCAddress)
 
-	tipSet, err := client.GetChainHead(ctx)
+	tipSet, err := rpcClient.GetChainHead(ctx)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -140,18 +119,15 @@ func TestGetChainHead(t *testing.T) {
 }
 
 func TestGetTipSetKey(t *testing.T) {
-	config, err := config.LoadConfig("../config")
+	config, err := config.LoadConfig("../")
 	if err != nil {
 		assert.Error(t, err)
 	}
 
 	ctx := context.Background()
-	client, err := NewLotusClient(ctx, config, MemoryKeyStore)
-	if err != nil {
-		assert.Error(t, err)
-	}
+	rpcClient := NewRPCClient(config.RPCAddress)
 
-	key, err := client.GetTipSetKey(ctx)
+	key, err := rpcClient.GetTipSetKey(ctx)
 	if err != nil {
 		assert.Error(t, err)
 	}

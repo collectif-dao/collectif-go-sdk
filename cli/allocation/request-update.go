@@ -1,45 +1,38 @@
 package allocation
 
 import (
-	"collective-go-sdk/config"
 	"collective-go-sdk/fvm"
+	"collective-go-sdk/keystore"
+	"collective-go-sdk/sdk"
+	"collective-go-sdk/utils"
 	"context"
-	"encoding/hex"
 	"fmt"
-	"math/big"
 
 	"github.com/spf13/cobra"
 )
 
 var (
-	allocationLimit int
-	dailyAllocation int
-	run             bool
+	totalLimit int64
+	dailyLimit int64
+	run        bool
 )
 
-func requestUpdate(allocationLimit int, dailyAllocation int, run bool) (string, error) {
-	config, err := config.LoadConfig("./config")
-	if err != nil {
-		return "", err
-	}
-
+func requestUpdate(totalLimit int64, dailyLimit int64, run bool) (*fvm.MessageResponse, error) {
 	ctx := context.Background()
-	client, err := fvm.NewLotusClient(ctx, config, fvm.FSKeyStore)
+	sdk, err := sdk.NewCollectifSDK(ctx, fvm.DefaultNetwork, keystore.FSKeyStore, "./")
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	limit := big.NewInt(int64(allocationLimit))
-	daily := big.NewInt(int64(dailyAllocation))
+	allocationLimit := utils.GetAttoFilFromFIL(totalLimit)
+	dailyAllocation := utils.GetAttoFilFromFIL(dailyLimit)
 
-	abi, err := client.RegistryABI.GetAbi()
+	msg, err := sdk.Client.RequestAllocationLimitUpdate(ctx, allocationLimit, dailyAllocation, run)
 	if err != nil {
-		return "", err
+		return msg, err
 	}
 
-	callData, err := abi.Pack("requestAllocationUpdate", limit, daily)
-
-	return hex.EncodeToString(callData), nil
+	return msg, nil
 }
 
 var RequestAllocationCmd = &cobra.Command{
@@ -48,23 +41,31 @@ var RequestAllocationCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		if resp, err := requestUpdate(allocationLimit, dailyAllocation, run); err != nil {
+		if msg, err := requestUpdate(totalLimit, dailyLimit, run); err != nil {
 			fmt.Println(err)
+
+			fmt.Println("Message calldata: ", msg.Data)
 		} else {
-			fmt.Println(resp)
+			if run {
+				fmt.Println("Executed message with: ", msg.Message, " CID")
+				fmt.Println("Returned: ", msg.Receipt.Return)
+				fmt.Println("Gas spent: ", msg.Receipt.GasUsed)
+			}
+
+			fmt.Println("Message calldata: ", msg.Data)
 		}
 	},
 }
 
 func init() {
-	RequestAllocationCmd.Flags().IntVarP(&allocationLimit, "limit", "l", 0, "Total allocation limit")
-	RequestAllocationCmd.Flags().IntVarP(&dailyAllocation, "daily", "d", 0, "Daily allocation limit")
-	RequestAllocationCmd.Flags().BoolVarP(&run, "run", "r", true, "Execute transaction")
+	RequestAllocationCmd.Flags().Int64VarP(&totalLimit, "allocation-limit", "l", 0, "Total allocation limit for update")
+	RequestAllocationCmd.Flags().Int64VarP(&dailyLimit, "daily-allocation", "d", 0, "Daily allocation limit for update")
+	RequestAllocationCmd.Flags().BoolVarP(&run, "execute", "e", true, "Execute transaction")
 
-	if err := RequestAllocationCmd.MarkFlagRequired("limit"); err != nil {
+	if err := RequestAllocationCmd.MarkFlagRequired("allocation-limit"); err != nil {
 		fmt.Println(err)
 	}
-	if err := RequestAllocationCmd.MarkFlagRequired("daily"); err != nil {
+	if err := RequestAllocationCmd.MarkFlagRequired("daily-allocation"); err != nil {
 		fmt.Println(err)
 	}
 

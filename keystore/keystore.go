@@ -17,6 +17,14 @@ var log = logging.Logger("keystore")
 
 var codec = base32.StdEncoding.WithPadding(base32.NoPadding)
 
+type CacheType string
+
+const (
+	MemoryKeyStore CacheType = "memory"
+	FSKeyStore     CacheType = "filesystem"
+	fsKeyStore               = "keystore/data"
+)
+
 type KeyStore interface {
 	// Has returns whether or not a key exists in the Keystore
 	Has(string) (bool, error)
@@ -107,13 +115,12 @@ func (ks *FSKeystore) Get(name string) (types.KeyInfo, error) {
 	if err != nil {
 		return types.KeyInfo{}, err
 	}
-
 	kp := filepath.Join(ks.dir, name)
 
 	data, err := os.ReadFile(kp)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return types.KeyInfo{}, ErrNoSuchKey
+			return types.KeyInfo{}, types.ErrKeyInfoNotFound
 		}
 		return types.KeyInfo{}, err
 	}
@@ -190,4 +197,23 @@ func decode(name string) (string, error) {
 	log.Debugf("Decoded key name: %s to: %s", name, decodedName)
 
 	return string(decodedName), nil
+}
+
+func (cache CacheType) PrepareKeystore(dir string) (KeyStore, error) {
+	var ks KeyStore
+	var err error
+
+	switch cache {
+	case MemoryKeyStore:
+		ks = NewMemKeystore()
+	case FSKeyStore:
+		ks, err = NewFSKeystore(dir)
+		if err != nil {
+			return nil, err
+		}
+	default:
+		return nil, fmt.Errorf("keystore type isn't specified")
+	}
+
+	return ks, nil
 }

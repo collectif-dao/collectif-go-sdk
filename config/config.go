@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"path/filepath"
 
 	"github.com/spf13/viper"
 )
@@ -9,17 +10,16 @@ import (
 var C Config
 
 type Config struct {
-	RPCAddress                string `mapstructure:"rpc_addr"`
-	ChainID                   int    `mapstructure:"chain_id"`
-	HDDerivationPath          string `mapstructure:"hd_derivation_path"`
+	RPCAddress    string                       `mapstructure:"rpc_addr"`
+	ChainID       int                          `mapstructure:"chain_id"`
+	FSKeyStoreDir string                       `mapstructure:"dir"`
+	Addresses     map[string]ContractAddresses `mapstructure:"contracts"`
+}
+
+type ContractAddresses struct {
 	LiquidStaking             string `mapstructure:"liquid_staking"`
-	PledgeOracle              string `mapstructure:"pledge_oracle"`
-	TestContract              string `mapstructure:"test_contract"`
-	FSKeyStoreDir             string `mapstructure:"dir"`
 	StorageProviderRegistry   string `mapstructure:"registry"`
 	StorageProviderCollateral string `mapstructure:"collateral"`
-	AllocationLimit           int64  `mapstructure:"allocation_limit"`
-	MaxPeriod                 int64  `mapstructure:"maxPeriod"`
 }
 
 // LoadConfig loads config from files
@@ -27,7 +27,7 @@ func LoadConfig(path string) (*Config, error) {
 	v := viper.New()
 
 	v.AddConfigPath(path)
-	v.SetConfigName("hyperspace")
+	v.SetConfigName("config")
 	v.SetConfigType("yaml")
 	v.SetEnvPrefix("collective-sdk")
 	v.AutomaticEnv()
@@ -38,6 +38,10 @@ func LoadConfig(path string) (*Config, error) {
 
 	if err := v.Unmarshal(&C); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal the configuration file: %s", err)
+	}
+
+	if !filepath.IsAbs(C.FSKeyStoreDir) {
+		C.FSKeyStoreDir = filepath.Join(filepath.Dir(v.ConfigFileUsed()), C.FSKeyStoreDir)
 	}
 
 	return &C, nil

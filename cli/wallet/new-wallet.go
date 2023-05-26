@@ -1,8 +1,9 @@
 package wallet
 
 import (
-	"collective-go-sdk/config"
 	"collective-go-sdk/fvm"
+	"collective-go-sdk/keystore"
+	"collective-go-sdk/sdk"
 	"context"
 	"fmt"
 
@@ -13,25 +14,19 @@ import (
 var key string
 
 func newWallet(key string) (string, error) {
-	config, err := config.LoadConfig("./config")
-	if err != nil {
-		return "", err
-	}
-
 	ctx := context.Background()
-
-	client, err := fvm.NewLotusClient(ctx, config, fvm.FSKeyStore)
+	sdk, err := sdk.NewCollectifSDK(ctx, fvm.DefaultNetwork, keystore.FSKeyStore, "./")
 	if err != nil {
 		return "", err
 	}
 
-	address, err := client.MessageSigner.Wallet.WalletNew(ctx, types.KeyType(key))
+	address, err := sdk.Client.MessageSigner.Wallet.WalletNew(ctx, types.KeyType(key))
 	if err != nil {
 		return "", err
 	}
 
 	if isDefault {
-		if err := client.MessageSigner.Wallet.SetDefault(address); err != nil {
+		if err := sdk.Client.MessageSigner.Wallet.SetDefault(address); err != nil {
 			return "", fmt.Errorf("failed to set default key: %w", err)
 		}
 	}

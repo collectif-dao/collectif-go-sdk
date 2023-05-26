@@ -1,10 +1,10 @@
 package restaking
 
 import (
-	"collective-go-sdk/config"
 	"collective-go-sdk/fvm"
+	"collective-go-sdk/keystore"
+	"collective-go-sdk/sdk"
 	"context"
-	"encoding/hex"
 	"fmt"
 	"math/big"
 
@@ -18,34 +18,37 @@ var (
 	run   bool
 )
 
-func setRestaking(ratio int, addr string, run bool) (string, error) {
-	config, err := config.LoadConfig("./config")
-	if err != nil {
-		return "", err
-	}
-
+func setRestaking(ratio int, addr string, run bool) (*fvm.MessageResponse, error) {
 	ctx := context.Background()
-	client, err := fvm.NewLotusClient(ctx, config, fvm.FSKeyStore)
+	sdk, err := sdk.NewCollectifSDK(ctx, fvm.DefaultNetwork, keystore.FSKeyStore, "./")
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	restakingRatio := big.NewInt(int64(ratio))
-	valid := common.IsHexAddress(addr)
 	var ethAddress common.Address
+	if addr == "0x" {
+		ethAddress = *sdk.Client.EthAddress
+	} else {
+		valid := common.IsHexAddress(addr)
 
-	if valid {
-		ethAddress = common.HexToAddress(addr)
+		if valid {
+			ethAddress = common.HexToAddress(addr)
+		}
 	}
 
-	abi, err := client.RegistryABI.GetAbi()
+	var restakingRatio *big.Int
+	if ratio > 100 && ratio < 10000 {
+		restakingRatio = big.NewInt(int64(ratio))
+	}
+
+	restakingRatio = big.NewInt(int64(ratio * 100))
+
+	msg, err := sdk.Client.SetRestaking(ctx, restakingRatio, ethAddress, run)
 	if err != nil {
-		return "", err
+		return msg, err
 	}
 
-	callData, err := abi.Pack("setRestaking", restakingRatio, ethAddress)
-
-	return hex.EncodeToString(callData), nil
+	return msg, nil
 }
 
 var SetRestakingCmd = &cobra.Command{
@@ -54,18 +57,26 @@ var SetRestakingCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		if resp, err := setRestaking(ratio, addr, run); err != nil {
+		if msg, err := setRestaking(ratio, addr, run); err != nil {
 			fmt.Println(err)
+
+			fmt.Println("Message calldata: ", msg.Data)
 		} else {
-			fmt.Println(resp)
+			if run {
+				fmt.Println("Executed message with: ", msg.Message, " CID")
+				fmt.Println("Returned: ", msg.Receipt.Return)
+				fmt.Println("Gas spent: ", msg.Receipt.GasUsed)
+			}
+
+			fmt.Println("Message calldata: ", msg.Data)
 		}
 	},
 }
 
 func init() {
-	SetRestakingCmd.Flags().IntVarP(&ratio, "ratio", "v", 0, "Restaking ratio")
+	SetRestakingCmd.Flags().IntVarP(&ratio, "ratio", "r", 0, "Restaking ratio in percentage (up to 100%)")
 	SetRestakingCmd.Flags().StringVarP(&addr, "address", "a", "0x", "Filecoin address to receive clFIL tokens")
-	SetRestakingCmd.Flags().BoolVarP(&run, "run", "r", true, "Execute transaction")
+	SetRestakingCmd.Flags().BoolVarP(&run, "execute", "e", true, "Execute transaction")
 
 	if err := SetRestakingCmd.MarkFlagRequired("ratio"); err != nil {
 		fmt.Println(err)

@@ -1,8 +1,9 @@
 package wallet
 
 import (
-	"collective-go-sdk/config"
 	"collective-go-sdk/fvm"
+	"collective-go-sdk/keystore"
+	"collective-go-sdk/sdk"
 	"context"
 	"encoding/hex"
 	"encoding/json"
@@ -16,16 +17,11 @@ var addr string
 
 func exportWallet(addr string) ([]string, error) {
 	emptyKey := make([]string, 0, 0)
-	config, err := config.LoadConfig("./config")
-	if err != nil {
-		return emptyKey, err
-	}
 
 	ctx := context.Background()
-
-	client, err := fvm.NewLotusClient(ctx, config, fvm.FSKeyStore)
+	sdk, err := sdk.NewCollectifSDK(ctx, fvm.DefaultNetwork, keystore.FSKeyStore, "./")
 	if err != nil {
-		return emptyKey, err
+		return nil, err
 	}
 
 	lAddr, err := address.NewFromString(addr)
@@ -33,7 +29,7 @@ func exportWallet(addr string) ([]string, error) {
 		return emptyKey, err
 	}
 
-	ki, err := client.MessageSigner.Wallet.WalletExport(ctx, lAddr)
+	ki, err := sdk.Client.MessageSigner.Wallet.WalletExport(ctx, lAddr)
 	if err != nil {
 		return emptyKey, err
 	}

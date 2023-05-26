@@ -1,8 +1,10 @@
-package fvm
+package messagesigner
 
 import (
 	"context"
 	"sync"
+
+	"collective-go-sdk/rpc"
 
 	"github.com/filecoin-project/go-address"
 	"github.com/filecoin-project/lotus/api"
@@ -14,18 +16,20 @@ import (
 )
 
 type MessageSigner struct {
-	Wallet lwallet.LocalWallet
-	lock   sync.Mutex
+	rpcClient *rpc.RPCClient
+	Wallet    lwallet.LocalWallet
+	lock      sync.Mutex
 }
 
-func NewMessageSigner(wallet lwallet.LocalWallet) *MessageSigner {
+func NewMessageSigner(wallet lwallet.LocalWallet, rpcClient *rpc.RPCClient) *MessageSigner {
 	return &MessageSigner{
-		Wallet: wallet,
+		Wallet:    wallet,
+		rpcClient: rpcClient,
 	}
 }
 
-func (c *LotusClient) NextNonce(ctx context.Context, addr address.Address) (uint64, error) {
-	nonce, err := c.GetNonce(ctx, addr)
+func (m *MessageSigner) NextNonce(ctx context.Context, addr address.Address) (uint64, error) {
+	nonce, err := m.rpcClient.GetNonce(ctx, addr)
 	if err != nil {
 		return 0, xerrors.Errorf("failed to get nonce from mempool: %w", err)
 	}
@@ -33,12 +37,12 @@ func (c *LotusClient) NextNonce(ctx context.Context, addr address.Address) (uint
 	return nonce, nil
 }
 
-func (c *LotusClient) SignMessage(ctx context.Context, msg *types.Message, spec *api.MessageSendSpec) (*types.SignedMessage, error) {
-	c.MessageSigner.lock.Lock()
-	defer c.MessageSigner.lock.Unlock()
+func (m *MessageSigner) SignMessage(ctx context.Context, msg *types.Message, spec *api.MessageSendSpec) (*types.SignedMessage, error) {
+	m.lock.Lock()
+	defer m.lock.Unlock()
 
 	if msg.Nonce == 0 {
-		nonce, err := c.NextNonce(ctx, msg.From)
+		nonce, err := m.NextNonce(ctx, msg.From)
 		if err != nil {
 			return nil, xerrors.Errorf("failed to create nonce: %w", err)
 		}
@@ -56,7 +60,7 @@ func (c *LotusClient) SignMessage(ctx context.Context, msg *types.Message, spec 
 		return nil, xerrors.Errorf("serializing message: %w", err)
 	}
 
-	sig, err := c.MessageSigner.Wallet.WalletSign(ctx, msg.From, sb, api.MsgMeta{
+	sig, err := m.Wallet.WalletSign(ctx, msg.From, sb, api.MsgMeta{
 		Type:  api.MTChainMsg,
 		Extra: mb.RawData(),
 	})

@@ -1,9 +1,10 @@
 package collateral
 
 import (
-	"collective-go-sdk/config"
 	"collective-go-sdk/fvm"
-	fUtils "collective-go-sdk/fvm/utils"
+	"collective-go-sdk/keystore"
+	"collective-go-sdk/sdk"
+	fUtils "collective-go-sdk/utils"
 	"context"
 	"fmt"
 
@@ -14,27 +15,21 @@ var (
 	address string
 )
 
-func getCollateral(address string) (string, string, error) {
-	config, err := config.LoadConfig("./config")
-	if err != nil {
-		return "", "", err
-	}
-
+func getCollateral(address string) (*fvm.CollateralInfo, error) {
 	ctx := context.Background()
-	client, err := fvm.NewLotusClient(ctx, config, fvm.FSKeyStore)
+	sdk, err := sdk.NewCollectifSDK(ctx, fvm.DefaultNetwork, keystore.FSKeyStore, "./")
 	if err != nil {
-		return "", "", err
+		return nil, err
 	}
 
-	idAddr := fUtils.GetIdAddress(ctx, address, client)
-	fmt.Print(idAddr)
+	idAddr := fUtils.GetIdAddress(ctx, address, sdk.Client)
 
-	available, err := client.GetAvailableCollateral(idAddr)
+	collateral, err := sdk.Client.GetCollateral(ctx, idAddr)
 	if err != nil {
-		return "", "", err
+		return nil, err
 	}
 
-	return available.String(), "0", nil
+	return collateral, nil
 }
 
 var getCollateralCmd = &cobra.Command{
@@ -43,11 +38,11 @@ var getCollateralCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		if available, locked, err := getCollateral(address); err != nil {
+		if collateral, err := getCollateral(address); err != nil {
 			fmt.Println(err)
 		} else {
-			fmt.Println("Available collateral: ", available)
-			fmt.Println("Locked collateral: ", locked)
+			fmt.Println("Available collateral: ", collateral.AvailableCollateral)
+			fmt.Println("Locked collateral: ", collateral.LockedCollateral)
 		}
 	},
 }

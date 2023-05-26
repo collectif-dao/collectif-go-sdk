@@ -1,0 +1,18 @@
+rpc_addr_2: "https://filecoin-hyperspace.chainstacklabs.com/rpc/v1"
+rpc_addr: "https://api.hyperspace.node.glif.io/rpc/v1"
+chain_id: 3141
+dir: "./keystore/data"
+liquid_staking: "0x33494d4f5976cf95c993DA8e485129702b4086Cb"
+registry: "0xe3C24e146b747Fb4B6763c13b386033D83D8e32E"
+collateral: "0x9396B7D3f0405994C098db756D5B5E65483f40f5"
+
+contracts:
+  hyperspace:
+    liquid_staking: "0x33494d4f5976cf95c993DA8e485129702b4086Cb"
+    registry: "0xe3C24e146b747Fb4B6763c13b386033D83D8e32E"
+    collateral: "0x9396B7D3f0405994C098db756D5B5E65483f40f5"
+
+  calibration:
+    liquid_staking: "0x000000000000000000000000000000000000dEaD"
+    registry: "0x000000000000000000000000000000000000dEaD"
+    collateral: "0x000000000000000000000000000000000000dEaD"

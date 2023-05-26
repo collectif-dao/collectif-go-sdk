@@ -1,9 +1,10 @@
 package allocation
 
 import (
-	"collective-go-sdk/config"
 	"collective-go-sdk/fvm"
-	fUtils "collective-go-sdk/fvm/utils"
+	"collective-go-sdk/keystore"
+	"collective-go-sdk/sdk"
+	fUtils "collective-go-sdk/utils"
 	"context"
 	"fmt"
 
@@ -15,24 +16,19 @@ var (
 )
 
 func getAllocationInfo(ownerId string) (*fvm.SPAllocation, error) {
-	config, err := config.LoadConfig("./config")
-	if err != nil {
-		return nil, err
-	}
-
 	ctx := context.Background()
-	client, err := fvm.NewLotusClient(ctx, config, fvm.FSKeyStore)
+	sdk, err := sdk.NewCollectifSDK(ctx, fvm.DefaultNetwork, keystore.FSKeyStore, "./")
 	if err != nil {
 		return nil, err
 	}
 
 	if ownerId == "" {
-		ownerId = client.Address.String()
+		ownerId = sdk.Client.Address.String()
 	}
 
-	idAddr := fUtils.GetIdAddress(ctx, ownerId, client)
+	idAddr := fUtils.GetIdAddress(ctx, ownerId, sdk.Client)
 
-	allocation, err := client.GetAllocations(idAddr)
+	allocation, err := sdk.Client.GetAllocations(ctx, idAddr)
 	if err != nil {
 		return nil, err
 	}
