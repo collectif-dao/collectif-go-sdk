@@ -35,7 +35,7 @@ func (c *LotusClient) Withdraw(ctx context.Context, amount *big.Int, send bool) 
 		return nil, err
 	}
 
-	res, err := c.performLotusMessage(ctx, &c.Collateral.NativeAddress, method, amount, calldata, send)
+	res, err := c.performLotusMessage(ctx, &c.Collateral.NativeAddress, method, big.NewInt(0), calldata, send)
 	if err != nil {
 		return res, err
 	}
