@@ -66,3 +66,30 @@ func GetIdAddress(ctx context.Context, addr string, c *fvm.LotusClient) uint64 {
 
 	return id
 }
+
+func LookupIdAddress(ctx context.Context, addr string, c *fvm.LotusClient) (*address.Address, error) {
+	var err error
+	var fAddr address.Address
+
+	fAddr, err = address.NewFromString(addr)
+	if err != nil {
+		ethAddr, err := ethtypes.ParseEthAddress(addr)
+
+		fAddr, err = ethAddr.ToFilecoinAddress()
+		if err != nil {
+			return nil, fmt.Errorf("unable to get Filecoin address: %v", err)
+		}
+	}
+
+	key, err := c.RPCClient.GetTipSetKey(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("unable to get tipset key for chain head: %v", err)
+	}
+
+	idAddr, err := c.RPCClient.LookupId(ctx, fAddr, key)
+	if err != nil {
+		return nil, fmt.Errorf("unable to get find actor ID for specified address: %v", err)
+	}
+
+	return idAddr, nil
+}
