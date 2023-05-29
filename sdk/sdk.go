@@ -15,7 +15,7 @@ type CollectifSDK struct {
 	Client  *fvm.LotusClient
 }
 
-func NewCollectifSDK(ctx context.Context, network string, cache keystore.CacheType, path string) (*CollectifSDK, error) {
+func NewCollectifSDK(ctx context.Context, cache keystore.CacheType, path string) (*CollectifSDK, error) {
 	s := CollectifSDK{}
 	var cfg *config.Config
 	var err error
@@ -30,7 +30,7 @@ func NewCollectifSDK(ctx context.Context, network string, cache keystore.CacheTy
 		return nil, err
 	}
 
-	client, err := fvm.NewLotusClient(ctx, cfg, network, cache)
+	client, err := fvm.NewLotusClient(ctx, cfg, cache)
 	if err != nil {
 		return nil, err
 	}

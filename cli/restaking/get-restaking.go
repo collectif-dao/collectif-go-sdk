@@ -17,7 +17,7 @@ var (
 
 func getRestakingInfo(ownerId string) (*fvm.SPRestaking, error) {
 	ctx := context.Background()
-	sdk, err := sdk.NewCollectifSDK(ctx, fvm.DefaultNetwork, keystore.FSKeyStore, "./")
+	sdk, err := sdk.NewCollectifSDK(ctx, keystore.FSKeyStore, "./")
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ var getRestaking = &cobra.Command{
 			fmt.Println(err)
 		} else {
 			fmt.Println("Restaking ratio: ", restaking.RestakingRatio.String())
-			fmt.Println("Locked collateral: ", restaking.RestakingAddress.String())
+			fmt.Println("Restaking address: ", restaking.RestakingAddress.String())
 		}
 	},
 }

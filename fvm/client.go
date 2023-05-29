@@ -26,7 +26,7 @@ import (
 	"golang.org/x/xerrors"
 )
 
-var DefaultNetwork = "hyperspace"
+var DefaultNetwork string
 
 type LotusClient struct {
 	Host       string
@@ -64,18 +64,20 @@ type Staking struct {
 	ABI           *abi.ABI
 }
 
-func NewLotusClient(ctx context.Context, cfg *config.Config, network string, cache keystore.CacheType) (*LotusClient, error) {
+func NewLotusClient(ctx context.Context, cfg *config.Config, cache keystore.CacheType) (*LotusClient, error) {
 	c := &LotusClient{}
+	DefaultNetwork = cfg.DefaultNetwork
+	rpcAddr := cfg.RPCConfig[DefaultNetwork].Address
 
-	client, err := ethclient.Dial(cfg.RPCAddress)
+	client, err := ethclient.Dial(rpcAddr)
 	if err != nil {
 		return nil, err
 	}
 
 	c.Client = client
-	c.Host = cfg.RPCAddress
+	c.Host = rpcAddr
 
-	c.RPCClient = rpc.NewRPCClient(cfg.RPCAddress)
+	c.RPCClient = rpc.NewRPCClient(rpcAddr, cfg.RPCConfig[DefaultNetwork].APIToken)
 
 	ks, err := cache.PrepareKeystore(cfg.FSKeyStoreDir)
 	if err != nil {
@@ -107,25 +109,19 @@ func NewLotusClient(ctx context.Context, cfg *config.Config, network string, cac
 		c.Address = &addr
 	}
 
-	// c.EthAddress, err := c.Address
-
-	if network == "" {
-		network = DefaultNetwork
-	}
-
-	registry, err := initRegistry(cfg.Addresses[network].StorageProviderRegistry, client)
+	registry, err := initRegistry(cfg.Addresses[DefaultNetwork].StorageProviderRegistry, client)
 	if err != nil {
 		return nil, err
 	}
 	c.Registry = registry
 
-	collateral, err := initCollateral(cfg.Addresses[network].StorageProviderCollateral, client)
+	collateral, err := initCollateral(cfg.Addresses[DefaultNetwork].StorageProviderCollateral, client)
 	if err != nil {
 		return nil, err
 	}
 	c.Collateral = collateral
 
-	staking, err := initStaking(cfg.Addresses[network].LiquidStaking, client)
+	staking, err := initStaking(cfg.Addresses[DefaultNetwork].LiquidStaking, client)
 	if err != nil {
 		return nil, err
 	}

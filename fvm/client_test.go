@@ -17,7 +17,7 @@ func TestNewLotusClient(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.MemoryKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -28,9 +28,11 @@ func TestNewLotusClient(t *testing.T) {
 	}
 
 	assert.Equal(t, big.NewInt(3141), chainId)
-	assert.Equal(t, config.RPCAddress, client.Host)
+	assert.Equal(t, config.RPCConfig[DefaultNetwork].Address, client.Host)
 
-	client, err = NewLotusClient(ctx, config, "calibration", keystore.MemoryKeyStore)
+	config.DefaultNetwork = "calibration"
+
+	client, err = NewLotusClient(ctx, config, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}

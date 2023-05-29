@@ -1,7 +1,6 @@
 package beneficiary
 
 import (
-	"collective-go-sdk/fvm"
 	"collective-go-sdk/keystore"
 	"collective-go-sdk/sdk"
 	"context"
@@ -17,7 +16,7 @@ var (
 
 func changeBeneficiaryAddress(pool string) (string, error) {
 	ctx := context.Background()
-	sdk, err := sdk.NewCollectifSDK(ctx, fvm.DefaultNetwork, keystore.FSKeyStore, "./")
+	sdk, err := sdk.NewCollectifSDK(ctx, keystore.FSKeyStore, "./")
 	if err != nil {
 		return "", err
 	}

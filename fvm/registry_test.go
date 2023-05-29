@@ -53,7 +53,7 @@ func TestGetStorageProvider(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.MemoryKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -78,7 +78,7 @@ func TestGetAllocations(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.MemoryKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -105,7 +105,7 @@ func TestGetRestakings(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.MemoryKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -128,7 +128,7 @@ func TestGetBeneficiaryStatus(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.MemoryKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -150,7 +150,7 @@ func TestGetSectorSize(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.MemoryKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -172,7 +172,7 @@ func TestIsActiveSP(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.MemoryKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -193,7 +193,7 @@ func TestRegisterCallData(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.FSKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.FSKeyStore)
 
 	minerId := uint64(53149)
 	allocationLimit := getAttoFilFromFIL(100000)
@@ -219,7 +219,7 @@ func TestSetRestaking(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.FSKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.FSKeyStore)
 
 	restakingRatio := big.NewInt(8000)
 	restakingAddress := common.HexToAddress("0x000000000000000000000000000000000000dEaD")
@@ -244,7 +244,7 @@ func TestRequestAllocationUpdate(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.FSKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.FSKeyStore)
 
 	allocationLimit := getAttoFilFromFIL(100000)
 	dailyAllocation := getAttoFilFromFIL(1000)
@@ -260,4 +260,36 @@ func TestRequestAllocationUpdate(t *testing.T) {
 	}
 
 	assert.Equal(t, callData, res.Data)
+}
+
+func TestChangeBeneficiary(t *testing.T) {
+	config, err := config.LoadConfig("../")
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	ctx := context.Background()
+	client, err := NewLotusClient(ctx, config, keystore.FSKeyStore)
+
+	mA := "t2fp6lovd2v565vli6e2edltx6tgwopqepfd3rarq"
+	bA := "t3q5szei4jstv3aqnqkimkehpbhiwj2urjt4pgiih2s5ky6cuynjedhfufvdvjybw3rnurfhwfwpcbnqa6q2tq"
+	quota := getAttoFilFromFIL(1000)
+	expiration := int64(384804)
+
+	mAddr, err := address.NewFromString(mA)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	bAddr, err := address.NewFromString(bA)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	res, err := client.ChangeBeneficiaryAddress(ctx, &mAddr, &bAddr, quota, expiration, false)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	assert.NotEmpty(t, res.Data)
 }

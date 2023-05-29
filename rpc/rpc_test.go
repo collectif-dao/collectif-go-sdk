@@ -16,7 +16,7 @@ func TestVersion(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	rpcClient := NewRPCClient(config.RPCAddress)
+	rpcClient := NewRPCClient(config.RPCConfig[config.DefaultNetwork].Address, config.RPCConfig[config.DefaultNetwork].APIToken)
 
 	version, err := rpcClient.Version(ctx)
 	if err != nil {
@@ -35,7 +35,7 @@ func TestVerifyCid(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	rpcClient := NewRPCClient(config.RPCAddress)
+	rpcClient := NewRPCClient(config.RPCConfig[config.DefaultNetwork].Address, config.RPCConfig[config.DefaultNetwork].APIToken)
 
 	status, err := rpcClient.VerifyCid(ctx, "bafy2bzacedeih423wkxn225h3r356jlu3qqrpmg43s2bcx6bq7kxhftncaiue")
 	if err != nil {
@@ -52,7 +52,7 @@ func TestGetNonce(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	rpcClient := NewRPCClient(config.RPCAddress)
+	rpcClient := NewRPCClient(config.RPCConfig[config.DefaultNetwork].Address, config.RPCConfig[config.DefaultNetwork].APIToken)
 
 	addr, err := address.NewFromString("t410fjtte454usorrzedcbgslfmiwg5yy6i2a2pxoyky")
 	if err != nil {
@@ -74,7 +74,7 @@ func TestLookupId(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	rpcClient := NewRPCClient(config.RPCAddress)
+	rpcClient := NewRPCClient(config.RPCConfig[config.DefaultNetwork].Address, config.RPCConfig[config.DefaultNetwork].APIToken)
 
 	fAddr := "t410fmiuoet6qvv3jowc33r7bvlvcpgiu25kjec5t2qa"
 
@@ -108,7 +108,7 @@ func TestGetChainHead(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	rpcClient := NewRPCClient(config.RPCAddress)
+	rpcClient := NewRPCClient(config.RPCConfig[config.DefaultNetwork].Address, config.RPCConfig[config.DefaultNetwork].APIToken)
 
 	tipSet, err := rpcClient.GetChainHead(ctx)
 	if err != nil {
@@ -125,7 +125,7 @@ func TestGetTipSetKey(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	rpcClient := NewRPCClient(config.RPCAddress)
+	rpcClient := NewRPCClient(config.RPCConfig[config.DefaultNetwork].Address, config.RPCConfig[config.DefaultNetwork].APIToken)
 
 	key, err := rpcClient.GetTipSetKey(ctx)
 	if err != nil {
@@ -133,4 +133,34 @@ func TestGetTipSetKey(t *testing.T) {
 	}
 
 	assert.NotEmpty(t, key)
+}
+
+func TestStateMinerInfo(t *testing.T) {
+	config, err := config.LoadConfig("../")
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	ctx := context.Background()
+	rpcClient := NewRPCClient(config.RPCConfig[config.DefaultNetwork].Address, config.RPCConfig[config.DefaultNetwork].APIToken)
+
+	fAddr := "t2fp6lovd2v565vli6e2edltx6tgwopqepfd3rarq"
+	// fAddr := "t035955"
+
+	mAddr, err := address.NewFromString(fAddr)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	key, err := rpcClient.GetTipSetKey(ctx)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	info, err := rpcClient.StateMinerInfo(ctx, mAddr, key)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	assert.NotEmpty(t, info)
 }

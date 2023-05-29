@@ -17,8 +17,18 @@ type RPCClient struct {
 	Client jsonrpc.RPCClient
 }
 
-func NewRPCClient(endpoint string) *RPCClient {
-	rpc := jsonrpc.NewClient(endpoint)
+func NewRPCClient(endpoint string, api_token string) *RPCClient {
+	var cHeader map[string]string
+
+	if api_token != "" {
+		cHeader = map[string]string{
+			"Authorization": "Bearer " + api_token,
+		}
+	}
+
+	rpc := jsonrpc.NewClientWithOpts(endpoint, &jsonrpc.RPCClientOpts{
+		CustomHeaders: cHeader,
+	})
 
 	return &RPCClient{
 		Client: rpc,
@@ -242,4 +252,22 @@ func (r *RPCClient) LookupId(ctx context.Context, addr address.Address, key *lty
 	}
 
 	return &fAddr, nil
+}
+
+func (r *RPCClient) StateMinerInfo(ctx context.Context, minerAddress address.Address, key *ltypes.TipSetKey) (*api.MinerInfo, error) {
+	i := make([]interface{}, 0)
+	i = append(i, minerAddress, key)
+
+	response, err := r.Client.Call(ctx, "Filecoin.StateMinerInfo", i)
+	if err != nil {
+		return nil, fmt.Errorf("failed to perform a Filecoin.StateMinerInfo call: %w", err)
+	}
+
+	info := api.MinerInfo{}
+	err = response.GetObject(&info)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response body: %w", err)
+	}
+
+	return &info, nil
 }

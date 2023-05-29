@@ -17,7 +17,7 @@ var (
 
 func getAllocationInfo(ownerId string) (*fvm.SPAllocation, error) {
 	ctx := context.Background()
-	sdk, err := sdk.NewCollectifSDK(ctx, fvm.DefaultNetwork, keystore.FSKeyStore, "./")
+	sdk, err := sdk.NewCollectifSDK(ctx, keystore.FSKeyStore, "./")
 	if err != nil {
 		return nil, err
 	}

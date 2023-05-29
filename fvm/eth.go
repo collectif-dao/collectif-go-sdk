@@ -77,32 +77,42 @@ func (c *LotusClient) performLotusMessage(ctx context.Context, target *address.A
 		Params: calldata,
 	}
 
-	fullMsg, err := c.RPCClient.EstimateMessageGas(ctx, msg, &api.MessageSendSpec{})
+	res, err = c.executeNativeMessage(ctx, msg, res, send)
 	if err != nil {
 		return &res, err
 	}
 
+	return &res, nil
+}
+
+func (c *LotusClient) executeNativeMessage(ctx context.Context, msg *lTypes.Message, res MessageResponse, send bool) (MessageResponse, error) {
+	fullMsg, err := c.RPCClient.EstimateMessageGas(ctx, msg, &api.MessageSendSpec{})
+	if err != nil {
+		return res, err
+	}
+
 	signedMessage, err := c.MessageSigner.SignMessage(ctx, fullMsg, &api.MessageSendSpec{})
 	if err != nil {
-		return &res, err
+		return res, err
 	}
 
 	if send {
 		cid, err := c.RPCClient.PushToMpool(ctx, signedMessage)
 		if err != nil {
-			return &res, err
+			return res, err
 		}
 
 		l, err := c.RPCClient.WaitMessage(ctx, &cid)
 		if err != nil {
-			return &res, err
+			return res, err
 		}
 
 		res.Message = l.Message
 		res.Receipt = l.Receipt
 	}
 
-	return &res, nil
+	return res, nil
+
 }
 
 func (c *LotusClient) calculateCalldata(method string, abi *abi.ABI, args ...interface{}) ([]byte, error) {

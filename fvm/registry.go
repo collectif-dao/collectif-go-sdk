@@ -2,11 +2,20 @@ package fvm
 
 import (
 	"context"
+	"fmt"
 
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/filecoin-project/go-address"
+	fAbi "github.com/filecoin-project/go-state-types/abi"
+	fBig "github.com/filecoin-project/go-state-types/big"
+	"github.com/filecoin-project/go-state-types/builtin"
+	"github.com/filecoin-project/go-state-types/builtin/v9/miner"
+	"github.com/filecoin-project/lotus/chain/actors"
+	"github.com/filecoin-project/lotus/chain/types"
+	"golang.org/x/xerrors"
 )
 
 type StorageProvider struct {
@@ -190,4 +199,59 @@ func (c *LotusClient) RequestAllocationLimitUpdate(ctx context.Context, allocati
 	}
 
 	return res, nil
+}
+
+func (c *LotusClient) ChangeBeneficiaryAddress(ctx context.Context, minerAddr *address.Address, beneficiaryAddr *address.Address, quota *big.Int, expiration int64, send bool) (*MessageResponse, error) {
+	tk, err := c.RPCClient.GetTipSetKey(ctx)
+	if err != nil {
+		return nil, xerrors.Errorf("unable to get tipset head key: %w", err)
+	}
+
+	idAddr, err := c.RPCClient.LookupId(ctx, *beneficiaryAddr, tk)
+	if err != nil {
+		return nil, xerrors.Errorf("invalid beneficiary address param: %w", err)
+	}
+
+	quotaVal, err := fBig.FromString(quota.String())
+	if err != nil {
+		return nil, xerrors.Errorf("invalid quota param: %w", err)
+	}
+
+	params := &miner.ChangeBeneficiaryParams{
+		NewBeneficiary: *idAddr,
+		NewQuota:       quotaVal,
+		NewExpiration:  fAbi.ChainEpoch(expiration),
+	}
+
+	sp, err := actors.SerializeParams(params)
+	if err != nil {
+		return nil, xerrors.Errorf("serializing params: %w", err)
+	}
+
+	mi, err := c.RPCClient.StateMinerInfo(ctx, *minerAddr, tk)
+	if err != nil {
+		return nil, xerrors.Errorf("invalid beneficiary address param: %w", err)
+	}
+
+	if mi.Beneficiary == mi.Owner && *idAddr == mi.Owner {
+		return nil, fmt.Errorf("beneficiary %s already set to owner address", mi.Beneficiary)
+	}
+
+	msg := &types.Message{
+		From:   mi.Owner,
+		To:     *minerAddr,
+		Method: builtin.MethodsMiner.ChangeBeneficiary,
+		Value:  fBig.Zero(),
+		Params: sp,
+	}
+
+	var res MessageResponse
+	res.Data = sp
+
+	res, err = c.executeNativeMessage(ctx, msg, res, send)
+	if err != nil {
+		return &res, err
+	}
+
+	return &res, nil
 }

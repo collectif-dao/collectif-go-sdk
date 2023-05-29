@@ -28,7 +28,7 @@ func registerStorageProvider(minerId uint64, totalLimit int64, dailyLimit int64,
 	allocationLimit := utils.GetAttoFilFromFIL(totalLimit)
 
 	ctx := context.Background()
-	sdk, err := sdk.NewCollectifSDK(ctx, fvm.DefaultNetwork, keystore.FSKeyStore, "./")
+	sdk, err := sdk.NewCollectifSDK(ctx, keystore.FSKeyStore, "./")
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +69,7 @@ func init() {
 	RegisterCmd.Flags().Int64VarP(&dailyLimit, "daily-allocation", "d", 0, "Daily FIL allocation for pledge")
 	RegisterCmd.Flags().BoolVarP(&run, "execute", "e", true, "Execute transaction")
 
-	if err := RegisterCmd.MarkFlagRequired("miner"); err != nil {
+	if err := RegisterCmd.MarkFlagRequired("minerId"); err != nil {
 		fmt.Println(err)
 	}
 }

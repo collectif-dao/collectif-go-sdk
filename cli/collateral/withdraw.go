@@ -13,7 +13,7 @@ import (
 
 func withdrawCollateral(amount int64, run bool) (*fvm.MessageResponse, error) {
 	ctx := context.Background()
-	sdk, err := sdk.NewCollectifSDK(ctx, fvm.DefaultNetwork, keystore.FSKeyStore, "./")
+	sdk, err := sdk.NewCollectifSDK(ctx, keystore.FSKeyStore, "./")
 	if err != nil {
 		return nil, err
 	}

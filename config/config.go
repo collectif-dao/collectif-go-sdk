@@ -10,10 +10,16 @@ import (
 var C Config
 
 type Config struct {
-	RPCAddress    string                       `mapstructure:"rpc_addr"`
-	ChainID       int                          `mapstructure:"chain_id"`
-	FSKeyStoreDir string                       `mapstructure:"dir"`
-	Addresses     map[string]ContractAddresses `mapstructure:"contracts"`
+	RPCConfig      map[string]RPCConfig         `mapstructure:"rpc"`
+	FSKeyStoreDir  string                       `mapstructure:"dir"`
+	DefaultNetwork string                       `mapstructure:"default_network"`
+	Addresses      map[string]ContractAddresses `mapstructure:"contracts"`
+}
+
+type RPCConfig struct {
+	Address  string `mapstructure:"address"`
+	ChainID  int    `mapstructure:"chain_id"`
+	APIToken string `mapstructure:"api_token"`
 }
 
 type ContractAddresses struct {

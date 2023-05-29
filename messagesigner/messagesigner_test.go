@@ -48,7 +48,7 @@ func TestNextNonce(t *testing.T) {
 
 	cache := keystore.MemoryKeyStore
 	ctx := context.Background()
-	rpcClient := rpc.NewRPCClient(config.RPCAddress)
+	rpcClient := rpc.NewRPCClient(config.RPCConfig[config.DefaultNetwork].Address, config.RPCConfig[config.DefaultNetwork].APIToken)
 
 	ks, err := cache.PrepareKeystore(config.FSKeyStoreDir)
 	if err != nil {
@@ -95,7 +95,7 @@ func TestNextNonceForExistingAddress(t *testing.T) {
 
 	cache := keystore.MemoryKeyStore
 	ctx := context.Background()
-	rpcClient := rpc.NewRPCClient(config.RPCAddress)
+	rpcClient := rpc.NewRPCClient(config.RPCConfig[config.DefaultNetwork].Address, config.RPCConfig[config.DefaultNetwork].APIToken)
 
 	ks, err := cache.PrepareKeystore(config.FSKeyStoreDir)
 	if err != nil {
@@ -133,7 +133,7 @@ func TestSignMessage(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	rpcClient := rpc.NewRPCClient(config.RPCAddress)
+	rpcClient := rpc.NewRPCClient(config.RPCConfig[config.DefaultNetwork].Address, config.RPCConfig[config.DefaultNetwork].APIToken)
 
 	w, err := wallet.NewWallet(keystore.NewMemKeystore())
 	if err != nil {

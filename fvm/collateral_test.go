@@ -22,7 +22,7 @@ func TestDepositCallData(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.FSKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.FSKeyStore)
 
 	callData, err := client.calculateCalldata("deposit", client.Collateral.ABI)
 	if err != nil {
@@ -44,7 +44,7 @@ func TestWithdrawCallData(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.FSKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.FSKeyStore)
 
 	res, err := client.Withdraw(ctx, amount, false)
 	if err != nil {
@@ -67,7 +67,7 @@ func TestGetCollateral(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.MemoryKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -89,7 +89,7 @@ func TestGetLockedCollateral(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.MemoryKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -110,7 +110,7 @@ func TestGetAvailableCollateral(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.MemoryKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -131,7 +131,7 @@ func TestIsActiveSlashing(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.MemoryKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -153,7 +153,7 @@ func TestGetTotalSlashing(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.MemoryKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}

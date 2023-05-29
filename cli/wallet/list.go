@@ -1,7 +1,6 @@
 package wallet
 
 import (
-	"collective-go-sdk/fvm"
 	"collective-go-sdk/keystore"
 	"collective-go-sdk/sdk"
 	"context"
@@ -14,7 +13,7 @@ func list() ([]string, error) {
 	addrList := make([]string, 0, 2)
 
 	ctx := context.Background()
-	sdk, err := sdk.NewCollectifSDK(ctx, fvm.DefaultNetwork, keystore.FSKeyStore, "./")
+	sdk, err := sdk.NewCollectifSDK(ctx, keystore.FSKeyStore, "./")
 	if err != nil {
 		return addrList, err
 	}

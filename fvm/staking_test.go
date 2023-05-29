@@ -18,7 +18,7 @@ func TestSymbol(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.MemoryKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -39,7 +39,7 @@ func TestName(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.MemoryKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -60,7 +60,7 @@ func TestTotalAssets(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.MemoryKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -81,7 +81,7 @@ func TestTotalFILAvailable(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.MemoryKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -102,7 +102,7 @@ func TestTotalFILPledged(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.MemoryKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -123,7 +123,7 @@ func TestTotalFees(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.MemoryKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -144,7 +144,7 @@ func TestPledge(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.FSKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.FSKeyStore)
 
 	callData, err := client.calculateCalldata("pledge", client.Staking.ABI, amount)
 	if err != nil {
@@ -166,7 +166,7 @@ func TestStake(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	client, err := NewLotusClient(ctx, config, DefaultNetwork, keystore.FSKeyStore)
+	client, err := NewLotusClient(ctx, config, keystore.FSKeyStore)
 
 	callData, err := client.calculateCalldata("stake", client.Staking.ABI)
 	if err != nil {

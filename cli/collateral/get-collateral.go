@@ -17,9 +17,13 @@ var (
 
 func getCollateral(address string) (*fvm.CollateralInfo, error) {
 	ctx := context.Background()
-	sdk, err := sdk.NewCollectifSDK(ctx, fvm.DefaultNetwork, keystore.FSKeyStore, "./")
+	sdk, err := sdk.NewCollectifSDK(ctx, keystore.FSKeyStore, "./")
 	if err != nil {
 		return nil, err
+	}
+
+	if address == "" {
+		address = sdk.Client.Address.String()
 	}
 
 	idAddr := fUtils.GetIdAddress(ctx, address, sdk.Client)
@@ -49,10 +53,5 @@ var getCollateralCmd = &cobra.Command{
 
 func init() {
 	getCollateralCmd.Flags().StringVarP(&address, "address", "a", "", "Storage Provider address (filecoin)")
-
-	if err := getCollateralCmd.MarkFlagRequired("address"); err != nil {
-		fmt.Println(err)
-	}
-
 	CollateralCmd.AddCommand(getCollateralCmd)
 }
