@@ -13,6 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Build Filecoin FFI
+        run: |
+          make filecoin-ffi
+        id: filecoin-ffi
+
       - name: Run SDK build
         run: |
           make build-sdk
