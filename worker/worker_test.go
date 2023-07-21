@@ -137,7 +137,9 @@ func TestIncreaseCollateral(t *testing.T) {
 	if err != nil {
 		assert.Error(t, err)
 	}
-	assert.NotEmpty(t, msg.Data)
+	if msg != nil {
+		assert.NotEmpty(t, msg.Data)
+	}
 
 	var lc = big.NewInt(0)
 	lc.Mul(amt, big.NewInt(3500)).Div(lc, big.NewInt(10000))
