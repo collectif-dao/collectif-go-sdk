@@ -1,0 +1,29 @@
+name: CI Test
+
+on:
+  push:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  Tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run SDK build
+        run: |
+          make build-sdk
+        id: build-sdk
+
+      - name: Run Client build
+        run: |
+          make build-client
+        id: build-client
+
+      - name: Run Tests
+        run: |
+          make test
+        id: test

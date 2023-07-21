@@ -23,6 +23,9 @@ clean:
 	rm -f $(SDK_NAME)
 	rm -f $(CLIENT_NAME)
 
+test:
+	go test -timeout=30m -v ./...
+
 ## FFI
 
 FFI_PATH:=extern/filecoin-ffi/
