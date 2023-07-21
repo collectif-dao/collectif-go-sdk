@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"path/filepath"
 
 	"github.com/spf13/viper"
 )
@@ -9,17 +10,25 @@ import (
 var C Config
 
 type Config struct {
-	RPCAddress                string `mapstructure:"rpc_addr"`
-	ChainID                   int    `mapstructure:"chain_id"`
-	PrivateKey                string `mapstructure:"private_key"`
-	MnemonicPhrase            string `mapstructure:"mnemonic_phrase"`
-	HDDerivationPath          string `mapstructure:"hd_derivation_path"`
+	RPCConfig      map[string]RPCConfig         `mapstructure:"rpc"`
+	FSKeyStoreDir  string                       `mapstructure:"dir"`
+	DefaultNetwork string                       `mapstructure:"default_network"`
+	Addresses      map[string]ContractAddresses `mapstructure:"contracts"`
+	Miners         map[string][]string          `mapstructure:"miners"`
+	PledgeTimeout  int64                        `mapstructure:"pledge_timeout"`
+	LogLevel       string                       `mapstructure:"log_level"`
+}
+
+type RPCConfig struct {
+	Address  string `mapstructure:"address"`
+	ChainID  int    `mapstructure:"chain_id"`
+	APIToken string `mapstructure:"api_token"`
+}
+
+type ContractAddresses struct {
 	LiquidStaking             string `mapstructure:"liquid_staking"`
-	PledgeOracle              string `mapstructure:"pledge_oracle"`
 	StorageProviderRegistry   string `mapstructure:"registry"`
 	StorageProviderCollateral string `mapstructure:"collateral"`
-	AllocationLimit           int64  `mapstructure:"allocation_limit"`
-	MaxPeriod                 int64  `mapstructure:"maxPeriod"`
 }
 
 // LoadConfig loads config from files
@@ -27,7 +36,7 @@ func LoadConfig(path string) (*Config, error) {
 	v := viper.New()
 
 	v.AddConfigPath(path)
-	v.SetConfigName("hyperspace")
+	v.SetConfigName("config")
 	v.SetConfigType("yaml")
 	v.SetEnvPrefix("collective-sdk")
 	v.AutomaticEnv()
@@ -38,6 +47,10 @@ func LoadConfig(path string) (*Config, error) {
 
 	if err := v.Unmarshal(&C); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal the configuration file: %s", err)
+	}
+
+	if !filepath.IsAbs(C.FSKeyStoreDir) {
+		C.FSKeyStoreDir = filepath.Join(filepath.Dir(v.ConfigFileUsed()), C.FSKeyStoreDir)
 	}
 
 	return &C, nil

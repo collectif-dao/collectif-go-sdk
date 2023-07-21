@@ -1,31 +1,30 @@
 package collateral
 
 import (
-	"collective-go-sdk/config"
 	"collective-go-sdk/fvm"
+	"collective-go-sdk/keystore"
+	"collective-go-sdk/sdk"
+	"collective-go-sdk/utils"
+	"context"
 	"fmt"
-
-	"math/big"
 
 	"github.com/spf13/cobra"
 )
 
-func withdrawCollateral(amount int, run bool) (string, error) {
-	withdrawal := big.NewInt(int64(amount))
-
-	config, err := config.LoadConfig("./config")
+func withdrawCollateral(amount int64, run bool) (*fvm.MessageResponse, error) {
+	ctx := context.Background()
+	sdk, err := sdk.NewCollectifSDK(ctx, keystore.FSKeyStore, "./")
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	client, err := fvm.NewLotusClient(config)
-
-	tx, err := client.Withdraw(withdrawal, run)
+	value := utils.GetAttoFilFromFIL(amount)
+	msg, err := sdk.Client.Withdraw(ctx, value, run)
 	if err != nil {
-		return "", err
+		return msg, err
 	}
 
-	return tx.Hash().Hex(), nil
+	return msg, nil
 }
 
 var withdrawCmd = &cobra.Command{
@@ -34,17 +33,25 @@ var withdrawCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		if resp, err := withdrawCollateral(amount, run); err != nil {
+		if msg, err := withdrawCollateral(amount, run); err != nil {
 			fmt.Println(err)
+
+			fmt.Println("Message calldata: ", msg.Data)
 		} else {
-			fmt.Println(resp)
+			if run {
+				fmt.Println("Executed message with: ", msg.Message, " CID")
+				fmt.Println("Returned: ", msg.Receipt.Return)
+				fmt.Println("Gas spent: ", msg.Receipt.GasUsed)
+			}
+
+			fmt.Println("Message calldata: ", msg.Data)
 		}
 	},
 }
 
 func init() {
-	withdrawCmd.Flags().IntVarP(&amount, "amount", "a", 0, "Deposit amount")
-	withdrawCmd.Flags().BoolVarP(&run, "run", "r", true, "Execute transaction")
+	withdrawCmd.Flags().Int64VarP(&amount, "amount", "a", 0, "Deposit amount")
+	withdrawCmd.Flags().BoolVarP(&run, "execute", "e", true, "Execute transaction")
 
 	if err := withdrawCmd.MarkFlagRequired("amount"); err != nil {
 		fmt.Println(err)

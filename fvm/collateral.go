@@ -1,68 +1,168 @@
 package fvm
 
 import (
+	"context"
+
 	"math/big"
 
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/core/types"
+	log "github.com/sirupsen/logrus"
+
+	"github.com/ethereum/go-ethereum/accounts/abi"
 )
 
-type Collateral struct {
-	availableCollateral *big.Int
-	lockedCollateral    *big.Int
+type CollateralInfo struct {
+	AvailableCollateral *big.Int
+	LockedCollateral    *big.Int
 }
 
-func (c *LotusClient) Deposit(amount *big.Int, send bool) (*types.Transaction, error) {
-	var opts = c.signer
+func (c *LotusClient) Deposit(ctx context.Context, amount *big.Int, send bool) (*MessageResponse, error) {
+	log.Info("Depositing collateral for ", amount.String(), " amount")
 
-	if !send {
-		opts.NoSend = true
-		opts.Value = amount
-	} else {
-		opts.NoSend = false
-		opts.Value = amount
-	}
-
-	tx, err := c.collateral.Deposit(opts)
-
+	method := "deposit"
+	calldata, err := c.calculateCalldata(method, c.Collateral.ABI)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	return tx, nil
-}
-
-func (c *LotusClient) Withdraw(amount *big.Int, send bool) (*types.Transaction, error) {
-	var opts = c.signer
-
-	if !send {
-		opts.NoSend = true
-	} else {
-		opts.NoSend = false
-	}
-
-	tx, err := c.collateral.Withdraw(opts, amount)
-
+	res, err := c.performLotusMessage(ctx, &c.Collateral.NativeAddress, method, amount, calldata, send)
 	if err != nil {
-		panic(err)
+		return res, err
 	}
 
-	return tx, nil
+	log.Info("Succesfully deposited collateral for ", amount.String(), " amount")
+	return res, nil
 }
 
-func (c *LotusClient) GetCollateral(provider []byte) (*big.Int, *big.Int, error) {
-	availableCollateral, lockedCollateral, err := c.collateral.GetCollateral(&bind.CallOpts{}, provider)
+func (c *LotusClient) Withdraw(ctx context.Context, amount *big.Int, send bool) (*MessageResponse, error) {
+	log.Info("Withdrawing collateral for ", amount.String(), " amount")
+	method := "withdraw"
+	calldata, err := c.calculateCalldata(method, c.Collateral.ABI, amount)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	return availableCollateral, lockedCollateral, nil
+	res, err := c.performLotusMessage(ctx, &c.Collateral.NativeAddress, method, big.NewInt(0), calldata, send)
+	if err != nil {
+		return res, err
+	}
+
+	log.Info("Succesfully withdrawn collateral for ", amount.String(), " amount")
+	return res, nil
 }
 
-func (c *LotusClient) GetLockedCollateral(provider []byte) (*big.Int, error) {
-	return c.collateral.GetLockedCollateral(&bind.CallOpts{}, provider)
+func (c *LotusClient) GetCollateral(ctx context.Context, ownerId uint64) (*CollateralInfo, error) {
+	method := "getCollateral"
+	var res [2]interface{}
+
+	callData, err := c.calculateEthCalldata(method, c.Collateral.ABI, ownerId)
+	if err != nil {
+		return nil, err
+	}
+
+	if err = c.performEthCall(ctx, nil, &c.Collateral.Address, method, callData, c.Collateral.ABI, &res); err != nil {
+		return nil, err
+	}
+
+	collateral := &CollateralInfo{
+		AvailableCollateral: *abi.ConvertType(res[0], new(*big.Int)).(**big.Int),
+		LockedCollateral:    *abi.ConvertType(res[1], new(*big.Int)).(**big.Int),
+	}
+
+	return collateral, nil
 }
 
-func (c *LotusClient) GetAvailableCollateral(provider []byte) (*big.Int, error) {
-	return c.collateral.GetAvailableCollateral(&bind.CallOpts{}, provider)
+func (c *LotusClient) GetLockedCollateral(ctx context.Context, ownerId uint64) (*big.Int, error) {
+	method := "getLockedCollateral"
+	res := &big.Int{}
+
+	callData, err := c.calculateEthCalldata(method, c.Collateral.ABI, ownerId)
+	if err != nil {
+		return nil, err
+	}
+
+	if err = c.performEthCall(ctx, nil, &c.Collateral.Address, method, callData, c.Collateral.ABI, &res); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (c *LotusClient) GetAvailableCollateral(ctx context.Context, ownerId uint64) (*big.Int, error) {
+	method := "getAvailableCollateral"
+	res := &big.Int{}
+
+	callData, err := c.calculateEthCalldata(method, c.Collateral.ABI, ownerId)
+	if err != nil {
+		return nil, err
+	}
+
+	if err = c.performEthCall(ctx, nil, &c.Collateral.Address, method, callData, c.Collateral.ABI, &res); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (c *LotusClient) GetTotalSlashing(ctx context.Context, ownerId uint64) (*big.Int, error) {
+	method := "slashings"
+	res := &big.Int{}
+
+	callData, err := c.calculateEthCalldata(method, c.Collateral.ABI, ownerId)
+	if err != nil {
+		return nil, err
+	}
+
+	if err = c.performEthCall(ctx, nil, &c.Collateral.Address, method, callData, c.Collateral.ABI, &res); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (c *LotusClient) IsActiveSlashing(ctx context.Context, ownerId uint64) (bool, error) {
+	method := "activeSlashings"
+	var res bool
+
+	callData, err := c.calculateEthCalldata(method, c.Collateral.ABI, ownerId)
+	if err != nil {
+		return false, err
+	}
+
+	if err = c.performEthCall(ctx, nil, &c.Collateral.Address, method, callData, c.Collateral.ABI, &res); err != nil {
+		return false, err
+	}
+
+	return res, nil
+}
+
+func (c *LotusClient) GetCollateralRequirements(ctx context.Context, ownerId uint64) (*big.Int, error) {
+	method := "collateralRequirements"
+	res := &big.Int{}
+
+	callData, err := c.calculateEthCalldata(method, c.Collateral.ABI, ownerId)
+	if err != nil {
+		return nil, err
+	}
+
+	if err = c.performEthCall(ctx, nil, &c.Collateral.Address, method, callData, c.Collateral.ABI, &res); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (c *LotusClient) GetDebt(ctx context.Context, ownerId uint64) (*big.Int, error) {
+	method := "getDebt"
+	res := &big.Int{}
+
+	callData, err := c.calculateEthCalldata(method, c.Collateral.ABI, ownerId)
+	if err != nil {
+		return nil, err
+	}
+
+	if err = c.performEthCall(ctx, nil, &c.Collateral.Address, method, callData, c.Collateral.ABI, &res); err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }

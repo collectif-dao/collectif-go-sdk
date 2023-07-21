@@ -2,110 +2,214 @@ package fvm
 
 import (
 	"collective-go-sdk/config"
-	"collective-go-sdk/utils"
-	"math/big"
+	"collective-go-sdk/keystore"
+	"context"
 	"testing"
+
+	"math/big"
 
 	"github.com/stretchr/testify/assert"
 )
 
-var minerAddr = utils.ConvertAddress("t2vb6iahjntzweoxb7ozhond4jalwf5azy2xzk2oa")
-var result = big.NewInt(0)
+var minerId = uint64(0100)
+var ZERO_BN = big.NewInt(0)
 var amount = big.NewInt(100)
 
-// func TestDepositCallData(t *testing.T) {
-// 	config, err := config.LoadConfig("../config")
-// 	if err != nil {
-// 		assert.Error(t, err)
-// 	}
+func TestDepositCallData(t *testing.T) {
+	config, err := config.LoadConfig("../")
+	if err != nil {
+		assert.Error(t, err)
+	}
 
-// 	client, err := NewLotusClient(config)
+	ctx := context.Background()
+	client, err := NewLotusClient(ctx, config, keystore.FSKeyStore)
 
-// 	abi, err := StorageProviderCollateral.StorageProviderCollateralMetaData.GetAbi()
-// 	if err != nil {
-// 		assert.Error(t, err)
-// 	}
+	callData, err := client.calculateCalldata("deposit", client.Collateral.ABI)
+	if err != nil {
+		assert.Error(t, err)
+	}
 
-// 	callData, err := abi.Pack("deposit")
+	res, err := client.Deposit(ctx, amount, false)
+	if err != nil {
+		assert.Error(t, err)
+	}
 
-// 	tx, err := client.Deposit(amount, false)
-// 	if err != nil {
-// 		assert.Error(t, err)
-// 	}
+	assert.Equal(t, callData, res.Data)
+}
 
-// 	assert.Equal(t, tx.Data(), callData)
-// }
+func TestWithdrawCallData(t *testing.T) {
+	config, err := config.LoadConfig("../")
+	if err != nil {
+		assert.Error(t, err)
+	}
 
-// func TestWithdrawCallData(t *testing.T) {
-// 	config, err := config.LoadConfig("../config")
-// 	if err != nil {
-// 		assert.Error(t, err)
-// 	}
+	ctx := context.Background()
+	client, err := NewLotusClient(ctx, config, keystore.FSKeyStore)
 
-// 	client, err := NewLotusClient(config)
+	res, err := client.Withdraw(ctx, amount, false)
+	if err != nil {
+		assert.Error(t, err)
+	}
 
-// 	tx, err := client.Withdraw(amount, false)
-// 	if err != nil {
-// 		assert.Error(t, err)
-// 	}
+	callData, err := client.calculateCalldata("withdraw", client.Collateral.ABI, amount)
+	if err != nil {
+		assert.Error(t, err)
+	}
 
-// 	abi, err := StorageProviderCollateral.StorageProviderCollateralMetaData.GetAbi()
-// 	if err != nil {
-// 		assert.Error(t, err)
-// 	}
-
-// 	callData, err := abi.Pack("withdraw", amount)
-// 	assert.Equal(t, tx.Data(), callData)
-// }
+	assert.Equal(t, callData, res.Data)
+}
 
 func TestGetCollateral(t *testing.T) {
-	config, err := config.LoadConfig("../config")
+	ctx := context.Background()
+	config, err := config.LoadConfig("../")
 
 	if err != nil {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(config)
-
-	available, locked, err := client.GetCollateral(minerAddr)
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}
 
-	assert.Equal(t, result.String(), available.String())
-	assert.Equal(t, result.String(), locked.String())
+	ownerId := getOwnerId(t, ctx, client)
+	collateral, err := client.GetCollateral(ctx, ownerId)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	assert.Equal(t, ZERO_BN.String(), collateral.AvailableCollateral.String())
+	assert.Equal(t, ZERO_BN.String(), collateral.LockedCollateral.String())
 }
 
 func TestGetLockedCollateral(t *testing.T) {
-	config, err := config.LoadConfig("../config")
+	ctx := context.Background()
+	config, err := config.LoadConfig("../")
 
 	if err != nil {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(config)
-
-	lockedCollateral, err := client.GetLockedCollateral(minerAddr)
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}
 
-	assert.Equal(t, result.String(), lockedCollateral.String())
+	ownerId := getOwnerId(t, ctx, client)
+	lockedCollateral, err := client.GetLockedCollateral(ctx, ownerId)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	assert.Equal(t, ZERO_BN.String(), lockedCollateral.String())
 }
 
 func TestGetAvailableCollateral(t *testing.T) {
-	config, err := config.LoadConfig("../config")
+	ctx := context.Background()
+	config, err := config.LoadConfig("../")
 
 	if err != nil {
 		assert.Error(t, err)
 	}
 
-	client, err := NewLotusClient(config)
-
-	availableCollateral, err := client.GetAvailableCollateral(minerAddr)
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
 	if err != nil {
 		assert.Error(t, err)
 	}
 
-	assert.Equal(t, result.String(), availableCollateral.String())
+	ownerId := getOwnerId(t, ctx, client)
+	availableCollateral, err := client.GetAvailableCollateral(ctx, ownerId)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	assert.Equal(t, ZERO_BN.String(), availableCollateral.String())
+}
+
+func TestIsActiveSlashing(t *testing.T) {
+	ctx := context.Background()
+
+	config, err := config.LoadConfig("../")
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	ownerId := getOwnerId(t, ctx, client)
+	status, err := client.IsActiveSlashing(ctx, ownerId)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	assert.Equal(t, status, false)
+}
+
+func TestGetTotalSlashing(t *testing.T) {
+	ctx := context.Background()
+
+	config, err := config.LoadConfig("../")
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	ownerId := getOwnerId(t, ctx, client)
+	slashing, err := client.GetTotalSlashing(ctx, ownerId)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	assert.Equal(t, ZERO_BN.String(), slashing.String())
+}
+
+func TestGetCollateralRequirements(t *testing.T) {
+	ctx := context.Background()
+
+	config, err := config.LoadConfig("../")
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	ownerId := getOwnerId(t, ctx, client)
+	requirements, err := client.GetCollateralRequirements(ctx, ownerId)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	assert.Equal(t, ZERO_BN.String(), requirements.String())
+}
+
+func TestGetDebt(t *testing.T) {
+	ctx := context.Background()
+
+	config, err := config.LoadConfig("../")
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	client, err := NewLotusClient(ctx, config, keystore.MemoryKeyStore)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	ownerId := getOwnerId(t, ctx, client)
+	debt, err := client.GetDebt(ctx, ownerId)
+	if err != nil {
+		assert.Error(t, err)
+	}
+
+	assert.Equal(t, ZERO_BN.String(), debt.String())
 }

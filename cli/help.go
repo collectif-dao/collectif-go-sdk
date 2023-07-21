@@ -1,9 +1,13 @@
 package cli
 
 import (
+	"collective-go-sdk/cli/allocation"
+	"collective-go-sdk/cli/beneficiary"
 	"collective-go-sdk/cli/collateral"
 	"collective-go-sdk/cli/register"
+	"collective-go-sdk/cli/restaking"
 	"collective-go-sdk/cli/staking"
+	"collective-go-sdk/cli/wallet"
 	"fmt"
 	"os"
 
@@ -30,28 +34,12 @@ func Execute() {
 }
 
 func init() {
-	// cobra.OnInitialize(initConfig)
-
 	fmt.Println()
 	rootCmd.AddCommand(collateral.CollateralCmd)
 	rootCmd.AddCommand(register.RegisterCmd)
 	rootCmd.AddCommand(staking.StakingCmd)
+	rootCmd.AddCommand(beneficiary.ChangeBeneficiaryCmd)
+	rootCmd.AddCommand(wallet.WalletCmd)
+	rootCmd.AddCommand(restaking.RestakingCmd)
+	rootCmd.AddCommand(allocation.AllocationCmd)
 }
-
-// func initConfig() {
-// 	if cfgFile != "" {
-// 		viper.SetConfigFile(cfgFile)
-// 	} else {
-// 		home, err := os.UserHomeDir()
-// 		cobra.CheckErr(err)
-// 		viper.AddConfigPath(home)
-// 		viper.SetConfigType("yaml")
-// 		viper.SetConfigName(".toolbox")
-// 	}
-
-// 	viper.AutomaticEnv()
-
-// 	if err := viper.ReadInConfig(); err == nil {
-// 		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
-// 	}
-// }

@@ -1,36 +1,35 @@
 package collateral
 
 import (
-	"collective-go-sdk/config"
 	"collective-go-sdk/fvm"
+	"collective-go-sdk/keystore"
+	"collective-go-sdk/sdk"
+	"collective-go-sdk/utils"
+	"context"
 	"fmt"
-
-	"math/big"
 
 	"github.com/spf13/cobra"
 )
 
 var (
-	amount int
+	amount int64
 	run    bool
 )
 
-func depositCollateral(amount int, run bool) (string, error) {
-	depositAmt := big.NewInt(int64(amount))
-
-	config, err := config.LoadConfig("./config")
+func depositCollateral(amount int64, run bool) (*fvm.MessageResponse, error) {
+	ctx := context.Background()
+	sdk, err := sdk.NewCollectifSDK(ctx, keystore.FSKeyStore, "./")
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	client, err := fvm.NewLotusClient(config)
-
-	tx, err := client.Deposit(depositAmt, run)
+	value := utils.GetAttoFilFromFIL(amount)
+	msg, err := sdk.Client.Deposit(ctx, value, run)
 	if err != nil {
-		return "", err
+		return msg, err
 	}
 
-	return tx.Hash().Hex(), nil
+	return msg, nil
 }
 
 var depositCmd = &cobra.Command{
@@ -39,17 +38,25 @@ var depositCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		if resp, err := depositCollateral(amount, run); err != nil {
+		if msg, err := depositCollateral(amount, run); err != nil {
 			fmt.Println(err)
+
+			fmt.Println("Message calldata: ", msg.Data)
 		} else {
-			fmt.Println(resp)
+			if run {
+				fmt.Println("Executed message with: ", msg.Message, " CID")
+				fmt.Println("Returned: ", msg.Receipt.Return)
+				fmt.Println("Gas spent: ", msg.Receipt.GasUsed)
+			}
+
+			fmt.Println("Message calldata: ", msg.Data)
 		}
 	},
 }
 
 func init() {
-	depositCmd.Flags().IntVarP(&amount, "amount", "a", 0, "Deposit amount")
-	depositCmd.Flags().BoolVarP(&run, "run", "r", true, "Execute transaction")
+	depositCmd.Flags().Int64VarP(&amount, "amount", "a", 0, "Deposit amount")
+	depositCmd.Flags().BoolVarP(&run, "execute", "e", true, "Execute transaction")
 
 	if err := depositCmd.MarkFlagRequired("amount"); err != nil {
 		fmt.Println(err)

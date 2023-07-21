@@ -1,0 +1,42 @@
+name: CI Test
+
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  Tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Initialize submodules
+        run: git submodule update --init --recursive
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y valgrind ocl-icd-opencl-dev libssl-dev libhwloc-dev nvidia-cuda-toolkit
+
+      - name: Build Filecoin FFI
+        run: |
+          make filecoin-ffi
+        id: filecoin-ffi
+
+      - name: Run SDK build
+        run: |
+          make build-sdk
+        id: build-sdk
+
+      - name: Run Client build
+        run: |
+          make build-client
+        id: build-client
+
+      - name: Run Tests
+        run: |
+          make test
+        id: test

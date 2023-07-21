@@ -1,56 +1,64 @@
 package staking
 
 import (
-	"collective-go-sdk/config"
 	"collective-go-sdk/fvm"
+	"collective-go-sdk/keystore"
+	"collective-go-sdk/sdk"
+	"collective-go-sdk/utils"
+	"context"
 	"fmt"
 
 	"github.com/spf13/cobra"
 )
 
 var (
-	sector uint64
-	proof  string
+	amount int64
 	run    bool
 )
 
-func pledge(sector uint64, proof string, run bool) (string, error) {
-	proofBytes := []byte(proof)
-	config, err := config.LoadConfig("./config")
+func pledge(amount int64, run bool) (*fvm.MessageResponse, error) {
+	ctx := context.Background()
+	sdk, err := sdk.NewCollectifSDK(ctx, keystore.FSKeyStore, "./")
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	client, err := fvm.NewLotusClient(config)
-	tx, err := client.Pledge(sector, proofBytes, run)
-
+	value := utils.GetAttoFilFromFIL(amount)
+	msg, err := sdk.Client.Pledge(ctx, value, run)
 	if err != nil {
-		return "", err
+		return msg, err
 	}
 
-	return tx.Hash().Hex(), nil
+	return msg, nil
 }
 
 var pledgeCmd = &cobra.Command{
 	Use:   "pledge",
-	Short: "Pledge sector to finalize sealing and increase initial pledge for Storage Provider",
+	Short: "Pledge part of daily allocation to cover initial pledge for Storage Provider",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		if resp, err := pledge(sector, proof, run); err != nil {
+		if msg, err := pledge(amount, run); err != nil {
 			fmt.Println(err)
+
+			fmt.Println("Message calldata: ", msg.Data)
 		} else {
-			fmt.Println(resp)
+			if run {
+				fmt.Println("Executed message with: ", msg.Message, " CID")
+				fmt.Println("Returned: ", msg.Receipt.Return)
+				fmt.Println("Gas spent: ", msg.Receipt.GasUsed)
+			}
+
+			fmt.Println("Message calldata: ", msg.Data)
 		}
 	},
 }
 
 func init() {
-	pledgeCmd.Flags().Uint64VarP(&sector, "sector", "s", 0, "Sector number")
-	pledgeCmd.Flags().StringVarP(&proof, "proof", "p", "", "Sector proof")
-	pledgeCmd.Flags().BoolVarP(&run, "run", "r", true, "Execute transaction")
+	pledgeCmd.Flags().Int64VarP(&amount, "amount", "a", 0, "Amount of FIL to pledge (not attoFIL)")
+	pledgeCmd.Flags().BoolVarP(&run, "execute", "e", true, "Execute transaction")
 
-	if err := pledgeCmd.MarkFlagRequired("sector"); err != nil {
+	if err := pledgeCmd.MarkFlagRequired("amount"); err != nil {
 		fmt.Println(err)
 	}
 

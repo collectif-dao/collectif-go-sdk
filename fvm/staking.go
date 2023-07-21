@@ -1,70 +1,106 @@
 package fvm
 
 import (
+	"context"
 	"math/big"
 
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/core/types"
+	log "github.com/sirupsen/logrus"
 )
 
-func (c *LotusClient) Pledge(sectorNumber uint64, proof []byte, send bool) (*types.Transaction, error) {
-	var opts = c.signer
-
-	if !send {
-		opts.NoSend = true
-	} else {
-		opts.NoSend = false
-	}
-
-	tx, err := c.staking.Pledge(opts, sectorNumber, proof)
-
+func (c *LotusClient) Pledge(ctx context.Context, amount *big.Int, send bool) (*MessageResponse, error) {
+	log.Info("Pledging ", amount.String(), " amount of FIL")
+	method := "pledge"
+	calldata, err := c.calculateCalldata(method, c.Staking.ABI, amount)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	return tx, nil
-}
-
-func (c *LotusClient) PledgeAggregate(sectorNumber []uint64, proof [][]byte, send bool) (*types.Transaction, error) {
-	var opts = c.signer
-
-	if !send {
-		opts.NoSend = true
-	} else {
-		opts.NoSend = false
-	}
-
-	tx, err := c.staking.PledgeAggregate(opts, sectorNumber, proof)
-
+	res, err := c.performLotusMessage(ctx, &c.Staking.NativeAddress, method, big.NewInt(0), calldata, send)
 	if err != nil {
-		panic(err)
+		return res, err
 	}
 
-	return tx, nil
+	log.Info("Succesfully pledged ", amount.String(), " amount of FIL")
+	return res, nil
 }
 
-func (c *LotusClient) WithdrawBalance(miner []byte, amount *big.Int, send bool) (*types.Transaction, error) {
-	var opts = c.signer
-
-	if !send {
-		opts.NoSend = true
-	} else {
-		opts.NoSend = false
-	}
-
-	tx, err := c.staking.WithdrawRewards(opts, miner, amount)
-
+func (c *LotusClient) Stake(ctx context.Context, amount *big.Int, send bool) (*MessageResponse, error) {
+	log.Info("Staking ", amount.String(), " amount of FIL")
+	method := "stake"
+	calldata, err := c.calculateCalldata(method, c.Staking.ABI)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	return tx, nil
+	res, err := c.performLotusMessage(ctx, &c.Staking.NativeAddress, method, amount, calldata, send)
+	if err != nil {
+		return res, err
+	}
+
+	log.Info("Succesfully staked ", amount.String(), " amount of FIL")
+	return res, nil
 }
 
-func (c *LotusClient) TotalAssets() (*big.Int, error) {
-	return c.staking.TotalAssets(&bind.CallOpts{})
+func (c *LotusClient) TotalAssets(ctx context.Context) (*big.Int, error) {
+	method := "totalAssets"
+	res := &big.Int{}
+
+	callData, err := c.calculateEthCalldata(method, c.Staking.ABI)
+	if err != nil {
+		return nil, err
+	}
+
+	if err = c.performEthCall(ctx, nil, &c.Staking.Address, method, callData, c.Staking.ABI, &res); err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }
 
-func (c *LotusClient) TotalFilAvailable() (*big.Int, error) {
-	return c.staking.TotalFilAvailable(&bind.CallOpts{})
+func (c *LotusClient) TotalFilAvailable(ctx context.Context) (*big.Int, error) {
+	method := "totalFilAvailable"
+	res := &big.Int{}
+
+	callData, err := c.calculateEthCalldata(method, c.Staking.ABI)
+	if err != nil {
+		return nil, err
+	}
+
+	if err = c.performEthCall(ctx, nil, &c.Staking.Address, method, callData, c.Staking.ABI, &res); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (c *LotusClient) TotalFilPledged(ctx context.Context) (*big.Int, error) {
+	method := "totalFilPledged"
+	res := &big.Int{}
+
+	callData, err := c.calculateEthCalldata(method, c.Staking.ABI)
+	if err != nil {
+		return nil, err
+	}
+
+	if err = c.performEthCall(ctx, nil, &c.Staking.Address, method, callData, c.Staking.ABI, &res); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (c *LotusClient) TotalFees(ctx context.Context, ownerId uint64) (*big.Int, error) {
+	method := "totalFees"
+	res := &big.Int{}
+
+	callData, err := c.calculateEthCalldata(method, c.Staking.ABI, ownerId)
+	if err != nil {
+		return nil, err
+	}
+
+	if err = c.performEthCall(ctx, nil, &c.Staking.Address, method, callData, c.Staking.ABI, &res); err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }
