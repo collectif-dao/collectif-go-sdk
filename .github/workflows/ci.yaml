@@ -16,6 +16,11 @@ jobs:
       - name: Initialize submodules
         run: git submodule update --init --recursive
 
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y valgrind ocl-icd-opencl-dev libssl-dev libhwloc-dev nvidia-cuda-toolkit
+
       - name: Build Filecoin FFI
         run: |
           make filecoin-ffi
