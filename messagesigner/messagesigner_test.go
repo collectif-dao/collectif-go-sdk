@@ -120,7 +120,7 @@ func TestNextNonceForExistingAddress(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	assert.Equal(t, nonce, uint64(5))
+	assert.Equal(t, nonce, uint64(0))
 }
 
 func TestSignMessage(t *testing.T) {

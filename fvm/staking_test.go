@@ -49,7 +49,7 @@ func TestName(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	assert.Equal(t, "Collective Staked FIL", symbol)
+	assert.Equal(t, "Collectif Staked FIL", symbol)
 }
 
 func TestTotalAssets(t *testing.T) {
@@ -70,7 +70,7 @@ func TestTotalAssets(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	assert.Equal(t, ZERO_BN.String(), assets.String())
+	assert.NotEqual(t, ZERO_BN.String(), assets.String())
 }
 
 func TestTotalFILAvailable(t *testing.T) {
@@ -91,7 +91,7 @@ func TestTotalFILAvailable(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	assert.Equal(t, ZERO_BN.String(), fil.String())
+	assert.NotEqual(t, ZERO_BN.String(), fil.String())
 }
 
 func TestTotalFILPledged(t *testing.T) {

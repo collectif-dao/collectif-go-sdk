@@ -27,3 +27,7 @@ keystore/test-data
 #Compiled binaries
 collectif-go-sdk
 filecoin-ffi
+collectif-client
+
+#Logs
+logs/

@@ -15,13 +15,14 @@ import (
 	"github.com/filecoin-project/go-state-types/builtin/v9/miner"
 	"github.com/filecoin-project/lotus/chain/actors"
 	"github.com/filecoin-project/lotus/chain/types"
+	log "github.com/sirupsen/logrus"
 	"golang.org/x/xerrors"
 )
 
 type StorageProvider struct {
 	isActive   bool
 	targetPool common.Address
-	minerId    uint64
+	ownerId    uint64
 	lastEpoch  int64
 }
 
@@ -40,6 +41,8 @@ type SPRestaking struct {
 }
 
 func (c *LotusClient) Register(ctx context.Context, minerId uint64, allocationLimit *big.Int, dailyAllocation *big.Int, send bool) (*MessageResponse, error) {
+	log.Info("Registering ", minerId, " minerID with ", allocationLimit.String(), " allocation limit and ", dailyAllocation.String(), " daily allocation")
+
 	method := "register"
 	calldata, err := c.calculateCalldata(method, c.Registry.ABI, minerId, allocationLimit, dailyAllocation)
 	if err != nil {
@@ -51,6 +54,7 @@ func (c *LotusClient) Register(ctx context.Context, minerId uint64, allocationLi
 		return res, err
 	}
 
+	log.Info("Succesfully registered ", minerId, " minerId")
 	return res, nil
 }
 
@@ -70,11 +74,20 @@ func (c *LotusClient) GetStorageProvider(ctx context.Context, ownerId uint64) (*
 	sp := &StorageProvider{
 		isActive:   *abi.ConvertType(res[0], new(bool)).(*bool),
 		targetPool: *abi.ConvertType(res[1], new(common.Address)).(*common.Address),
-		minerId:    *abi.ConvertType(res[2], new(uint64)).(*uint64),
+		ownerId:    *abi.ConvertType(res[2], new(uint64)).(*uint64),
 		lastEpoch:  *abi.ConvertType(res[3], new(int64)).(*int64),
 	}
 
 	return sp, nil
+}
+
+func (c *LotusClient) GetMinerOwner(ctx context.Context, minerId uint64) (uint64, error) {
+	sp, err := c.GetStorageProvider(ctx, minerId)
+	if err != nil {
+		return 0, err
+	}
+
+	return sp.ownerId, nil
 }
 
 func (c *LotusClient) IsActiveProvider(ctx context.Context, ownerId uint64) (bool, error) {

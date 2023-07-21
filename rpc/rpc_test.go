@@ -37,7 +37,7 @@ func TestVerifyCid(t *testing.T) {
 	ctx := context.Background()
 	rpcClient := NewRPCClient(config.RPCConfig[config.DefaultNetwork].Address, config.RPCConfig[config.DefaultNetwork].APIToken)
 
-	status, err := rpcClient.VerifyCid(ctx, "bafy2bzacedeih423wkxn225h3r356jlu3qqrpmg43s2bcx6bq7kxhftncaiue")
+	status, err := rpcClient.VerifyCid(ctx, "bafy2bzacec65x4yigxmuih6ncnpxv6wlnumn5p22n3l7qeext5sghuf72gszu")
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -64,7 +64,7 @@ func TestGetNonce(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	assert.Equal(t, nonce, uint64(5))
+	assert.Equal(t, nonce, uint64(0))
 }
 
 func TestLookupId(t *testing.T) {
@@ -144,8 +144,7 @@ func TestStateMinerInfo(t *testing.T) {
 	ctx := context.Background()
 	rpcClient := NewRPCClient(config.RPCConfig[config.DefaultNetwork].Address, config.RPCConfig[config.DefaultNetwork].APIToken)
 
-	fAddr := "t2fp6lovd2v565vli6e2edltx6tgwopqepfd3rarq"
-	// fAddr := "t035955"
+	fAddr := "t2743ki7uyosdcqmzea6qvf5xmqardqpklvzesrbi"
 
 	mAddr, err := address.NewFromString(fAddr)
 	if err != nil {

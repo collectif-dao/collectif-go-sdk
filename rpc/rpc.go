@@ -10,6 +10,7 @@ import (
 	ltypes "github.com/filecoin-project/lotus/chain/types"
 	"github.com/filecoin-project/lotus/chain/types/ethtypes"
 	"github.com/ipfs/go-cid"
+	log "github.com/sirupsen/logrus"
 	"github.com/ybbus/jsonrpc/v3"
 )
 
@@ -56,14 +57,20 @@ func (r *RPCClient) Version(ctx context.Context) (*types.APIVersion, error) {
 
 	response, err := r.Client.Call(ctx, "Filecoin.Version", i)
 	if err != nil {
-		return nil, fmt.Errorf("failed to perform Filecoin.Version call: %w", err)
+		err := fmt.Errorf("failed to perform Filecoin.Version call: %w", err)
+		log.Warn(err)
+
+		return nil, err
 	}
 
 	version := types.APIVersion{}
 
 	err = response.GetObject(&version)
 	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response body: %w", err)
+		err := fmt.Errorf("failed to unmarshal response body: %w", err)
+		log.Warn(err)
+
+		return nil, err
 	}
 
 	return &version, nil
@@ -75,12 +82,18 @@ func (r *RPCClient) GetNonce(ctx context.Context, address address.Address) (uint
 
 	response, err := r.Client.Call(ctx, "Filecoin.MpoolGetNonce", i)
 	if err != nil {
-		return 0, fmt.Errorf("failed to perform Filecoin.MpoolGetNonce call: %w", err)
+		err := fmt.Errorf("failed to perform Filecoin.MpoolGetNonce call: %w", err)
+		log.Warn(err)
+
+		return 0, err
 	}
 
 	value, err := response.GetInt()
 	if err != nil {
-		return 0, fmt.Errorf("failed to unmarshal response body: %w", err)
+		err := fmt.Errorf("failed to unmarshal response body: %w", err)
+		log.Warn(err)
+
+		return 0, err
 	}
 
 	return uint64(value), nil
@@ -92,12 +105,18 @@ func (r *RPCClient) Call(ctx context.Context, msg *ethtypes.EthCall) (string, er
 
 	response, err := r.Client.Call(ctx, "eth_call", i)
 	if err != nil {
-		return "", fmt.Errorf("failed perform eth_call: %w", err)
+		err := fmt.Errorf("failed perform eth_call: %w", err)
+		log.Warn(err)
+
+		return "", err
 	}
 
 	res, err := response.GetString()
 	if err != nil {
-		return "", fmt.Errorf("failed to unmarshal response body: %w", err)
+		err := fmt.Errorf("failed to unmarshal response body: %w", err)
+		log.Warn(err)
+
+		return "", err
 	}
 
 	return res, nil
@@ -108,24 +127,36 @@ func (r *RPCClient) EstimateMessageGas(ctx context.Context, msg *ltypes.Message,
 
 	tsk, err := r.GetTipSetKey(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("failed to perform GetTipSetKey: %w", err)
+		err := fmt.Errorf("failed to perform GetTipSetKey: %w", err)
+		log.Warn(err)
+
+		return nil, err
 	}
 
 	i = append(i, msg, spec, tsk)
 
 	response, err := r.Client.Call(ctx, "Filecoin.GasEstimateMessageGas", i)
 	if err != nil {
-		return nil, fmt.Errorf("failed to perform Filecoin.GasEstimateMessageGas call: %w", err)
+		err := fmt.Errorf("failed to perform Filecoin.GasEstimateMessageGas call: %w", err)
+		log.Warn(err)
+
+		return nil, err
 	}
 
 	if response.Error != nil {
-		return nil, fmt.Errorf("Filecoin.GasEstimateMessageGas call failed with: %s", response.Error.Message)
+		err := fmt.Errorf("Filecoin.GasEstimateMessageGas call failed with: %s", response.Error.Message)
+		log.Warn(err)
+
+		return nil, err
 	}
 
 	rMsg := ltypes.Message{}
 	err = response.GetObject(&rMsg)
 	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response body: %w", err)
+		err := fmt.Errorf("failed to unmarshal response body: %w", err)
+		log.Warn(err)
+
+		return nil, err
 	}
 
 	return &rMsg, nil
@@ -136,19 +167,28 @@ func (r *RPCClient) GasEstimateGasLimit(ctx context.Context, msg *ltypes.Message
 
 	tsk, err := r.GetTipSetKey(ctx)
 	if err != nil {
-		return 0, fmt.Errorf("failed to perform GetTipSetKey: %w", err)
+		err := fmt.Errorf("failed to perform GetTipSetKey: %w", err)
+		log.Warn(err)
+
+		return 0, err
 	}
 
 	i = append(i, msg, tsk)
 
 	response, err := r.Client.Call(ctx, "Filecoin.GasEstimateGasLimit", i)
 	if err != nil {
-		return 0, fmt.Errorf("failed to perform Filecoin.GasEstimateGasLimit call: %w", err)
+		err := fmt.Errorf("failed to perform Filecoin.GasEstimateGasLimit call: %w", err)
+		log.Warn(err)
+
+		return 0, err
 	}
 
 	gasLimit, err := response.GetInt()
 	if err != nil {
-		return 0, fmt.Errorf("failed to unmarshal response body: %w", err)
+		err := fmt.Errorf("failed to unmarshal response body: %w", err)
+		log.Warn(err)
+
+		return 0, err
 	}
 
 	return uint64(gasLimit), nil
@@ -160,13 +200,19 @@ func (r *RPCClient) PushToMpool(ctx context.Context, sMsg *ltypes.SignedMessage)
 
 	response, err := r.Client.Call(ctx, "Filecoin.MpoolPush", i)
 	if err != nil {
-		return cid.Cid{}, fmt.Errorf("failed to perform Filecoin.MpoolPush call: %w", err)
+		err := fmt.Errorf("failed to perform Filecoin.MpoolPush call: %w", err)
+		log.Warn(err)
+
+		return cid.Cid{}, err
 	}
 
 	c := cid.Cid{}
 	err = response.GetObject(&c)
 	if err != nil {
-		return cid.Cid{}, fmt.Errorf("failed to unmarshal response body: %w", err)
+		err := fmt.Errorf("failed to unmarshal response body: %w", err)
+		log.Warn(err)
+
+		return cid.Cid{}, err
 	}
 
 	return c, nil
@@ -178,13 +224,19 @@ func (r *RPCClient) WaitMessage(ctx context.Context, cid *cid.Cid) (api.MsgLooku
 
 	response, err := r.Client.Call(ctx, "Filecoin.StateWaitMsg", i)
 	if err != nil {
-		return api.MsgLookup{}, fmt.Errorf("failed to perform Filecoin.StateWaitMsg call: %w", err)
+		err := fmt.Errorf("failed to perform Filecoin.StateWaitMsg call: %w", err)
+		log.Warn(err)
+
+		return api.MsgLookup{}, err
 	}
 
 	l := api.MsgLookup{}
 	err = response.GetObject(&l)
 	if err != nil {
-		return api.MsgLookup{}, fmt.Errorf("failed to unmarshal response body: %w", err)
+		err := fmt.Errorf("failed to unmarshal response body: %w", err)
+		log.Warn(err)
+
+		return api.MsgLookup{}, err
 	}
 
 	return l, nil
@@ -195,12 +247,18 @@ func (r *RPCClient) VerifyCid(ctx context.Context, cid string) (bool, error) {
 
 	response, err := r.Client.Call(ctx, "Filecoin.ChainHasObj", i)
 	if err != nil {
-		return false, fmt.Errorf("failed to perform Filecoin.ChainHasObj call: %w", err)
+		err := fmt.Errorf("failed to perform Filecoin.ChainHasObj call: %w", err)
+		log.Warn(err)
+
+		return false, err
 	}
 
 	value, err := response.GetBool()
 	if err != nil {
-		return false, fmt.Errorf("failed to unmarshal response body: %w", err)
+		err := fmt.Errorf("failed to unmarshal response body: %w", err)
+		log.Warn(err)
+
+		return false, err
 	}
 
 	return value, nil
@@ -211,14 +269,20 @@ func (r *RPCClient) GetChainHead(ctx context.Context) (*ltypes.TipSet, error) {
 
 	response, err := r.Client.Call(ctx, "Filecoin.ChainHead", i)
 	if err != nil {
-		return nil, fmt.Errorf("failed to perform a ChainHead call: %w", err)
+		err := fmt.Errorf("failed to perform a ChainHead call: %w", err)
+		log.Warn(err)
+
+		return nil, err
 	}
 
 	tipSet := ltypes.TipSet{}
 
 	err = response.GetObject(&tipSet)
 	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response body: %w", err)
+		err := fmt.Errorf("failed to unmarshal response body: %w", err)
+		log.Warn(err)
+
+		return nil, err
 	}
 
 	return &tipSet, nil
@@ -227,7 +291,10 @@ func (r *RPCClient) GetChainHead(ctx context.Context) (*ltypes.TipSet, error) {
 func (r *RPCClient) GetTipSetKey(ctx context.Context) (*ltypes.TipSetKey, error) {
 	tipSet, err := r.GetChainHead(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("failed to perform a ChainHead call: %w", err)
+		err := fmt.Errorf("failed to perform a ChainHead call: %w", err)
+		log.Warn(err)
+
+		return nil, err
 	}
 
 	key := tipSet.Key()
@@ -241,14 +308,20 @@ func (r *RPCClient) LookupId(ctx context.Context, addr address.Address, key *lty
 
 	response, err := r.Client.Call(ctx, "Filecoin.StateLookupID", i)
 	if err != nil {
-		return nil, fmt.Errorf("failed to perform a Filecoin.StateLookupID call: %w", err)
+		err := fmt.Errorf("failed to perform a Filecoin.StateLookupID call: %w", err)
+		log.Warn(err)
+
+		return nil, err
 	}
 
 	fAddr := address.Address{}
 
 	err = response.GetObject(&fAddr)
 	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response body: %w", err)
+		err := fmt.Errorf("failed to unmarshal response body: %w", err)
+		log.Warn(err)
+
+		return nil, err
 	}
 
 	return &fAddr, nil
@@ -260,13 +333,19 @@ func (r *RPCClient) StateMinerInfo(ctx context.Context, minerAddress address.Add
 
 	response, err := r.Client.Call(ctx, "Filecoin.StateMinerInfo", i)
 	if err != nil {
-		return nil, fmt.Errorf("failed to perform a Filecoin.StateMinerInfo call: %w", err)
+		err := fmt.Errorf("failed to perform a Filecoin.StateMinerInfo call: %w", err)
+		log.Warn(err)
+
+		return nil, err
 	}
 
 	info := api.MinerInfo{}
 	err = response.GetObject(&info)
 	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response body: %w", err)
+		err := fmt.Errorf("failed to unmarshal response body: %w", err)
+		log.Warn(err)
+
+		return nil, err
 	}
 
 	return &info, nil

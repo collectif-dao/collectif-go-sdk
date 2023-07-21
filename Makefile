@@ -1,19 +1,27 @@
-all: filecoin-ffi build
+all: filecoin-ffi build-sdk build-client
 
-BINARY_NAME=collectif-go-sdk
- 
-build: 
-	go build -o ${BINARY_NAME} -v cmd/sdk.go
- 
-run:
-	go build -o ${BINARY_NAME} cmd/sdk.go
-	./${BINARY_NAME}
+SDK_NAME=collectif-go-sdk
+CLIENT_NAME=collectif-client
+
+build-sdk:
+	go build -o $(SDK_NAME) -v ./cmd/sdk/
+
+build-client:
+	go build -o $(CLIENT_NAME) -v ./cmd/client/
+
+run-sdk:
+	go build -o $(SDK_NAME) -v ./cmd/sdk/
+	./${SDK_NAME}
+
+run-client:
+	go build -o $(CLIENT_NAME) -v ./cmd/client/
+	./${CLIENT_NAME}
  
 clean:
 	go clean
 	$(MAKE) -C $(FFI_PATH) clean
-	rm ${BINARY_NAME}
-	
+	rm -f $(SDK_NAME)
+	rm -f $(CLIENT_NAME)
 
 ## FFI
 

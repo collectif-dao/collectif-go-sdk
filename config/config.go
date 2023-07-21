@@ -14,6 +14,9 @@ type Config struct {
 	FSKeyStoreDir  string                       `mapstructure:"dir"`
 	DefaultNetwork string                       `mapstructure:"default_network"`
 	Addresses      map[string]ContractAddresses `mapstructure:"contracts"`
+	Miners         map[string][]string          `mapstructure:"miners"`
+	PledgeTimeout  int64                        `mapstructure:"pledge_timeout"`
+	LogLevel       string                       `mapstructure:"log_level"`
 }
 
 type RPCConfig struct {

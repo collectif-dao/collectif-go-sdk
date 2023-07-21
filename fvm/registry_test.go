@@ -20,9 +20,18 @@ func getAttoFilFromFIL(amount int) *big.Int {
 	return big.NewInt(1).Mul(v, fil)
 }
 
+func getMinerId(t *testing.T, ctx context.Context, client *LotusClient) uint64 {
+	miner := "t2743ki7uyosdcqmzea6qvf5xmqardqpklvzesrbi"
+	return getIdAddress(t, ctx, client, miner)
+}
+
 func getOwnerId(t *testing.T, ctx context.Context, client *LotusClient) uint64 {
-	ownerAddress := "t3r3nqkq7ybn2ozj4lvvpdwayyy3b5v6l7gnrgg7yd5d42ti65qfaamvdphnqscek3ruoo7rnulixbsyh52tla"
-	fAddr, err := address.NewFromString(ownerAddress)
+	ownerAddress := "t3rdf43pyvfxexfnb5h4mysy2txftx5qhwlpwyufmzegoquy6yo472cjblsvfirbsmvyxsd626lmnymd7fjhma"
+	return getIdAddress(t, ctx, client, ownerAddress)
+}
+
+func getIdAddress(t *testing.T, ctx context.Context, client *LotusClient, addr string) uint64 {
+	fAddr, err := address.NewFromString(addr)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -66,7 +75,7 @@ func TestGetStorageProvider(t *testing.T) {
 
 	assert.Equal(t, sp.isActive, false)
 	assert.Equal(t, sp.lastEpoch, int64(0))
-	assert.Equal(t, sp.minerId, uint64(0))
+	assert.Equal(t, sp.ownerId, uint64(0))
 	assert.Equal(t, sp.targetPool, common.HexToAddress("0x"))
 }
 
@@ -83,8 +92,8 @@ func TestGetAllocations(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	ownerId := getOwnerId(t, ctx, client)
-	allocation, err := client.GetAllocations(ctx, ownerId)
+	minerId := getMinerId(t, ctx, client)
+	allocation, err := client.GetAllocations(ctx, minerId)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -110,8 +119,8 @@ func TestGetRestakings(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	ownerId := getOwnerId(t, ctx, client)
-	restaking, err := client.GetRestaking(ctx, ownerId)
+	minerId := getMinerId(t, ctx, client)
+	restaking, err := client.GetRestaking(ctx, minerId)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -133,8 +142,8 @@ func TestGetBeneficiaryStatus(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	ownerId := getOwnerId(t, ctx, client)
-	status, err := client.GetBeneficiaryStatus(ctx, ownerId)
+	minerId := getMinerId(t, ctx, client)
+	status, err := client.GetBeneficiaryStatus(ctx, minerId)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -155,8 +164,8 @@ func TestGetSectorSize(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	ownerId := getOwnerId(t, ctx, client)
-	size, err := client.GetSectorSize(ctx, ownerId)
+	minerId := getMinerId(t, ctx, client)
+	size, err := client.GetSectorSize(ctx, minerId)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -177,8 +186,8 @@ func TestIsActiveSP(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	ownerId := getOwnerId(t, ctx, client)
-	status, err := client.IsActiveProvider(ctx, ownerId)
+	minerId := getMinerId(t, ctx, client)
+	status, err := client.IsActiveProvider(ctx, minerId)
 	if err != nil {
 		assert.Error(t, err)
 	}
@@ -271,8 +280,8 @@ func TestChangeBeneficiary(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewLotusClient(ctx, config, keystore.FSKeyStore)
 
-	mA := "t2fp6lovd2v565vli6e2edltx6tgwopqepfd3rarq"
-	bA := "t3q5szei4jstv3aqnqkimkehpbhiwj2urjt4pgiih2s5ky6cuynjedhfufvdvjybw3rnurfhwfwpcbnqa6q2tq"
+	mA := "t2k26l3hql5ne4ymmbbxru5lasub3a2steu2xoxaq"
+	bA := "t410fmiuoet6qvv3jowc33r7bvlvcpgiu25kjec5t2qa"
 	quota := getAttoFilFromFIL(1000)
 	expiration := int64(384804)
 

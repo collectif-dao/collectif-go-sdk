@@ -1,13 +1,12 @@
-# rpc_addr_2: "https://filecoin-hyperspace.chainstacklabs.com/rpc/v1"
-# rpc_addr: "https://api.hyperspace.node.glif.io/rpc/v1"
 dir: "./keystore/data"
-default_network: "hyperspace"
+default_network: "calibration"
+log_level: "debug"
 
 rpc:
-  hyperspace:
-    address: "https://api.hyperspace.node.glif.io/rpc/v1"
+  mainnet:
+    address: "https://rpc.ankr.com/filecoin"
     api_token: ""
-    chain_id: 3141
+    chain_id: 314
   calibration:
     address: "https://api.calibration.node.glif.io/rpc/v1"
     api_token: ""
@@ -18,12 +17,17 @@ rpc:
     chain_id: 31415926
 
 contracts:
-  hyperspace:
-    liquid_staking: "0x33494d4f5976cf95c993DA8e485129702b4086Cb"
-    registry: "0xe3C24e146b747Fb4B6763c13b386033D83D8e32E"
-    collateral: "0x9396B7D3f0405994C098db756D5B5E65483f40f5"
-
   calibration:
-    liquid_staking: "0x000000000000000000000000000000000000dEaD"
-    registry: "0x000000000000000000000000000000000000dEaD"
-    collateral: "0x000000000000000000000000000000000000dEaD"
+    liquid_staking: "0x19AAB7dD96E9EedF9E232fE56d1736f53205834a"
+    registry: "0xCc6C40Da237F2311e6D8e8e7832b1f76aA6115E4"
+    collateral: "0x98A79c415aF7b4c0c2C8fB440796D02652AbDF87"
+  mainnet:
+    liquid_staking: "0xd0437765D1Dc0e2fA14E97d290F135eFdf1a8a9A"
+    registry: "0x34150FdEd1e598866E5111718e4F5D5af2517f98"
+    collateral: "0x3D52874772C66466c93E36cc3782946fd0FA7666"
+
+miners:
+  mainnet: ["f063869", "f063868"]
+  calibration: []
+
+pledge_timeout: 24
