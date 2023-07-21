@@ -99,7 +99,7 @@ func TestTryPledge(t *testing.T) {
 	miners[0].TotalAllocation = big.NewInt(2)
 
 	msg, err = worker.tryPledge(ctx, &miners[0])
-	if err != nil {
+	if err != nil || msg == nil {
 		assert.Error(t, err)
 	}
 
@@ -142,7 +142,7 @@ func TestIncreaseCollateral(t *testing.T) {
 	miners[0].LockedCollateral = lc
 
 	msg, err = worker.increaseCollateral(ctx, &miners[0], amt)
-	if err != nil {
+	if err != nil || msg == nil {
 		assert.Error(t, err)
 	}
 
