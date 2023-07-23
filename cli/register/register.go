@@ -13,13 +13,13 @@ import (
 )
 
 var (
-	minerId    uint64
+	minerAddr  string
 	totalLimit int64
 	dailyLimit int64
 	run        bool
 )
 
-func registerStorageProvider(minerId uint64, totalLimit int64, dailyLimit int64, run bool) (*fvm.MessageResponse, error) {
+func registerStorageProvider(minerAddr string, totalLimit int64, dailyLimit int64, run bool) (*fvm.MessageResponse, error) {
 	if totalLimit == 0 || dailyLimit == 0 {
 		return nil, xerrors.Errorf("Incorrect params for Register transaction")
 	}
@@ -33,6 +33,7 @@ func registerStorageProvider(minerId uint64, totalLimit int64, dailyLimit int64,
 		return nil, err
 	}
 
+	minerId := utils.GetIdAddress(ctx, minerAddr, sdk.Client)
 	msg, err := sdk.Client.Register(ctx, minerId, allocationLimit, dailyAllocation, run)
 	if err != nil {
 		return msg, err
@@ -47,7 +48,7 @@ var RegisterCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		if msg, err := registerStorageProvider(minerId, totalLimit, dailyLimit, run); err != nil {
+		if msg, err := registerStorageProvider(minerAddr, totalLimit, dailyLimit, run); err != nil {
 			fmt.Println(err)
 
 			fmt.Println("Message calldata: ", msg.Data)
@@ -64,7 +65,7 @@ var RegisterCmd = &cobra.Command{
 }
 
 func init() {
-	RegisterCmd.Flags().Uint64VarP(&minerId, "minerId", "m", 0, "Storage Provider miner id (not filecoin address)")
+	RegisterCmd.Flags().StringVarP(&minerAddr, "minerAddr", "m", "", "Storage Provider miner id (not filecoin address)")
 	RegisterCmd.Flags().Int64VarP(&totalLimit, "allocation-limit", "l", 0, "Total FIL allocation for pledge")
 	RegisterCmd.Flags().Int64VarP(&dailyLimit, "daily-allocation", "d", 0, "Daily FIL allocation for pledge")
 	RegisterCmd.Flags().BoolVarP(&run, "execute", "e", true, "Execute transaction")

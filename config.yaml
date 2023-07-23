@@ -1,4 +1,4 @@
-dir: "./keystore/data"
+dir: "./keystore/data" ## location of the keystore with wallet's private key
 default_network: "calibration"
 log_level: "debug"
 
@@ -30,4 +30,4 @@ miners:
   mainnet: ["f063869", "f063868"]
   calibration: []
 
-pledge_timeout: 24
+pledge_timeout: 24 ## number of hours between an auto-pledge operation
