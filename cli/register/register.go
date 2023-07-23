@@ -34,7 +34,7 @@ func registerStorageProvider(minerAddr string, totalLimit int64, dailyLimit int6
 	}
 
 	minerId := utils.GetIdAddress(ctx, minerAddr, sdk.Client)
-	msg, err := sdk.Client.Register(ctx, minerId, allocationLimit, dailyAllocation, false)
+	msg, err := sdk.Client.Register(ctx, minerId, allocationLimit, dailyAllocation, run)
 	if err != nil {
 		return msg, err
 	}
