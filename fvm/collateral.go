@@ -16,7 +16,7 @@ type CollateralInfo struct {
 }
 
 func (c *LotusClient) Deposit(ctx context.Context, amount *big.Int, send bool) (*MessageResponse, error) {
-	log.Info("Depositing collateral for ", amount.String(), " amount")
+	log.Info("Depositing collateral for ", amount.String(), " attoFIL")
 
 	method := "deposit"
 	calldata, err := c.calculateCalldata(method, c.Collateral.ABI)
@@ -29,12 +29,12 @@ func (c *LotusClient) Deposit(ctx context.Context, amount *big.Int, send bool) (
 		return res, err
 	}
 
-	log.Info("Succesfully deposited collateral for ", amount.String(), " amount")
+	log.Info("Succesfully deposited collateral for ", amount.String(), " attoFIL")
 	return res, nil
 }
 
 func (c *LotusClient) Withdraw(ctx context.Context, amount *big.Int, send bool) (*MessageResponse, error) {
-	log.Info("Withdrawing collateral for ", amount.String(), " amount")
+	log.Info("Withdrawing collateral for ", amount.String(), " attoFIL")
 	method := "withdraw"
 	calldata, err := c.calculateCalldata(method, c.Collateral.ABI, amount)
 	if err != nil {
@@ -46,7 +46,7 @@ func (c *LotusClient) Withdraw(ctx context.Context, amount *big.Int, send bool) 
 		return res, err
 	}
 
-	log.Info("Succesfully withdrawn collateral for ", amount.String(), " amount")
+	log.Info("Succesfully withdrawn collateral for ", amount.String(), " attoFIL")
 	return res, nil
 }
 

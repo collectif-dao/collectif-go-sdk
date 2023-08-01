@@ -151,7 +151,7 @@ func TestPledge(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	res, err := client.Pledge(ctx, amount, false)
+	res, err := client.Pledge(ctx, amount, minerId, false)
 	if err != nil {
 		assert.Error(t, err)
 	}

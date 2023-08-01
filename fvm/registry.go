@@ -251,7 +251,7 @@ func (c *LotusClient) ChangeBeneficiaryAddress(ctx context.Context, minerAddr *a
 	}
 
 	msg := &types.Message{
-		From:   mi.Owner,
+		From:   *c.Address,
 		To:     *minerAddr,
 		Method: builtin.MethodsMiner.ChangeBeneficiary,
 		Value:  fBig.Zero(),

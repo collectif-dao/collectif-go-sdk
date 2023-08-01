@@ -5,6 +5,7 @@ import (
 	"collective-go-sdk/keystore"
 	"collective-go-sdk/sdk"
 	"context"
+	"encoding/hex"
 	"fmt"
 	"math/big"
 
@@ -68,7 +69,7 @@ var SetRestakingCmd = &cobra.Command{
 				fmt.Println("Gas spent: ", msg.Receipt.GasUsed)
 			}
 
-			fmt.Println("Message calldata: ", msg.Data)
+			fmt.Println("Message calldata: ", hex.EncodeToString(msg.Data))
 		}
 	},
 }

@@ -15,6 +15,7 @@ import (
 	lTypes "github.com/filecoin-project/lotus/chain/types"
 	"github.com/filecoin-project/lotus/chain/types/ethtypes"
 	"github.com/ipfs/go-cid"
+	log "github.com/sirupsen/logrus"
 	cbg "github.com/whyrusleeping/cbor-gen"
 )
 
@@ -62,6 +63,7 @@ func (c *LotusClient) performLotusMessage(ctx context.Context, target *address.A
 	if err != nil {
 		return &res, fmt.Errorf("failed to get the next nonce: %w", err)
 	}
+	log.Debug("Next message nonce ", nonce)
 
 	v, err := fBig.FromString(value.String())
 	if err != nil {
@@ -76,6 +78,7 @@ func (c *LotusClient) performLotusMessage(ctx context.Context, target *address.A
 		Method: builtin.MethodsEVM.InvokeContract,
 		Params: calldata,
 	}
+	log.Debug("Native message ", msg)
 
 	res, err = c.executeNativeMessage(ctx, msg, res, send)
 	if err != nil {
@@ -90,22 +93,26 @@ func (c *LotusClient) executeNativeMessage(ctx context.Context, msg *lTypes.Mess
 	if err != nil {
 		return res, err
 	}
+	log.Debug("Native message after gas estimation", fullMsg)
 
 	signedMessage, err := c.MessageSigner.SignMessage(ctx, fullMsg, &api.MessageSendSpec{})
 	if err != nil {
 		return res, err
 	}
+	log.Debug("Signed message", signedMessage)
 
 	if send {
 		cid, err := c.RPCClient.PushToMpool(ctx, signedMessage)
 		if err != nil {
 			return res, err
 		}
+		log.Debug("Message CID", cid)
 
 		l, err := c.RPCClient.WaitMessage(ctx, &cid)
 		if err != nil {
 			return res, err
 		}
+		log.Debug("Message lookup", l)
 
 		res.Message = l.Message
 		res.Receipt = l.Receipt
