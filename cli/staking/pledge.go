@@ -60,7 +60,7 @@ var pledgeCmd = &cobra.Command{
 }
 
 func init() {
-	pledgeCmd.Flags().StringVarP(&minerAddr, "minerAddr", "m", "", "Storage Provider miner id")
+	pledgeCmd.Flags().StringVarP(&minerAddr, "minerAddr", "m", "", "Storage Provider miner address (or actor ID)")
 	pledgeCmd.Flags().Int64VarP(&amount, "amount", "a", 0, "Amount of FIL to pledge (not attoFIL)")
 	pledgeCmd.Flags().BoolVarP(&run, "execute", "e", true, "Execute transaction")
 

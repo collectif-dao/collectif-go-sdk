@@ -66,7 +66,7 @@ var RegisterCmd = &cobra.Command{
 }
 
 func init() {
-	RegisterCmd.Flags().StringVarP(&minerAddr, "minerAddr", "m", "", "Storage Provider miner id (not filecoin address)")
+	RegisterCmd.Flags().StringVarP(&minerAddr, "minerAddr", "m", "", "Storage Provider miner address (or actor ID)")
 	RegisterCmd.Flags().Int64VarP(&totalLimit, "allocation-limit", "l", 0, "Total FIL allocation for pledge")
 	RegisterCmd.Flags().Int64VarP(&dailyLimit, "daily-allocation", "d", 0, "Daily FIL allocation for pledge")
 	RegisterCmd.Flags().BoolVarP(&run, "execute", "e", true, "Execute transaction")
