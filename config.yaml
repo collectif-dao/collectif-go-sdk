@@ -31,7 +31,7 @@ contracts:
     collateral: ""
 
 miners:
-  mainnet: ["f063869", "f063868"]
+  mainnet: [] ## example: ["f063869", "f063868"]
   calibration: []
   localnet: []
 
