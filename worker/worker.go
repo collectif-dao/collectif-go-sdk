@@ -180,7 +180,7 @@ func PrepareMiners(ctx context.Context, minerList []string, client *fvm.LotusCli
 			Address:                mAddr,
 			MinerId:                idAddr,
 			OwnerId:                ownerId,
-			DailyAllocation:        utils.GetAttoFilFromFIL(5), // allocations.DailyAllocation,
+			DailyAllocation:        allocations.DailyAllocation,
 			Allocated:              allocations.UsedAllocation,
 			TotalAllocation:        allocations.AllocationLimit,
 			RepaidPledge:           allocations.RepaidPledge,
