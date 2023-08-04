@@ -12,21 +12,21 @@ import (
 )
 
 var (
-	ownerId string
+	minerId string
 )
 
-func getAllocationInfo(ownerId string) (*fvm.SPAllocation, error) {
+func getAllocationInfo(minerId string) (*fvm.SPAllocation, error) {
 	ctx := context.Background()
 	sdk, err := sdk.NewCollectifSDK(ctx, keystore.FSKeyStore, "./")
 	if err != nil {
 		return nil, err
 	}
 
-	if ownerId == "" {
-		ownerId = sdk.Client.Address.String()
+	if minerId == "" {
+		minerId = sdk.Client.Address.String()
 	}
 
-	idAddr := fUtils.GetIdAddress(ctx, ownerId, sdk.Client)
+	idAddr := fUtils.GetIdAddress(ctx, minerId, sdk.Client)
 
 	allocation, err := sdk.Client.GetAllocations(ctx, idAddr)
 	if err != nil {
@@ -42,7 +42,7 @@ var getAllocation = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		if allocation, err := getAllocationInfo(ownerId); err != nil {
+		if allocation, err := getAllocationInfo(minerId); err != nil {
 			fmt.Println(err)
 		} else {
 			fmt.Println("Allocation limit: ", allocation.AllocationLimit.String())
@@ -56,6 +56,6 @@ var getAllocation = &cobra.Command{
 }
 
 func init() {
-	getAllocation.Flags().StringVarP(&ownerId, "ownerId", "o", "", "Storage Provider ownerID (filecoin)")
+	getAllocation.Flags().StringVarP(&minerId, "minerId", "o", "", "Storage Provider's miner address (or miner actor ID)")
 	AllocationCmd.AddCommand(getAllocation)
 }

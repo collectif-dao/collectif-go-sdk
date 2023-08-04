@@ -116,6 +116,8 @@ func NewLotusClient(ctx context.Context, cfg *config.Config, cache keystore.Cach
 		c.Address = &addr
 	}
 
+	log.Debug("Using address ", addr.String())
+
 	registry, err := initRegistry(cfg.Addresses[DefaultNetwork].StorageProviderRegistry, client)
 	if err != nil {
 		log.Error(err)
@@ -165,11 +167,9 @@ func initRegistry(addr string, client *ethclient.Client) (*Registry, error) {
 		return nil, err
 	}
 
-	log.WithFields(log.Fields{
-		"contract":       "Storage Provider Registry",
-		"address":        ethAddr,
-		"native-address": fAddr,
-	}).Debug("Initialized")
+	log.Debug("Initializing Storage Provider Registry contract :")
+	log.Debug("Ethereum address : ", ethAddr.String())
+	log.Debug("Native Filecoin address : ", fAddr.String())
 
 	return &Registry{
 		Contract:      c,
@@ -204,11 +204,9 @@ func initCollateral(addr string, client *ethclient.Client) (*Collateral, error) 
 		return nil, err
 	}
 
-	log.WithFields(log.Fields{
-		"contract":       "Storage Provider Collateral",
-		"address":        ethAddr,
-		"native-address": fAddr,
-	}).Debug("Initialized")
+	log.Debug("Initializing Storage Provider Collateral contract :")
+	log.Debug("Ethereum address : ", ethAddr.String())
+	log.Debug("Native Filecoin address : ", fAddr.String())
 
 	return &Collateral{
 		Contract:      c,
@@ -243,11 +241,9 @@ func initStaking(addr string, client *ethclient.Client) (*Staking, error) {
 		return nil, err
 	}
 
-	log.WithFields(log.Fields{
-		"contract":       "Liquid Staking",
-		"address":        ethAddr,
-		"native-address": fAddr,
-	}).Debug("Initialized")
+	log.Debug("Initializing Liquid Staking contract :")
+	log.Debug("Ethereum address : ", ethAddr.String())
+	log.Debug("Native Filecoin address : ", fAddr.String())
 
 	return &Staking{
 		Contract:      sc,

@@ -7,6 +7,8 @@ import (
 	"context"
 )
 
+var minerId = uint64(1000)
+
 func main() {
 	ctx := context.Background()
 
@@ -20,5 +22,5 @@ func main() {
 
 	pledgeAmount := utils.GetAttoFilFromFIL(1000)
 
-	sdk.Client.Pledge(ctx, pledgeAmount, true)
+	sdk.Client.Pledge(ctx, pledgeAmount, minerId, true)
 }

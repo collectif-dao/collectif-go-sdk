@@ -205,6 +205,9 @@ func (r *RPCClient) PushToMpool(ctx context.Context, sMsg *ltypes.SignedMessage)
 
 		return cid.Cid{}, err
 	}
+	if response.Error != nil {
+		log.Error("PushToMpool call error is ", response.Error)
+	}
 
 	c := cid.Cid{}
 	err = response.GetObject(&c)

@@ -146,12 +146,12 @@ func TestPledge(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewLotusClient(ctx, config, keystore.FSKeyStore)
 
-	callData, err := client.calculateCalldata("pledge", client.Staking.ABI, amount)
+	callData, err := client.calculateCalldata("pledge", client.Staking.ABI, amount, minerId)
 	if err != nil {
 		assert.Error(t, err)
 	}
 
-	res, err := client.Pledge(ctx, amount, false)
+	res, err := client.Pledge(ctx, amount, minerId, false)
 	if err != nil {
 		assert.Error(t, err)
 	}

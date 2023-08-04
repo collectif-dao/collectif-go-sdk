@@ -52,6 +52,6 @@ var getCollateralCmd = &cobra.Command{
 }
 
 func init() {
-	getCollateralCmd.Flags().StringVarP(&address, "address", "a", "", "Storage Provider address (filecoin)")
+	getCollateralCmd.Flags().StringVarP(&address, "address", "a", "", "Storage Provider Owner ID address (filecoin)")
 	CollateralCmd.AddCommand(getCollateralCmd)
 }

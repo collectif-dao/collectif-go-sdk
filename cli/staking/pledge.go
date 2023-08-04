@@ -6,17 +6,19 @@ import (
 	"collective-go-sdk/sdk"
 	"collective-go-sdk/utils"
 	"context"
+	"encoding/hex"
 	"fmt"
 
 	"github.com/spf13/cobra"
 )
 
 var (
-	amount int64
-	run    bool
+	amount    int64
+	run       bool
+	minerAddr string
 )
 
-func pledge(amount int64, run bool) (*fvm.MessageResponse, error) {
+func pledge(amount int64, minerAddr string, run bool) (*fvm.MessageResponse, error) {
 	ctx := context.Background()
 	sdk, err := sdk.NewCollectifSDK(ctx, keystore.FSKeyStore, "./")
 	if err != nil {
@@ -24,7 +26,10 @@ func pledge(amount int64, run bool) (*fvm.MessageResponse, error) {
 	}
 
 	value := utils.GetAttoFilFromFIL(amount)
-	msg, err := sdk.Client.Pledge(ctx, value, run)
+
+	minerId := utils.GetIdAddress(ctx, minerAddr, sdk.Client)
+
+	msg, err := sdk.Client.Pledge(ctx, value, minerId, run)
 	if err != nil {
 		return msg, err
 	}
@@ -38,7 +43,7 @@ var pledgeCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		if msg, err := pledge(amount, run); err != nil {
+		if msg, err := pledge(amount, minerAddr, run); err != nil {
 			fmt.Println(err)
 
 			fmt.Println("Message calldata: ", msg.Data)
@@ -49,16 +54,21 @@ var pledgeCmd = &cobra.Command{
 				fmt.Println("Gas spent: ", msg.Receipt.GasUsed)
 			}
 
-			fmt.Println("Message calldata: ", msg.Data)
+			fmt.Println("Message calldata: ", hex.EncodeToString(msg.Data))
 		}
 	},
 }
 
 func init() {
+	pledgeCmd.Flags().StringVarP(&minerAddr, "minerAddr", "m", "", "Storage Provider miner address (or actor ID)")
 	pledgeCmd.Flags().Int64VarP(&amount, "amount", "a", 0, "Amount of FIL to pledge (not attoFIL)")
 	pledgeCmd.Flags().BoolVarP(&run, "execute", "e", true, "Execute transaction")
 
 	if err := pledgeCmd.MarkFlagRequired("amount"); err != nil {
+		fmt.Println(err)
+	}
+
+	if err := pledgeCmd.MarkFlagRequired("minerAddr"); err != nil {
 		fmt.Println(err)
 	}
 

@@ -6,6 +6,7 @@ import (
 	"collective-go-sdk/sdk"
 	"collective-go-sdk/utils"
 	"context"
+	"encoding/hex"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -44,7 +45,7 @@ var withdrawCmd = &cobra.Command{
 				fmt.Println("Gas spent: ", msg.Receipt.GasUsed)
 			}
 
-			fmt.Println("Message calldata: ", msg.Data)
+			fmt.Println("Message calldata: ", hex.EncodeToString(msg.Data))
 		}
 	},
 }

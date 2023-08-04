@@ -25,9 +25,14 @@ contracts:
     liquid_staking: "0xd0437765D1Dc0e2fA14E97d290F135eFdf1a8a9A"
     registry: "0x34150FdEd1e598866E5111718e4F5D5af2517f98"
     collateral: "0x3D52874772C66466c93E36cc3782946fd0FA7666"
+  localnet:
+    liquid_staking: ""
+    registry: ""
+    collateral: ""
 
 miners:
-  mainnet: ["f063869", "f063868"]
+  mainnet: [] ## example: ["f063869", "f063868"]
   calibration: []
+  localnet: []
 
 pledge_timeout: 24 ## number of hours between an auto-pledge operation

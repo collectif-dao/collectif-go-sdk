@@ -6,6 +6,7 @@ import (
 	"collective-go-sdk/sdk"
 	"collective-go-sdk/utils"
 	"context"
+	"encoding/hex"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -59,13 +60,13 @@ var RegisterCmd = &cobra.Command{
 				fmt.Println("Gas spent: ", msg.Receipt.GasUsed)
 			}
 
-			fmt.Println("Message calldata: ", msg.Data)
+			fmt.Println("Message calldata: ", hex.EncodeToString(msg.Data))
 		}
 	},
 }
 
 func init() {
-	RegisterCmd.Flags().StringVarP(&minerAddr, "minerAddr", "m", "", "Storage Provider miner id (not filecoin address)")
+	RegisterCmd.Flags().StringVarP(&minerAddr, "minerAddr", "m", "", "Storage Provider miner address (or actor ID)")
 	RegisterCmd.Flags().Int64VarP(&totalLimit, "allocation-limit", "l", 0, "Total FIL allocation for pledge")
 	RegisterCmd.Flags().Int64VarP(&dailyLimit, "daily-allocation", "d", 0, "Daily FIL allocation for pledge")
 	RegisterCmd.Flags().BoolVarP(&run, "execute", "e", true, "Execute transaction")

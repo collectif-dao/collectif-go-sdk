@@ -14,6 +14,7 @@ import (
 
 type Miner struct {
 	Address                *address.Address
+	MinerId                uint64
 	OwnerId                uint64
 	DailyAllocation        *big.Int
 	TotalAllocation        *big.Int
@@ -96,7 +97,7 @@ func (w *Worker) tryPledge(ctx context.Context, m *Miner) (*fvm.MessageResponse,
 		return nil, err
 	}
 
-	msg, err = w.Client.Pledge(ctx, m.DailyAllocation, w.ExecuteTransactions)
+	msg, err = w.Client.Pledge(ctx, m.DailyAllocation, m.MinerId, w.ExecuteTransactions)
 	if err != nil {
 		log.Warn(err)
 		return nil, err
@@ -177,6 +178,7 @@ func PrepareMiners(ctx context.Context, minerList []string, client *fvm.LotusCli
 
 		miner := Miner{
 			Address:                mAddr,
+			MinerId:                idAddr,
 			OwnerId:                ownerId,
 			DailyAllocation:        allocations.DailyAllocation,
 			Allocated:              allocations.UsedAllocation,

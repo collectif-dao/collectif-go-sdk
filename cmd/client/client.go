@@ -45,7 +45,7 @@ func main() {
 		panic(err)
 	}
 
-	worker := worker.NewWorker(time.Duration(config.PledgeTimeout)*time.Hour, client, miners, false)
+	worker := worker.NewWorker(time.Duration(config.PledgeTimeout)*time.Hour, client, miners, true)
 
 	worker.Start(ctx)
 }
