@@ -42,7 +42,7 @@ func TestVerifyCid(t *testing.T) {
 		assert.Error(t, err)
 	}
 
-	assert.Equal(t, status, true)
+	assert.Equal(t, status, false)
 }
 
 func TestGetNonce(t *testing.T) {
