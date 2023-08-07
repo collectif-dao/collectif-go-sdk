@@ -27,7 +27,7 @@ func getDefaultWallet() (string, error) {
 var getDefaultCmd = &cobra.Command{
 	Use:   "get-default",
 	Short: "Get default wallet used by SDK",
-	Long:  ``,
+	Long:  `Returns a default wallet that this SDK is using on each transaction`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		if resp, err := getDefaultWallet(); err != nil {

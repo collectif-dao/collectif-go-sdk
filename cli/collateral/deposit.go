@@ -36,7 +36,7 @@ func depositCollateral(amount int64, run bool) (*fvm.MessageResponse, error) {
 var depositCmd = &cobra.Command{
 	Use:   "deposit",
 	Short: "Deposit collateral into StorageProviderCollateral contract",
-	Long:  ``,
+	Long:  `To deposit FIL into the collateral system provide an amount of FIL with -a (or --amount) flag`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		if msg, err := depositCollateral(amount, run); err != nil {

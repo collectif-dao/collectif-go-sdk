@@ -35,8 +35,8 @@ func newWallet(key string) (string, error) {
 
 var newWalletCmd = &cobra.Command{
 	Use:   "new-wallet",
-	Short: "Create new wallet for Collectif SDK",
-	Long:  ``,
+	Short: "Create new wallet for Collectif SDK.",
+	Long:  `Create new wallet for Collectif SDK. Make sure to transfer ownership of your miner actor if you want to use this wallet further. If you already have a wallet that is an owner of your miner actors, it's better to import instead of creating new one.`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		if resp, err := newWallet(key); err != nil {

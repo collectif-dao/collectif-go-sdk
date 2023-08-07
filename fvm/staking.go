@@ -8,7 +8,7 @@ import (
 )
 
 func (c *LotusClient) Pledge(ctx context.Context, amount *big.Int, minerId uint64, send bool) (*MessageResponse, error) {
-	log.Info("Pledging ", amount.String(), " amount of attoFIL")
+	log.Info("Pledging ", AttoFIL2FIL_str(amount), " amount of FIL")
 	method := "pledge"
 	calldata, err := c.calculateCalldata(method, c.Staking.ABI, amount, minerId)
 	if err != nil {
@@ -20,12 +20,12 @@ func (c *LotusClient) Pledge(ctx context.Context, amount *big.Int, minerId uint6
 		return res, err
 	}
 
-	log.Info("Succesfully pledged ", amount.String(), " amount of attoFIL")
+	log.Info("Succesfully pledged ", AttoFIL2FIL_str(amount), " amount of FIL")
 	return res, nil
 }
 
 func (c *LotusClient) Stake(ctx context.Context, amount *big.Int, send bool) (*MessageResponse, error) {
-	log.Info("Staking ", amount.String(), " amount of attoFIL")
+	log.Info("Staking ", AttoFIL2FIL_str(amount), " amount of FIL")
 	method := "stake"
 	calldata, err := c.calculateCalldata(method, c.Staking.ABI)
 	if err != nil {
@@ -37,7 +37,7 @@ func (c *LotusClient) Stake(ctx context.Context, amount *big.Int, send bool) (*M
 		return res, err
 	}
 
-	log.Info("Succesfully staked ", amount.String(), " amount of attoFIL")
+	log.Info("Succesfully staked ", AttoFIL2FIL_str(amount), " amount of FIL")
 	return res, nil
 }
 

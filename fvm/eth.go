@@ -145,3 +145,11 @@ func (c *LotusClient) calculateEthCalldata(method string, abi *abi.ABI, args ...
 
 	return callData, nil
 }
+
+func AttoFIL2FIL_str(amount *big.Int) string {
+	compact_amount := big.NewInt(0)
+	reminder := big.NewInt(0)
+	divisor := big.NewInt(1e18)
+	compact_amount.QuoRem(amount, divisor, reminder)
+	return fmt.Sprintf("%v.%018s", compact_amount.String(), reminder.String())
+}

@@ -11,22 +11,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	minerId string
-)
-
-func getAllocationInfo(minerId string) (*fvm.SPAllocation, error) {
+func getAllocationInfo(minerAddr string) (*fvm.SPAllocation, error) {
 	ctx := context.Background()
 	sdk, err := sdk.NewCollectifSDK(ctx, keystore.FSKeyStore, "./")
 	if err != nil {
 		return nil, err
 	}
 
-	if minerId == "" {
-		minerId = sdk.Client.Address.String()
-	}
-
-	idAddr := fUtils.GetIdAddress(ctx, minerId, sdk.Client)
+	idAddr := fUtils.GetIdAddress(ctx, minerAddr, sdk.Client)
 
 	allocation, err := sdk.Client.GetAllocations(ctx, idAddr)
 	if err != nil {
@@ -42,20 +34,24 @@ var getAllocation = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		if allocation, err := getAllocationInfo(minerId); err != nil {
+		if allocation, err := getAllocationInfo(minerAddr); err != nil {
 			fmt.Println(err)
 		} else {
-			fmt.Println("Allocation limit: ", allocation.AllocationLimit.String())
-			fmt.Println("Repayment: ", allocation.Repayment.String())
-			fmt.Println("Used allocation: ", allocation.UsedAllocation.String())
-			fmt.Println("Daily allocation: ", allocation.DailyAllocation.String())
-			fmt.Println("Accrued rewards: ", allocation.AccruedRewards.String())
-			fmt.Println("Repaid pledge: ", allocation.RepaidPledge.String())
+			fmt.Println("Allocation limit: ", fvm.AttoFIL2FIL_str(allocation.AllocationLimit), " FIL")
+			fmt.Println("Repayment: ", fvm.AttoFIL2FIL_str(allocation.Repayment), " FIL")
+			fmt.Println("Used allocation: ", fvm.AttoFIL2FIL_str(allocation.UsedAllocation), " FIL")
+			fmt.Println("Daily allocation: ", fvm.AttoFIL2FIL_str(allocation.DailyAllocation), " FIL")
+			fmt.Println("Accrued rewards: ", fvm.AttoFIL2FIL_str(allocation.AccruedRewards), " FIL")
+			fmt.Println("Repaid pledge: ", fvm.AttoFIL2FIL_str(allocation.RepaidPledge), " FIL")
 		}
 	},
 }
 
 func init() {
-	getAllocation.Flags().StringVarP(&minerId, "minerId", "o", "", "Storage Provider's miner address (or miner actor ID)")
+	getAllocation.Flags().StringVarP(&minerAddr, "minerAddr", "m", "", "Miner actor address (either ID address or actor address)")
+	if err := getAllocation.MarkFlagRequired("minerAddr"); err != nil {
+		fmt.Println(err)
+	}
+
 	AllocationCmd.AddCommand(getAllocation)
 }

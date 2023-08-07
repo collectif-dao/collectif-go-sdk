@@ -41,7 +41,12 @@ type SPRestaking struct {
 }
 
 func (c *LotusClient) Register(ctx context.Context, minerId uint64, allocationLimit *big.Int, dailyAllocation *big.Int, send bool) (*MessageResponse, error) {
-	log.Info("Registering ", minerId, " minerID with ", allocationLimit.String(), " allocation limit and ", dailyAllocation.String(), " daily allocation")
+	log.Info("Registering ", minerId, " minerID with ", AttoFIL2FIL_str(allocationLimit), " FIL allocation limit and ", AttoFIL2FIL_str(dailyAllocation), " FIL daily allocation")
+
+	mAddr, err := address.NewIDAddress(minerId)
+	if err != nil {
+		return nil, err
+	}
 
 	method := "register"
 	calldata, err := c.calculateCalldata(method, c.Registry.ABI, minerId, allocationLimit, dailyAllocation)
@@ -54,7 +59,7 @@ func (c *LotusClient) Register(ctx context.Context, minerId uint64, allocationLi
 		return res, err
 	}
 
-	log.Info("Succesfully registered ", minerId, " minerId")
+	log.Info("Succesfully registered ", mAddr.String(), " minerId")
 	return res, nil
 }
 
@@ -199,9 +204,9 @@ func (c *LotusClient) SetRestaking(ctx context.Context, restakingRatio *big.Int,
 	return res, nil
 }
 
-func (c *LotusClient) RequestAllocationLimitUpdate(ctx context.Context, allocationLimit *big.Int, dailyAllocation *big.Int, send bool) (*MessageResponse, error) {
+func (c *LotusClient) RequestAllocationLimitUpdate(ctx context.Context, minerId uint64, allocationLimit *big.Int, dailyAllocation *big.Int, send bool) (*MessageResponse, error) {
 	method := "requestAllocationLimitUpdate"
-	calldata, err := c.calculateCalldata(method, c.Registry.ABI, allocationLimit, dailyAllocation)
+	calldata, err := c.calculateCalldata(method, c.Registry.ABI, minerId, allocationLimit, dailyAllocation)
 	if err != nil {
 		return nil, err
 	}
