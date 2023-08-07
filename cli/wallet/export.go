@@ -46,7 +46,7 @@ func exportWallet(addr string) ([]string, error) {
 var exportCmd = &cobra.Command{
 	Use:   "export",
 	Short: "Export Filecoin wallet from SDK",
-	Long:  ``,
+	Long:  `Export a private key of your Filecoin wallet by providing your wallet address with -a flag`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		if res, err := exportWallet(addr); err != nil {

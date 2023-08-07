@@ -30,7 +30,7 @@ var (
 
 // StorageProviderCollateralMetaData contains all meta data concerning the StorageProviderCollateral contract.
 var StorageProviderCollateralMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[],\"name\":\"AllocationOverflow\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InactiveActor\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InactivePool\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InactiveSP\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InactiveSlashing\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InsufficientCollateral\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InsufficientFunds\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidAccess\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidParams\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"previousAdmin\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"newAdmin\",\"type\":\"address\"}],\"name\":\"AdminChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"beacon\",\"type\":\"address\"}],\"name\":\"BeaconUpgraded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint8\",\"name\":\"version\",\"type\":\"uint8\"}],\"name\":\"Initialized\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"minerId\",\"type\":\"uint64\"}],\"name\":\"ReportRecovery\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"minerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"slashingAmount\",\"type\":\"uint256\"}],\"name\":\"ReportSlashing\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"previousAdminRole\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"newAdminRole\",\"type\":\"bytes32\"}],\"name\":\"RoleAdminChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"RoleGranted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"RoleRevoked\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"registry\",\"type\":\"address\"}],\"name\":\"SetRegistryAddress\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"StorageProviderCollateralDeposit\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"lockedCollateral\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"availableCollateral\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"isUnlock\",\"type\":\"bool\"}],\"name\":\"StorageProviderCollateralRebalance\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"slashingAmt\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"pool\",\"type\":\"address\"}],\"name\":\"StorageProviderCollateralSlash\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"prevRequirements\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"requirements\",\"type\":\"uint256\"}],\"name\":\"StorageProviderCollateralUpdate\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"StorageProviderCollateralWithdraw\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"baseCollateralRequirements\",\"type\":\"uint256\"}],\"name\":\"UpdateBaseCollateralRequirements\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"Upgraded\",\"type\":\"event\"},{\"stateMutability\":\"payable\",\"type\":\"fallback\"},{\"inputs\":[],\"name\":\"DEFAULT_ADMIN_ROLE\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"WFIL\",\"outputs\":[{\"internalType\":\"contractIWFIL\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"name\":\"activeSlashings\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"baseRequirements\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"name\":\"collateralRequirements\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"name\":\"collaterals\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"availableCollateral\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"lockedCollateral\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"}],\"name\":\"fit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"}],\"name\":\"getAvailableCollateral\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"}],\"name\":\"getCollateral\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"}],\"name\":\"getCollateralRequirements\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"}],\"name\":\"getDebt\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getImplementation\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"}],\"name\":\"getLockedCollateral\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"}],\"name\":\"getRoleAdmin\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"grantRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"hasRole\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contractIWFIL\",\"name\":\"_wFIL\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_resolver\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_baseRequirements\",\"type\":\"uint256\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"_allocated\",\"type\":\"uint256\"}],\"name\":\"lock\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"proxiableUUID\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"renounceRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"}],\"name\":\"reportRecovery\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"_slashingAmt\",\"type\":\"uint256\"}],\"name\":\"reportSlashing\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"revokeRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"name\":\"slashings\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"requirements\",\"type\":\"uint256\"}],\"name\":\"updateBaseCollateralRequirements\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"requirements\",\"type\":\"uint256\"}],\"name\":\"updateCollateralRequirements\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"}],\"name\":\"upgradeTo\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"upgradeToAndCall\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"version\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"stateMutability\":\"payable\",\"type\":\"receive\"}]",
+	ABI: "[{\"inputs\":[],\"name\":\"AllocationOverflow\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InactiveActor\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InactivePool\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InactiveSP\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InactiveSlashing\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InsufficientCollateral\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InsufficientFunds\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidAccess\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidOwner\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidParams\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"previousAdmin\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"newAdmin\",\"type\":\"address\"}],\"name\":\"AdminChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"beacon\",\"type\":\"address\"}],\"name\":\"BeaconUpgraded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint8\",\"name\":\"version\",\"type\":\"uint8\"}],\"name\":\"Initialized\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"}],\"name\":\"ReportRecovery\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"slashingAmount\",\"type\":\"uint256\"}],\"name\":\"ReportSlashing\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"previousAdminRole\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"newAdminRole\",\"type\":\"bytes32\"}],\"name\":\"RoleAdminChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"RoleGranted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"RoleRevoked\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"registry\",\"type\":\"address\"}],\"name\":\"SetRegistryAddress\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"StorageProviderCollateralDeposit\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"lockedCollateral\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"availableCollateral\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"isUnlock\",\"type\":\"bool\"}],\"name\":\"StorageProviderCollateralRebalance\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"slashingAmt\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"pool\",\"type\":\"address\"}],\"name\":\"StorageProviderCollateralSlash\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"prevRequirements\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"requirements\",\"type\":\"uint256\"}],\"name\":\"StorageProviderCollateralUpdate\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"StorageProviderCollateralWithdraw\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"baseCollateralRequirements\",\"type\":\"uint256\"}],\"name\":\"UpdateBaseCollateralRequirements\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"Upgraded\",\"type\":\"event\"},{\"stateMutability\":\"payable\",\"type\":\"fallback\"},{\"inputs\":[],\"name\":\"DEFAULT_ADMIN_ROLE\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"WFIL\",\"outputs\":[{\"internalType\":\"contractIWFIL\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"name\":\"activeSlashings\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"baseRequirements\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"name\":\"collateralRequirements\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"name\":\"collaterals\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"availableCollateral\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"lockedCollateral\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"}],\"name\":\"fit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"}],\"name\":\"getAvailableCollateral\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"}],\"name\":\"getCollateral\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"}],\"name\":\"getCollateralRequirements\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"}],\"name\":\"getDebt\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getImplementation\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"}],\"name\":\"getLockedCollateral\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"}],\"name\":\"getRoleAdmin\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"grantRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"hasRole\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contractIWFIL\",\"name\":\"_wFIL\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_resolver\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_baseRequirements\",\"type\":\"uint256\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"_minerId\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"_allocated\",\"type\":\"uint256\"}],\"name\":\"lock\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"proxiableUUID\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"renounceRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"}],\"name\":\"reportRecovery\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"_slashingAmt\",\"type\":\"uint256\"}],\"name\":\"reportSlashing\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"revokeRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"name\":\"slashings\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"requirements\",\"type\":\"uint256\"}],\"name\":\"updateBaseCollateralRequirements\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"requirements\",\"type\":\"uint256\"}],\"name\":\"updateCollateralRequirements\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"}],\"name\":\"upgradeTo\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"upgradeToAndCall\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"version\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"stateMutability\":\"payable\",\"type\":\"receive\"}]",
 }
 
 // StorageProviderCollateralABI is the input ABI used to generate the binding from.
@@ -473,37 +473,6 @@ func (_StorageProviderCollateral *StorageProviderCollateralCallerSession) GetCol
 	return _StorageProviderCollateral.Contract.GetCollateralRequirements(&_StorageProviderCollateral.CallOpts, _ownerId)
 }
 
-// GetDebt is a free data retrieval call binding the contract method 0xc8025dda.
-//
-// Solidity: function getDebt(uint64 _ownerId) view returns(uint256)
-func (_StorageProviderCollateral *StorageProviderCollateralCaller) GetDebt(opts *bind.CallOpts, _ownerId uint64) (*big.Int, error) {
-	var out []interface{}
-	err := _StorageProviderCollateral.contract.Call(opts, &out, "getDebt", _ownerId)
-
-	if err != nil {
-		return *new(*big.Int), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
-
-	return out0, err
-
-}
-
-// GetDebt is a free data retrieval call binding the contract method 0xc8025dda.
-//
-// Solidity: function getDebt(uint64 _ownerId) view returns(uint256)
-func (_StorageProviderCollateral *StorageProviderCollateralSession) GetDebt(_ownerId uint64) (*big.Int, error) {
-	return _StorageProviderCollateral.Contract.GetDebt(&_StorageProviderCollateral.CallOpts, _ownerId)
-}
-
-// GetDebt is a free data retrieval call binding the contract method 0xc8025dda.
-//
-// Solidity: function getDebt(uint64 _ownerId) view returns(uint256)
-func (_StorageProviderCollateral *StorageProviderCollateralCallerSession) GetDebt(_ownerId uint64) (*big.Int, error) {
-	return _StorageProviderCollateral.Contract.GetDebt(&_StorageProviderCollateral.CallOpts, _ownerId)
-}
-
 // GetImplementation is a free data retrieval call binding the contract method 0xaaf10f42.
 //
 // Solidity: function getImplementation() view returns(address)
@@ -794,6 +763,27 @@ func (_StorageProviderCollateral *StorageProviderCollateralTransactorSession) Fi
 	return _StorageProviderCollateral.Contract.Fit(&_StorageProviderCollateral.TransactOpts, _ownerId)
 }
 
+// GetDebt is a paid mutator transaction binding the contract method 0xc8025dda.
+//
+// Solidity: function getDebt(uint64 _ownerId) returns(uint256)
+func (_StorageProviderCollateral *StorageProviderCollateralTransactor) GetDebt(opts *bind.TransactOpts, _ownerId uint64) (*types.Transaction, error) {
+	return _StorageProviderCollateral.contract.Transact(opts, "getDebt", _ownerId)
+}
+
+// GetDebt is a paid mutator transaction binding the contract method 0xc8025dda.
+//
+// Solidity: function getDebt(uint64 _ownerId) returns(uint256)
+func (_StorageProviderCollateral *StorageProviderCollateralSession) GetDebt(_ownerId uint64) (*types.Transaction, error) {
+	return _StorageProviderCollateral.Contract.GetDebt(&_StorageProviderCollateral.TransactOpts, _ownerId)
+}
+
+// GetDebt is a paid mutator transaction binding the contract method 0xc8025dda.
+//
+// Solidity: function getDebt(uint64 _ownerId) returns(uint256)
+func (_StorageProviderCollateral *StorageProviderCollateralTransactorSession) GetDebt(_ownerId uint64) (*types.Transaction, error) {
+	return _StorageProviderCollateral.Contract.GetDebt(&_StorageProviderCollateral.TransactOpts, _ownerId)
+}
+
 // GrantRole is a paid mutator transaction binding the contract method 0x2f2ff15d.
 //
 // Solidity: function grantRole(bytes32 role, address account) returns()
@@ -836,25 +826,25 @@ func (_StorageProviderCollateral *StorageProviderCollateralTransactorSession) In
 	return _StorageProviderCollateral.Contract.Initialize(&_StorageProviderCollateral.TransactOpts, _wFIL, _resolver, _baseRequirements)
 }
 
-// Lock is a paid mutator transaction binding the contract method 0x2a800e88.
+// Lock is a paid mutator transaction binding the contract method 0x241c054a.
 //
-// Solidity: function lock(uint64 _ownerId, uint256 _allocated) returns()
-func (_StorageProviderCollateral *StorageProviderCollateralTransactor) Lock(opts *bind.TransactOpts, _ownerId uint64, _allocated *big.Int) (*types.Transaction, error) {
-	return _StorageProviderCollateral.contract.Transact(opts, "lock", _ownerId, _allocated)
+// Solidity: function lock(uint64 _ownerId, uint64 _minerId, uint256 _allocated) returns()
+func (_StorageProviderCollateral *StorageProviderCollateralTransactor) Lock(opts *bind.TransactOpts, _ownerId uint64, _minerId uint64, _allocated *big.Int) (*types.Transaction, error) {
+	return _StorageProviderCollateral.contract.Transact(opts, "lock", _ownerId, _minerId, _allocated)
 }
 
-// Lock is a paid mutator transaction binding the contract method 0x2a800e88.
+// Lock is a paid mutator transaction binding the contract method 0x241c054a.
 //
-// Solidity: function lock(uint64 _ownerId, uint256 _allocated) returns()
-func (_StorageProviderCollateral *StorageProviderCollateralSession) Lock(_ownerId uint64, _allocated *big.Int) (*types.Transaction, error) {
-	return _StorageProviderCollateral.Contract.Lock(&_StorageProviderCollateral.TransactOpts, _ownerId, _allocated)
+// Solidity: function lock(uint64 _ownerId, uint64 _minerId, uint256 _allocated) returns()
+func (_StorageProviderCollateral *StorageProviderCollateralSession) Lock(_ownerId uint64, _minerId uint64, _allocated *big.Int) (*types.Transaction, error) {
+	return _StorageProviderCollateral.Contract.Lock(&_StorageProviderCollateral.TransactOpts, _ownerId, _minerId, _allocated)
 }
 
-// Lock is a paid mutator transaction binding the contract method 0x2a800e88.
+// Lock is a paid mutator transaction binding the contract method 0x241c054a.
 //
-// Solidity: function lock(uint64 _ownerId, uint256 _allocated) returns()
-func (_StorageProviderCollateral *StorageProviderCollateralTransactorSession) Lock(_ownerId uint64, _allocated *big.Int) (*types.Transaction, error) {
-	return _StorageProviderCollateral.Contract.Lock(&_StorageProviderCollateral.TransactOpts, _ownerId, _allocated)
+// Solidity: function lock(uint64 _ownerId, uint64 _minerId, uint256 _allocated) returns()
+func (_StorageProviderCollateral *StorageProviderCollateralTransactorSession) Lock(_ownerId uint64, _minerId uint64, _allocated *big.Int) (*types.Transaction, error) {
+	return _StorageProviderCollateral.Contract.Lock(&_StorageProviderCollateral.TransactOpts, _ownerId, _minerId, _allocated)
 }
 
 // RenounceRole is a paid mutator transaction binding the contract method 0x36568abe.
@@ -1571,13 +1561,12 @@ func (it *StorageProviderCollateralReportRecoveryIterator) Close() error {
 // StorageProviderCollateralReportRecovery represents a ReportRecovery event raised by the StorageProviderCollateral contract.
 type StorageProviderCollateralReportRecovery struct {
 	OwnerId uint64
-	MinerId uint64
 	Raw     types.Log // Blockchain specific contextual infos
 }
 
-// FilterReportRecovery is a free log retrieval operation binding the contract event 0x6c4d204a735f6360373ac6ba2315f026f2e1d5f629cf86246812b2615525643c.
+// FilterReportRecovery is a free log retrieval operation binding the contract event 0x4ae1ac1eeb2bb87a829856665535c45f6381998822857dde5d4573a1b4a4a9c1.
 //
-// Solidity: event ReportRecovery(uint64 ownerId, uint64 minerId)
+// Solidity: event ReportRecovery(uint64 ownerId)
 func (_StorageProviderCollateral *StorageProviderCollateralFilterer) FilterReportRecovery(opts *bind.FilterOpts) (*StorageProviderCollateralReportRecoveryIterator, error) {
 
 	logs, sub, err := _StorageProviderCollateral.contract.FilterLogs(opts, "ReportRecovery")
@@ -1587,9 +1576,9 @@ func (_StorageProviderCollateral *StorageProviderCollateralFilterer) FilterRepor
 	return &StorageProviderCollateralReportRecoveryIterator{contract: _StorageProviderCollateral.contract, event: "ReportRecovery", logs: logs, sub: sub}, nil
 }
 
-// WatchReportRecovery is a free log subscription operation binding the contract event 0x6c4d204a735f6360373ac6ba2315f026f2e1d5f629cf86246812b2615525643c.
+// WatchReportRecovery is a free log subscription operation binding the contract event 0x4ae1ac1eeb2bb87a829856665535c45f6381998822857dde5d4573a1b4a4a9c1.
 //
-// Solidity: event ReportRecovery(uint64 ownerId, uint64 minerId)
+// Solidity: event ReportRecovery(uint64 ownerId)
 func (_StorageProviderCollateral *StorageProviderCollateralFilterer) WatchReportRecovery(opts *bind.WatchOpts, sink chan<- *StorageProviderCollateralReportRecovery) (event.Subscription, error) {
 
 	logs, sub, err := _StorageProviderCollateral.contract.WatchLogs(opts, "ReportRecovery")
@@ -1624,9 +1613,9 @@ func (_StorageProviderCollateral *StorageProviderCollateralFilterer) WatchReport
 	}), nil
 }
 
-// ParseReportRecovery is a log parse operation binding the contract event 0x6c4d204a735f6360373ac6ba2315f026f2e1d5f629cf86246812b2615525643c.
+// ParseReportRecovery is a log parse operation binding the contract event 0x4ae1ac1eeb2bb87a829856665535c45f6381998822857dde5d4573a1b4a4a9c1.
 //
-// Solidity: event ReportRecovery(uint64 ownerId, uint64 minerId)
+// Solidity: event ReportRecovery(uint64 ownerId)
 func (_StorageProviderCollateral *StorageProviderCollateralFilterer) ParseReportRecovery(log types.Log) (*StorageProviderCollateralReportRecovery, error) {
 	event := new(StorageProviderCollateralReportRecovery)
 	if err := _StorageProviderCollateral.contract.UnpackLog(event, "ReportRecovery", log); err != nil {
@@ -1706,14 +1695,13 @@ func (it *StorageProviderCollateralReportSlashingIterator) Close() error {
 // StorageProviderCollateralReportSlashing represents a ReportSlashing event raised by the StorageProviderCollateral contract.
 type StorageProviderCollateralReportSlashing struct {
 	OwnerId        uint64
-	MinerId        uint64
 	SlashingAmount *big.Int
 	Raw            types.Log // Blockchain specific contextual infos
 }
 
-// FilterReportSlashing is a free log retrieval operation binding the contract event 0x8304571b6b5f328db0508fa215bb7cc5a764d4982ff61e0c36d7b088c44b643a.
+// FilterReportSlashing is a free log retrieval operation binding the contract event 0xe920a3bd2d05623539eb004a3d191cb43a32f41b4dce001e9c4d9ee2e7a443e3.
 //
-// Solidity: event ReportSlashing(uint64 ownerId, uint64 minerId, uint256 slashingAmount)
+// Solidity: event ReportSlashing(uint64 ownerId, uint256 slashingAmount)
 func (_StorageProviderCollateral *StorageProviderCollateralFilterer) FilterReportSlashing(opts *bind.FilterOpts) (*StorageProviderCollateralReportSlashingIterator, error) {
 
 	logs, sub, err := _StorageProviderCollateral.contract.FilterLogs(opts, "ReportSlashing")
@@ -1723,9 +1711,9 @@ func (_StorageProviderCollateral *StorageProviderCollateralFilterer) FilterRepor
 	return &StorageProviderCollateralReportSlashingIterator{contract: _StorageProviderCollateral.contract, event: "ReportSlashing", logs: logs, sub: sub}, nil
 }
 
-// WatchReportSlashing is a free log subscription operation binding the contract event 0x8304571b6b5f328db0508fa215bb7cc5a764d4982ff61e0c36d7b088c44b643a.
+// WatchReportSlashing is a free log subscription operation binding the contract event 0xe920a3bd2d05623539eb004a3d191cb43a32f41b4dce001e9c4d9ee2e7a443e3.
 //
-// Solidity: event ReportSlashing(uint64 ownerId, uint64 minerId, uint256 slashingAmount)
+// Solidity: event ReportSlashing(uint64 ownerId, uint256 slashingAmount)
 func (_StorageProviderCollateral *StorageProviderCollateralFilterer) WatchReportSlashing(opts *bind.WatchOpts, sink chan<- *StorageProviderCollateralReportSlashing) (event.Subscription, error) {
 
 	logs, sub, err := _StorageProviderCollateral.contract.WatchLogs(opts, "ReportSlashing")
@@ -1760,9 +1748,9 @@ func (_StorageProviderCollateral *StorageProviderCollateralFilterer) WatchReport
 	}), nil
 }
 
-// ParseReportSlashing is a log parse operation binding the contract event 0x8304571b6b5f328db0508fa215bb7cc5a764d4982ff61e0c36d7b088c44b643a.
+// ParseReportSlashing is a log parse operation binding the contract event 0xe920a3bd2d05623539eb004a3d191cb43a32f41b4dce001e9c4d9ee2e7a443e3.
 //
-// Solidity: event ReportSlashing(uint64 ownerId, uint64 minerId, uint256 slashingAmount)
+// Solidity: event ReportSlashing(uint64 ownerId, uint256 slashingAmount)
 func (_StorageProviderCollateral *StorageProviderCollateralFilterer) ParseReportSlashing(log types.Log) (*StorageProviderCollateralReportSlashing, error) {
 	event := new(StorageProviderCollateralReportSlashing)
 	if err := _StorageProviderCollateral.contract.UnpackLog(event, "ReportSlashing", log); err != nil {

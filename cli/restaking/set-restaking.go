@@ -55,7 +55,7 @@ func setRestaking(ratio int, addr string, run bool) (*fvm.MessageResponse, error
 var SetRestakingCmd = &cobra.Command{
 	Use:   "set-restaking",
 	Short: "Update restaking parameters for SP in the Collectif DAO protocol",
-	Long:  ``,
+	Long:  `IF you wish to allow restaking of some of your mining rewards, provide a percentage of rewards that you want to stake in the Liquid Staking pool. Restaking helps you to minimize the cost of capital, and earn some portion of rewards from other SPs. During restaking you'll receive clFIL token. Make sure to provide an f4 or 0x Filecoin wallet with -a flag and your restaking ratio with -r flag.`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		if msg, err := setRestaking(ratio, addr, run); err != nil {
@@ -76,7 +76,7 @@ var SetRestakingCmd = &cobra.Command{
 
 func init() {
 	SetRestakingCmd.Flags().IntVarP(&ratio, "ratio", "r", 0, "Restaking ratio in percentage (up to 100%)")
-	SetRestakingCmd.Flags().StringVarP(&addr, "address", "a", "0x", "Filecoin address to receive clFIL tokens")
+	SetRestakingCmd.Flags().StringVarP(&addr, "address", "a", "0x", "Filecoin address to receive clFIL tokens (f4/0x address type)")
 	SetRestakingCmd.Flags().BoolVarP(&run, "execute", "e", true, "Execute transaction")
 
 	if err := SetRestakingCmd.MarkFlagRequired("ratio"); err != nil {

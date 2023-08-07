@@ -55,7 +55,7 @@ func importWallet(pk string, isDefault bool) error {
 var importCmd = &cobra.Command{
 	Use:   "import",
 	Short: "Import Filecoin wallet for SDK",
-	Long:  ``,
+	Long:  `Import your Filecoin wallet into SDK to be able to trigger transactions on-behalf of your miner actor. Make sure to add here only an owner wallet, ideally the same that you're using with your Lotus node`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		if err := importWallet(privateKey, isDefault); err != nil {
@@ -65,7 +65,7 @@ var importCmd = &cobra.Command{
 }
 
 func init() {
-	importCmd.Flags().StringVarP(&privateKey, "private-key", "p", "", "Private Key")
+	importCmd.Flags().StringVarP(&privateKey, "private-key", "p", "", "Filecoin wallet private Key")
 	importCmd.Flags().BoolVarP(&isDefault, "use-default", "d", true, "Set as default")
 
 	if err := importCmd.MarkFlagRequired("private-key"); err != nil {

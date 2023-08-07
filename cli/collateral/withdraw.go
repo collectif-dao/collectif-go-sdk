@@ -31,7 +31,7 @@ func withdrawCollateral(amount int64, run bool) (*fvm.MessageResponse, error) {
 var withdrawCmd = &cobra.Command{
 	Use:   "withdraw",
 	Short: "Withdraw collateral from the StorageProviderCollateral contract",
-	Long:  ``,
+	Long:  `To withdraw FIL from the collateral system provide an amount of FIL with -a (or --amount) flag. The transaction would withdraw collateral only from the available balance, and locked portion of collateral would remain in the smart contract`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		if msg, err := withdrawCollateral(amount, run); err != nil {

@@ -30,7 +30,7 @@ var (
 
 // StorageProviderRegistryMetaData contains all meta data concerning the StorageProviderRegistry contract.
 var StorageProviderRegistryMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[],\"name\":\"ActivePool\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"errorCode\",\"type\":\"int256\"}],\"name\":\"ActorError\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ActorNotFound\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"AllocationOverflow\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"FailToCallActor\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"FailToCallActor\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InactiveActor\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InactivePool\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InactiveSP\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidAccess\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"CommonTypes.FilActorId\",\"name\":\"actorId\",\"type\":\"uint64\"}],\"name\":\"InvalidActorID\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidAddress\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidAllocation\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"name\":\"InvalidCodec\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidDailyAllocation\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidOwner\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidParams\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidRepayment\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidResponseLength\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"balance\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"NotEnoughBalance\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OwnerProposed\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"RegisteredSP\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"previousAdmin\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"newAdmin\",\"type\":\"address\"}],\"name\":\"AdminChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"beacon\",\"type\":\"address\"}],\"name\":\"BeaconUpgraded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"collateral\",\"type\":\"address\"}],\"name\":\"CollateralAddressUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint8\",\"name\":\"version\",\"type\":\"uint8\"}],\"name\":\"Initialized\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"pool\",\"type\":\"address\"}],\"name\":\"LiquidStakingPoolRegistered\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"previousAdminRole\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"newAdminRole\",\"type\":\"bytes32\"}],\"name\":\"RoleAdminChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"RoleGranted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"RoleRevoked\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"rewards\",\"type\":\"uint256\"}],\"name\":\"StorageProviderAccruedRewards\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"allocationLimit\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"dailyAllocation\",\"type\":\"uint256\"}],\"name\":\"StorageProviderAllocationLimitRequest\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"allocationLimit\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"dailyAllocation\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"repayment\",\"type\":\"uint256\"}],\"name\":\"StorageProviderAllocationLimitUpdate\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"usedAllocation\",\"type\":\"uint256\"}],\"name\":\"StorageProviderAllocationUsed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"}],\"name\":\"StorageProviderBeneficiaryAddressAccepted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"beneficiaryAddress\",\"type\":\"address\"}],\"name\":\"StorageProviderBeneficiaryAddressUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"}],\"name\":\"StorageProviderDeactivated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"int64\",\"name\":\"lastEpoch\",\"type\":\"int64\"}],\"name\":\"StorageProviderLastEpochUpdate\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"miner\",\"type\":\"uint64\"}],\"name\":\"StorageProviderMinerAddressUpdate\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"restakingRatio\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"restakingAddress\",\"type\":\"address\"}],\"name\":\"StorageProviderMinerRestakingRatioUpdate\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"minerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"allocationLimit\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"dailyAllocation\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"repayment\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"int64\",\"name\":\"lastEpoch\",\"type\":\"int64\"}],\"name\":\"StorageProviderOnboarded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"owner\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"minerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"targetPool\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"allocationLimit\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"dailyAllocation\",\"type\":\"uint256\"}],\"name\":\"StorageProviderRegistered\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"pledge\",\"type\":\"uint256\"}],\"name\":\"StorageProviderRepaidPledge\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"maxAllocation\",\"type\":\"uint256\"}],\"name\":\"UpdateMaxAllocation\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"Upgraded\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"DEFAULT_ADMIN_ROLE\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"}],\"name\":\"acceptBeneficiaryAddress\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"name\":\"allocationRequests\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"allocationLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"dailyAllocation\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"name\":\"allocations\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"allocationLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"repayment\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"usedAllocation\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"dailyAllocation\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"accruedRewards\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"repaidPledge\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"name\":\"beneficiaryStatus\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"name\":\"dailyUsages\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"}],\"name\":\"deactivateStorageProvider\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getImplementation\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"}],\"name\":\"getRepayment\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"}],\"name\":\"getRoleAdmin\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"}],\"name\":\"getStorageProvider\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"},{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"},{\"internalType\":\"int64\",\"name\":\"\",\"type\":\"int64\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"grantRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"hasRole\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"_repaidPledge\",\"type\":\"uint256\"}],\"name\":\"increasePledgeRepayment\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"_accuredRewards\",\"type\":\"uint256\"}],\"name\":\"increaseRewards\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"_allocated\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_timestamp\",\"type\":\"uint256\"}],\"name\":\"increaseUsedAllocation\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_maxAllocation\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_resolver\",\"type\":\"address\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_pool\",\"type\":\"address\"}],\"name\":\"isActivePool\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"}],\"name\":\"isActiveProvider\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"status\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"maxAllocation\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_minerId\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"_allocationLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_dailyAllocation\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_repayment\",\"type\":\"uint256\"},{\"internalType\":\"int64\",\"name\":\"_lastEpoch\",\"type\":\"int64\"}],\"name\":\"onboardStorageProvider\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"pools\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"proxiableUUID\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_minerId\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"_allocationLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_dailyAllocation\",\"type\":\"uint256\"}],\"name\":\"register\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_pool\",\"type\":\"address\"}],\"name\":\"registerPool\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"renounceRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_allocationLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_dailyAllocation\",\"type\":\"uint256\"}],\"name\":\"requestAllocationLimitUpdate\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"name\":\"restakings\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"restakingRatio\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"restakingAddress\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"revokeRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"name\":\"sectorSizes\",\"outputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"_minerId\",\"type\":\"uint64\"}],\"name\":\"setMinerAddress\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_restakingRatio\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_restakingAddress\",\"type\":\"address\"}],\"name\":\"setRestaking\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"name\":\"storageProviders\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"active\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"onboarded\",\"type\":\"bool\"},{\"internalType\":\"address\",\"name\":\"targetPool\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"minerId\",\"type\":\"uint64\"},{\"internalType\":\"int64\",\"name\":\"lastEpoch\",\"type\":\"int64\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"_allocationLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_dailyAllocation\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_repaymentAmount\",\"type\":\"uint256\"}],\"name\":\"updateAllocationLimit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"allocation\",\"type\":\"uint256\"}],\"name\":\"updateMaxAllocation\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"}],\"name\":\"upgradeTo\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"upgradeToAndCall\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"version\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"pure\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[],\"name\":\"ActivePool\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"errorCode\",\"type\":\"int256\"}],\"name\":\"ActorError\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ActorNotFound\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"AllocationOverflow\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"AlreadyApproved\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"FailToCallActor\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"FailToCallActor\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InactiveActor\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InactivePool\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InactiveSP\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidAccess\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"CommonTypes.FilActorId\",\"name\":\"actorId\",\"type\":\"uint64\"}],\"name\":\"InvalidActorID\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidAddress\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidAllocation\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidBeneficiary\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"name\":\"InvalidCodec\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidDailyAllocation\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidOwner\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidParams\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidRepayment\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidResponseLength\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NonSyncedBeneficiary\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"balance\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"NotEnoughBalance\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OwnerProposed\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"RegisteredSP\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"previousAdmin\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"newAdmin\",\"type\":\"address\"}],\"name\":\"AdminChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"beacon\",\"type\":\"address\"}],\"name\":\"BeaconUpgraded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"collateral\",\"type\":\"address\"}],\"name\":\"CollateralAddressUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint8\",\"name\":\"version\",\"type\":\"uint8\"}],\"name\":\"Initialized\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"pool\",\"type\":\"address\"}],\"name\":\"LiquidStakingPoolRegistered\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"previousAdminRole\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"newAdminRole\",\"type\":\"bytes32\"}],\"name\":\"RoleAdminChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"RoleGranted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"RoleRevoked\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"rewards\",\"type\":\"uint256\"}],\"name\":\"StorageProviderAccruedRewards\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"allocationLimit\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"dailyAllocation\",\"type\":\"uint256\"}],\"name\":\"StorageProviderAllocationLimitRequest\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"allocationLimit\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"dailyAllocation\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"repayment\",\"type\":\"uint256\"}],\"name\":\"StorageProviderAllocationLimitUpdate\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"usedAllocation\",\"type\":\"uint256\"}],\"name\":\"StorageProviderAllocationUsed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"}],\"name\":\"StorageProviderBeneficiaryAddressAccepted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"beneficiaryAddress\",\"type\":\"address\"}],\"name\":\"StorageProviderBeneficiaryAddressUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"}],\"name\":\"StorageProviderDeactivated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"int64\",\"name\":\"lastEpoch\",\"type\":\"int64\"}],\"name\":\"StorageProviderLastEpochUpdate\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"miner\",\"type\":\"uint64\"}],\"name\":\"StorageProviderMinerAddressUpdate\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"restakingRatio\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"restakingAddress\",\"type\":\"address\"}],\"name\":\"StorageProviderMinerRestakingRatioUpdate\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"minerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"allocationLimit\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"dailyAllocation\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"repayment\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"int64\",\"name\":\"lastEpoch\",\"type\":\"int64\"}],\"name\":\"StorageProviderOnboarded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"owner\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"minerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"targetPool\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"allocationLimit\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"dailyAllocation\",\"type\":\"uint256\"}],\"name\":\"StorageProviderRegistered\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"pledge\",\"type\":\"uint256\"}],\"name\":\"StorageProviderRepaidPledge\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"maxAllocation\",\"type\":\"uint256\"}],\"name\":\"UpdateMaxAllocation\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"Upgraded\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"DEFAULT_ADMIN_ROLE\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_minerId\",\"type\":\"uint64\"}],\"name\":\"acceptBeneficiaryAddress\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"name\":\"allocationRequests\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"allocationLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"dailyAllocation\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"name\":\"allocations\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"allocationLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"repayment\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"usedAllocation\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"dailyAllocation\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"accruedRewards\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"repaidPledge\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"name\":\"dailyUsages\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_minerId\",\"type\":\"uint64\"}],\"name\":\"deactivateStorageProvider\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"}],\"name\":\"getAllocations\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getImplementation\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_minerId\",\"type\":\"uint64\"}],\"name\":\"getRepayment\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"}],\"name\":\"getRoleAdmin\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_minerId\",\"type\":\"uint64\"}],\"name\":\"getStorageProvider\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"},{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"},{\"internalType\":\"int64\",\"name\":\"\",\"type\":\"int64\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"grantRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"hasRole\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_minerId\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"_repaidPledge\",\"type\":\"uint256\"}],\"name\":\"increasePledgeRepayment\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_minerId\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"_accuredRewards\",\"type\":\"uint256\"}],\"name\":\"increaseRewards\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_minerId\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"_allocated\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_timestamp\",\"type\":\"uint256\"}],\"name\":\"increaseUsedAllocation\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_maxAllocation\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_resolver\",\"type\":\"address\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"}],\"name\":\"isActiveOwner\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_pool\",\"type\":\"address\"}],\"name\":\"isActivePool\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_minerId\",\"type\":\"uint64\"}],\"name\":\"isActiveProvider\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"status\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_ownerId\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"_minerId\",\"type\":\"uint64\"}],\"name\":\"isActualOwner\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"maxAllocation\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_minerId\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"_allocationLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_dailyAllocation\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_repayment\",\"type\":\"uint256\"},{\"internalType\":\"int64\",\"name\":\"_lastEpoch\",\"type\":\"int64\"}],\"name\":\"onboardStorageProvider\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"pools\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"proxiableUUID\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_minerId\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"_allocationLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_dailyAllocation\",\"type\":\"uint256\"}],\"name\":\"register\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_pool\",\"type\":\"address\"}],\"name\":\"registerPool\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"renounceRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_minerId\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"_allocationLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_dailyAllocation\",\"type\":\"uint256\"}],\"name\":\"requestAllocationLimitUpdate\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"name\":\"restakings\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"restakingRatio\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"restakingAddress\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"revokeRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"name\":\"sectorSizes\",\"outputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_restakingRatio\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_restakingAddress\",\"type\":\"address\"}],\"name\":\"setRestaking\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"name\":\"storageProviders\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"active\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"onboarded\",\"type\":\"bool\"},{\"internalType\":\"address\",\"name\":\"targetPool\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"ownerId\",\"type\":\"uint64\"},{\"internalType\":\"int64\",\"name\":\"lastEpoch\",\"type\":\"int64\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"name\":\"syncedBeneficiary\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"_minerId\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"_allocationLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_dailyAllocation\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_repaymentAmount\",\"type\":\"uint256\"}],\"name\":\"updateAllocationLimit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"allocation\",\"type\":\"uint256\"}],\"name\":\"updateMaxAllocation\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"}],\"name\":\"upgradeTo\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"upgradeToAndCall\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"version\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"pure\",\"type\":\"function\"}]",
 }
 
 // StorageProviderRegistryABI is the input ABI used to generate the binding from.
@@ -320,37 +320,6 @@ func (_StorageProviderRegistry *StorageProviderRegistryCallerSession) Allocation
 	return _StorageProviderRegistry.Contract.Allocations(&_StorageProviderRegistry.CallOpts, arg0)
 }
 
-// BeneficiaryStatus is a free data retrieval call binding the contract method 0x0610f3ad.
-//
-// Solidity: function beneficiaryStatus(uint64 ) view returns(bool)
-func (_StorageProviderRegistry *StorageProviderRegistryCaller) BeneficiaryStatus(opts *bind.CallOpts, arg0 uint64) (bool, error) {
-	var out []interface{}
-	err := _StorageProviderRegistry.contract.Call(opts, &out, "beneficiaryStatus", arg0)
-
-	if err != nil {
-		return *new(bool), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(bool)).(*bool)
-
-	return out0, err
-
-}
-
-// BeneficiaryStatus is a free data retrieval call binding the contract method 0x0610f3ad.
-//
-// Solidity: function beneficiaryStatus(uint64 ) view returns(bool)
-func (_StorageProviderRegistry *StorageProviderRegistrySession) BeneficiaryStatus(arg0 uint64) (bool, error) {
-	return _StorageProviderRegistry.Contract.BeneficiaryStatus(&_StorageProviderRegistry.CallOpts, arg0)
-}
-
-// BeneficiaryStatus is a free data retrieval call binding the contract method 0x0610f3ad.
-//
-// Solidity: function beneficiaryStatus(uint64 ) view returns(bool)
-func (_StorageProviderRegistry *StorageProviderRegistryCallerSession) BeneficiaryStatus(arg0 uint64) (bool, error) {
-	return _StorageProviderRegistry.Contract.BeneficiaryStatus(&_StorageProviderRegistry.CallOpts, arg0)
-}
-
 // DailyUsages is a free data retrieval call binding the contract method 0xd2d3164b.
 //
 // Solidity: function dailyUsages(bytes32 ) view returns(uint256)
@@ -380,6 +349,38 @@ func (_StorageProviderRegistry *StorageProviderRegistrySession) DailyUsages(arg0
 // Solidity: function dailyUsages(bytes32 ) view returns(uint256)
 func (_StorageProviderRegistry *StorageProviderRegistryCallerSession) DailyUsages(arg0 [32]byte) (*big.Int, error) {
 	return _StorageProviderRegistry.Contract.DailyUsages(&_StorageProviderRegistry.CallOpts, arg0)
+}
+
+// GetAllocations is a free data retrieval call binding the contract method 0x16e71d49.
+//
+// Solidity: function getAllocations(uint64 _ownerId) view returns(uint256, uint256)
+func (_StorageProviderRegistry *StorageProviderRegistryCaller) GetAllocations(opts *bind.CallOpts, _ownerId uint64) (*big.Int, *big.Int, error) {
+	var out []interface{}
+	err := _StorageProviderRegistry.contract.Call(opts, &out, "getAllocations", _ownerId)
+
+	if err != nil {
+		return *new(*big.Int), *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+	out1 := *abi.ConvertType(out[1], new(*big.Int)).(**big.Int)
+
+	return out0, out1, err
+
+}
+
+// GetAllocations is a free data retrieval call binding the contract method 0x16e71d49.
+//
+// Solidity: function getAllocations(uint64 _ownerId) view returns(uint256, uint256)
+func (_StorageProviderRegistry *StorageProviderRegistrySession) GetAllocations(_ownerId uint64) (*big.Int, *big.Int, error) {
+	return _StorageProviderRegistry.Contract.GetAllocations(&_StorageProviderRegistry.CallOpts, _ownerId)
+}
+
+// GetAllocations is a free data retrieval call binding the contract method 0x16e71d49.
+//
+// Solidity: function getAllocations(uint64 _ownerId) view returns(uint256, uint256)
+func (_StorageProviderRegistry *StorageProviderRegistryCallerSession) GetAllocations(_ownerId uint64) (*big.Int, *big.Int, error) {
+	return _StorageProviderRegistry.Contract.GetAllocations(&_StorageProviderRegistry.CallOpts, _ownerId)
 }
 
 // GetImplementation is a free data retrieval call binding the contract method 0xaaf10f42.
@@ -415,10 +416,10 @@ func (_StorageProviderRegistry *StorageProviderRegistryCallerSession) GetImpleme
 
 // GetRepayment is a free data retrieval call binding the contract method 0x67f47a94.
 //
-// Solidity: function getRepayment(uint64 _ownerId) view returns(uint256)
-func (_StorageProviderRegistry *StorageProviderRegistryCaller) GetRepayment(opts *bind.CallOpts, _ownerId uint64) (*big.Int, error) {
+// Solidity: function getRepayment(uint64 _minerId) view returns(uint256)
+func (_StorageProviderRegistry *StorageProviderRegistryCaller) GetRepayment(opts *bind.CallOpts, _minerId uint64) (*big.Int, error) {
 	var out []interface{}
-	err := _StorageProviderRegistry.contract.Call(opts, &out, "getRepayment", _ownerId)
+	err := _StorageProviderRegistry.contract.Call(opts, &out, "getRepayment", _minerId)
 
 	if err != nil {
 		return *new(*big.Int), err
@@ -432,16 +433,16 @@ func (_StorageProviderRegistry *StorageProviderRegistryCaller) GetRepayment(opts
 
 // GetRepayment is a free data retrieval call binding the contract method 0x67f47a94.
 //
-// Solidity: function getRepayment(uint64 _ownerId) view returns(uint256)
-func (_StorageProviderRegistry *StorageProviderRegistrySession) GetRepayment(_ownerId uint64) (*big.Int, error) {
-	return _StorageProviderRegistry.Contract.GetRepayment(&_StorageProviderRegistry.CallOpts, _ownerId)
+// Solidity: function getRepayment(uint64 _minerId) view returns(uint256)
+func (_StorageProviderRegistry *StorageProviderRegistrySession) GetRepayment(_minerId uint64) (*big.Int, error) {
+	return _StorageProviderRegistry.Contract.GetRepayment(&_StorageProviderRegistry.CallOpts, _minerId)
 }
 
 // GetRepayment is a free data retrieval call binding the contract method 0x67f47a94.
 //
-// Solidity: function getRepayment(uint64 _ownerId) view returns(uint256)
-func (_StorageProviderRegistry *StorageProviderRegistryCallerSession) GetRepayment(_ownerId uint64) (*big.Int, error) {
-	return _StorageProviderRegistry.Contract.GetRepayment(&_StorageProviderRegistry.CallOpts, _ownerId)
+// Solidity: function getRepayment(uint64 _minerId) view returns(uint256)
+func (_StorageProviderRegistry *StorageProviderRegistryCallerSession) GetRepayment(_minerId uint64) (*big.Int, error) {
+	return _StorageProviderRegistry.Contract.GetRepayment(&_StorageProviderRegistry.CallOpts, _minerId)
 }
 
 // GetRoleAdmin is a free data retrieval call binding the contract method 0x248a9ca3.
@@ -477,10 +478,10 @@ func (_StorageProviderRegistry *StorageProviderRegistryCallerSession) GetRoleAdm
 
 // GetStorageProvider is a free data retrieval call binding the contract method 0xb0298c31.
 //
-// Solidity: function getStorageProvider(uint64 _ownerId) view returns(bool, address, uint64, int64)
-func (_StorageProviderRegistry *StorageProviderRegistryCaller) GetStorageProvider(opts *bind.CallOpts, _ownerId uint64) (bool, common.Address, uint64, int64, error) {
+// Solidity: function getStorageProvider(uint64 _minerId) view returns(bool, address, uint64, int64)
+func (_StorageProviderRegistry *StorageProviderRegistryCaller) GetStorageProvider(opts *bind.CallOpts, _minerId uint64) (bool, common.Address, uint64, int64, error) {
 	var out []interface{}
-	err := _StorageProviderRegistry.contract.Call(opts, &out, "getStorageProvider", _ownerId)
+	err := _StorageProviderRegistry.contract.Call(opts, &out, "getStorageProvider", _minerId)
 
 	if err != nil {
 		return *new(bool), *new(common.Address), *new(uint64), *new(int64), err
@@ -497,16 +498,16 @@ func (_StorageProviderRegistry *StorageProviderRegistryCaller) GetStorageProvide
 
 // GetStorageProvider is a free data retrieval call binding the contract method 0xb0298c31.
 //
-// Solidity: function getStorageProvider(uint64 _ownerId) view returns(bool, address, uint64, int64)
-func (_StorageProviderRegistry *StorageProviderRegistrySession) GetStorageProvider(_ownerId uint64) (bool, common.Address, uint64, int64, error) {
-	return _StorageProviderRegistry.Contract.GetStorageProvider(&_StorageProviderRegistry.CallOpts, _ownerId)
+// Solidity: function getStorageProvider(uint64 _minerId) view returns(bool, address, uint64, int64)
+func (_StorageProviderRegistry *StorageProviderRegistrySession) GetStorageProvider(_minerId uint64) (bool, common.Address, uint64, int64, error) {
+	return _StorageProviderRegistry.Contract.GetStorageProvider(&_StorageProviderRegistry.CallOpts, _minerId)
 }
 
 // GetStorageProvider is a free data retrieval call binding the contract method 0xb0298c31.
 //
-// Solidity: function getStorageProvider(uint64 _ownerId) view returns(bool, address, uint64, int64)
-func (_StorageProviderRegistry *StorageProviderRegistryCallerSession) GetStorageProvider(_ownerId uint64) (bool, common.Address, uint64, int64, error) {
-	return _StorageProviderRegistry.Contract.GetStorageProvider(&_StorageProviderRegistry.CallOpts, _ownerId)
+// Solidity: function getStorageProvider(uint64 _minerId) view returns(bool, address, uint64, int64)
+func (_StorageProviderRegistry *StorageProviderRegistryCallerSession) GetStorageProvider(_minerId uint64) (bool, common.Address, uint64, int64, error) {
+	return _StorageProviderRegistry.Contract.GetStorageProvider(&_StorageProviderRegistry.CallOpts, _minerId)
 }
 
 // HasRole is a free data retrieval call binding the contract method 0x91d14854.
@@ -538,6 +539,37 @@ func (_StorageProviderRegistry *StorageProviderRegistrySession) HasRole(role [32
 // Solidity: function hasRole(bytes32 role, address account) view returns(bool)
 func (_StorageProviderRegistry *StorageProviderRegistryCallerSession) HasRole(role [32]byte, account common.Address) (bool, error) {
 	return _StorageProviderRegistry.Contract.HasRole(&_StorageProviderRegistry.CallOpts, role, account)
+}
+
+// IsActiveOwner is a free data retrieval call binding the contract method 0x15b2f22f.
+//
+// Solidity: function isActiveOwner(uint64 _ownerId) view returns(bool)
+func (_StorageProviderRegistry *StorageProviderRegistryCaller) IsActiveOwner(opts *bind.CallOpts, _ownerId uint64) (bool, error) {
+	var out []interface{}
+	err := _StorageProviderRegistry.contract.Call(opts, &out, "isActiveOwner", _ownerId)
+
+	if err != nil {
+		return *new(bool), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(bool)).(*bool)
+
+	return out0, err
+
+}
+
+// IsActiveOwner is a free data retrieval call binding the contract method 0x15b2f22f.
+//
+// Solidity: function isActiveOwner(uint64 _ownerId) view returns(bool)
+func (_StorageProviderRegistry *StorageProviderRegistrySession) IsActiveOwner(_ownerId uint64) (bool, error) {
+	return _StorageProviderRegistry.Contract.IsActiveOwner(&_StorageProviderRegistry.CallOpts, _ownerId)
+}
+
+// IsActiveOwner is a free data retrieval call binding the contract method 0x15b2f22f.
+//
+// Solidity: function isActiveOwner(uint64 _ownerId) view returns(bool)
+func (_StorageProviderRegistry *StorageProviderRegistryCallerSession) IsActiveOwner(_ownerId uint64) (bool, error) {
+	return _StorageProviderRegistry.Contract.IsActiveOwner(&_StorageProviderRegistry.CallOpts, _ownerId)
 }
 
 // IsActivePool is a free data retrieval call binding the contract method 0x8097354f.
@@ -573,10 +605,10 @@ func (_StorageProviderRegistry *StorageProviderRegistryCallerSession) IsActivePo
 
 // IsActiveProvider is a free data retrieval call binding the contract method 0x154caabb.
 //
-// Solidity: function isActiveProvider(uint64 _ownerId) view returns(bool status)
-func (_StorageProviderRegistry *StorageProviderRegistryCaller) IsActiveProvider(opts *bind.CallOpts, _ownerId uint64) (bool, error) {
+// Solidity: function isActiveProvider(uint64 _minerId) view returns(bool status)
+func (_StorageProviderRegistry *StorageProviderRegistryCaller) IsActiveProvider(opts *bind.CallOpts, _minerId uint64) (bool, error) {
 	var out []interface{}
-	err := _StorageProviderRegistry.contract.Call(opts, &out, "isActiveProvider", _ownerId)
+	err := _StorageProviderRegistry.contract.Call(opts, &out, "isActiveProvider", _minerId)
 
 	if err != nil {
 		return *new(bool), err
@@ -590,16 +622,47 @@ func (_StorageProviderRegistry *StorageProviderRegistryCaller) IsActiveProvider(
 
 // IsActiveProvider is a free data retrieval call binding the contract method 0x154caabb.
 //
-// Solidity: function isActiveProvider(uint64 _ownerId) view returns(bool status)
-func (_StorageProviderRegistry *StorageProviderRegistrySession) IsActiveProvider(_ownerId uint64) (bool, error) {
-	return _StorageProviderRegistry.Contract.IsActiveProvider(&_StorageProviderRegistry.CallOpts, _ownerId)
+// Solidity: function isActiveProvider(uint64 _minerId) view returns(bool status)
+func (_StorageProviderRegistry *StorageProviderRegistrySession) IsActiveProvider(_minerId uint64) (bool, error) {
+	return _StorageProviderRegistry.Contract.IsActiveProvider(&_StorageProviderRegistry.CallOpts, _minerId)
 }
 
 // IsActiveProvider is a free data retrieval call binding the contract method 0x154caabb.
 //
-// Solidity: function isActiveProvider(uint64 _ownerId) view returns(bool status)
-func (_StorageProviderRegistry *StorageProviderRegistryCallerSession) IsActiveProvider(_ownerId uint64) (bool, error) {
-	return _StorageProviderRegistry.Contract.IsActiveProvider(&_StorageProviderRegistry.CallOpts, _ownerId)
+// Solidity: function isActiveProvider(uint64 _minerId) view returns(bool status)
+func (_StorageProviderRegistry *StorageProviderRegistryCallerSession) IsActiveProvider(_minerId uint64) (bool, error) {
+	return _StorageProviderRegistry.Contract.IsActiveProvider(&_StorageProviderRegistry.CallOpts, _minerId)
+}
+
+// IsActualOwner is a free data retrieval call binding the contract method 0xdcd23508.
+//
+// Solidity: function isActualOwner(uint64 _ownerId, uint64 _minerId) view returns(bool)
+func (_StorageProviderRegistry *StorageProviderRegistryCaller) IsActualOwner(opts *bind.CallOpts, _ownerId uint64, _minerId uint64) (bool, error) {
+	var out []interface{}
+	err := _StorageProviderRegistry.contract.Call(opts, &out, "isActualOwner", _ownerId, _minerId)
+
+	if err != nil {
+		return *new(bool), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(bool)).(*bool)
+
+	return out0, err
+
+}
+
+// IsActualOwner is a free data retrieval call binding the contract method 0xdcd23508.
+//
+// Solidity: function isActualOwner(uint64 _ownerId, uint64 _minerId) view returns(bool)
+func (_StorageProviderRegistry *StorageProviderRegistrySession) IsActualOwner(_ownerId uint64, _minerId uint64) (bool, error) {
+	return _StorageProviderRegistry.Contract.IsActualOwner(&_StorageProviderRegistry.CallOpts, _ownerId, _minerId)
+}
+
+// IsActualOwner is a free data retrieval call binding the contract method 0xdcd23508.
+//
+// Solidity: function isActualOwner(uint64 _ownerId, uint64 _minerId) view returns(bool)
+func (_StorageProviderRegistry *StorageProviderRegistryCallerSession) IsActualOwner(_ownerId uint64, _minerId uint64) (bool, error) {
+	return _StorageProviderRegistry.Contract.IsActualOwner(&_StorageProviderRegistry.CallOpts, _ownerId, _minerId)
 }
 
 // MaxAllocation is a free data retrieval call binding the contract method 0x9b3ba79f.
@@ -773,12 +836,12 @@ func (_StorageProviderRegistry *StorageProviderRegistryCallerSession) SectorSize
 
 // StorageProviders is a free data retrieval call binding the contract method 0xdd6460ce.
 //
-// Solidity: function storageProviders(uint64 ) view returns(bool active, bool onboarded, address targetPool, uint64 minerId, int64 lastEpoch)
+// Solidity: function storageProviders(uint64 ) view returns(bool active, bool onboarded, address targetPool, uint64 ownerId, int64 lastEpoch)
 func (_StorageProviderRegistry *StorageProviderRegistryCaller) StorageProviders(opts *bind.CallOpts, arg0 uint64) (struct {
 	Active     bool
 	Onboarded  bool
 	TargetPool common.Address
-	MinerId    uint64
+	OwnerId    uint64
 	LastEpoch  int64
 }, error) {
 	var out []interface{}
@@ -788,7 +851,7 @@ func (_StorageProviderRegistry *StorageProviderRegistryCaller) StorageProviders(
 		Active     bool
 		Onboarded  bool
 		TargetPool common.Address
-		MinerId    uint64
+		OwnerId    uint64
 		LastEpoch  int64
 	})
 	if err != nil {
@@ -798,7 +861,7 @@ func (_StorageProviderRegistry *StorageProviderRegistryCaller) StorageProviders(
 	outstruct.Active = *abi.ConvertType(out[0], new(bool)).(*bool)
 	outstruct.Onboarded = *abi.ConvertType(out[1], new(bool)).(*bool)
 	outstruct.TargetPool = *abi.ConvertType(out[2], new(common.Address)).(*common.Address)
-	outstruct.MinerId = *abi.ConvertType(out[3], new(uint64)).(*uint64)
+	outstruct.OwnerId = *abi.ConvertType(out[3], new(uint64)).(*uint64)
 	outstruct.LastEpoch = *abi.ConvertType(out[4], new(int64)).(*int64)
 
 	return *outstruct, err
@@ -807,12 +870,12 @@ func (_StorageProviderRegistry *StorageProviderRegistryCaller) StorageProviders(
 
 // StorageProviders is a free data retrieval call binding the contract method 0xdd6460ce.
 //
-// Solidity: function storageProviders(uint64 ) view returns(bool active, bool onboarded, address targetPool, uint64 minerId, int64 lastEpoch)
+// Solidity: function storageProviders(uint64 ) view returns(bool active, bool onboarded, address targetPool, uint64 ownerId, int64 lastEpoch)
 func (_StorageProviderRegistry *StorageProviderRegistrySession) StorageProviders(arg0 uint64) (struct {
 	Active     bool
 	Onboarded  bool
 	TargetPool common.Address
-	MinerId    uint64
+	OwnerId    uint64
 	LastEpoch  int64
 }, error) {
 	return _StorageProviderRegistry.Contract.StorageProviders(&_StorageProviderRegistry.CallOpts, arg0)
@@ -820,12 +883,12 @@ func (_StorageProviderRegistry *StorageProviderRegistrySession) StorageProviders
 
 // StorageProviders is a free data retrieval call binding the contract method 0xdd6460ce.
 //
-// Solidity: function storageProviders(uint64 ) view returns(bool active, bool onboarded, address targetPool, uint64 minerId, int64 lastEpoch)
+// Solidity: function storageProviders(uint64 ) view returns(bool active, bool onboarded, address targetPool, uint64 ownerId, int64 lastEpoch)
 func (_StorageProviderRegistry *StorageProviderRegistryCallerSession) StorageProviders(arg0 uint64) (struct {
 	Active     bool
 	Onboarded  bool
 	TargetPool common.Address
-	MinerId    uint64
+	OwnerId    uint64
 	LastEpoch  int64
 }, error) {
 	return _StorageProviderRegistry.Contract.StorageProviders(&_StorageProviderRegistry.CallOpts, arg0)
@@ -862,6 +925,37 @@ func (_StorageProviderRegistry *StorageProviderRegistryCallerSession) SupportsIn
 	return _StorageProviderRegistry.Contract.SupportsInterface(&_StorageProviderRegistry.CallOpts, interfaceId)
 }
 
+// SyncedBeneficiary is a free data retrieval call binding the contract method 0x9ae357fa.
+//
+// Solidity: function syncedBeneficiary(uint64 ) view returns(bool)
+func (_StorageProviderRegistry *StorageProviderRegistryCaller) SyncedBeneficiary(opts *bind.CallOpts, arg0 uint64) (bool, error) {
+	var out []interface{}
+	err := _StorageProviderRegistry.contract.Call(opts, &out, "syncedBeneficiary", arg0)
+
+	if err != nil {
+		return *new(bool), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(bool)).(*bool)
+
+	return out0, err
+
+}
+
+// SyncedBeneficiary is a free data retrieval call binding the contract method 0x9ae357fa.
+//
+// Solidity: function syncedBeneficiary(uint64 ) view returns(bool)
+func (_StorageProviderRegistry *StorageProviderRegistrySession) SyncedBeneficiary(arg0 uint64) (bool, error) {
+	return _StorageProviderRegistry.Contract.SyncedBeneficiary(&_StorageProviderRegistry.CallOpts, arg0)
+}
+
+// SyncedBeneficiary is a free data retrieval call binding the contract method 0x9ae357fa.
+//
+// Solidity: function syncedBeneficiary(uint64 ) view returns(bool)
+func (_StorageProviderRegistry *StorageProviderRegistryCallerSession) SyncedBeneficiary(arg0 uint64) (bool, error) {
+	return _StorageProviderRegistry.Contract.SyncedBeneficiary(&_StorageProviderRegistry.CallOpts, arg0)
+}
+
 // Version is a free data retrieval call binding the contract method 0x54fd4d50.
 //
 // Solidity: function version() pure returns(string)
@@ -895,44 +989,44 @@ func (_StorageProviderRegistry *StorageProviderRegistryCallerSession) Version() 
 
 // AcceptBeneficiaryAddress is a paid mutator transaction binding the contract method 0xfa2755c3.
 //
-// Solidity: function acceptBeneficiaryAddress(uint64 _ownerId) returns()
-func (_StorageProviderRegistry *StorageProviderRegistryTransactor) AcceptBeneficiaryAddress(opts *bind.TransactOpts, _ownerId uint64) (*types.Transaction, error) {
-	return _StorageProviderRegistry.contract.Transact(opts, "acceptBeneficiaryAddress", _ownerId)
+// Solidity: function acceptBeneficiaryAddress(uint64 _minerId) returns()
+func (_StorageProviderRegistry *StorageProviderRegistryTransactor) AcceptBeneficiaryAddress(opts *bind.TransactOpts, _minerId uint64) (*types.Transaction, error) {
+	return _StorageProviderRegistry.contract.Transact(opts, "acceptBeneficiaryAddress", _minerId)
 }
 
 // AcceptBeneficiaryAddress is a paid mutator transaction binding the contract method 0xfa2755c3.
 //
-// Solidity: function acceptBeneficiaryAddress(uint64 _ownerId) returns()
-func (_StorageProviderRegistry *StorageProviderRegistrySession) AcceptBeneficiaryAddress(_ownerId uint64) (*types.Transaction, error) {
-	return _StorageProviderRegistry.Contract.AcceptBeneficiaryAddress(&_StorageProviderRegistry.TransactOpts, _ownerId)
+// Solidity: function acceptBeneficiaryAddress(uint64 _minerId) returns()
+func (_StorageProviderRegistry *StorageProviderRegistrySession) AcceptBeneficiaryAddress(_minerId uint64) (*types.Transaction, error) {
+	return _StorageProviderRegistry.Contract.AcceptBeneficiaryAddress(&_StorageProviderRegistry.TransactOpts, _minerId)
 }
 
 // AcceptBeneficiaryAddress is a paid mutator transaction binding the contract method 0xfa2755c3.
 //
-// Solidity: function acceptBeneficiaryAddress(uint64 _ownerId) returns()
-func (_StorageProviderRegistry *StorageProviderRegistryTransactorSession) AcceptBeneficiaryAddress(_ownerId uint64) (*types.Transaction, error) {
-	return _StorageProviderRegistry.Contract.AcceptBeneficiaryAddress(&_StorageProviderRegistry.TransactOpts, _ownerId)
+// Solidity: function acceptBeneficiaryAddress(uint64 _minerId) returns()
+func (_StorageProviderRegistry *StorageProviderRegistryTransactorSession) AcceptBeneficiaryAddress(_minerId uint64) (*types.Transaction, error) {
+	return _StorageProviderRegistry.Contract.AcceptBeneficiaryAddress(&_StorageProviderRegistry.TransactOpts, _minerId)
 }
 
 // DeactivateStorageProvider is a paid mutator transaction binding the contract method 0x4f85bf32.
 //
-// Solidity: function deactivateStorageProvider(uint64 _ownerId) returns()
-func (_StorageProviderRegistry *StorageProviderRegistryTransactor) DeactivateStorageProvider(opts *bind.TransactOpts, _ownerId uint64) (*types.Transaction, error) {
-	return _StorageProviderRegistry.contract.Transact(opts, "deactivateStorageProvider", _ownerId)
+// Solidity: function deactivateStorageProvider(uint64 _minerId) returns()
+func (_StorageProviderRegistry *StorageProviderRegistryTransactor) DeactivateStorageProvider(opts *bind.TransactOpts, _minerId uint64) (*types.Transaction, error) {
+	return _StorageProviderRegistry.contract.Transact(opts, "deactivateStorageProvider", _minerId)
 }
 
 // DeactivateStorageProvider is a paid mutator transaction binding the contract method 0x4f85bf32.
 //
-// Solidity: function deactivateStorageProvider(uint64 _ownerId) returns()
-func (_StorageProviderRegistry *StorageProviderRegistrySession) DeactivateStorageProvider(_ownerId uint64) (*types.Transaction, error) {
-	return _StorageProviderRegistry.Contract.DeactivateStorageProvider(&_StorageProviderRegistry.TransactOpts, _ownerId)
+// Solidity: function deactivateStorageProvider(uint64 _minerId) returns()
+func (_StorageProviderRegistry *StorageProviderRegistrySession) DeactivateStorageProvider(_minerId uint64) (*types.Transaction, error) {
+	return _StorageProviderRegistry.Contract.DeactivateStorageProvider(&_StorageProviderRegistry.TransactOpts, _minerId)
 }
 
 // DeactivateStorageProvider is a paid mutator transaction binding the contract method 0x4f85bf32.
 //
-// Solidity: function deactivateStorageProvider(uint64 _ownerId) returns()
-func (_StorageProviderRegistry *StorageProviderRegistryTransactorSession) DeactivateStorageProvider(_ownerId uint64) (*types.Transaction, error) {
-	return _StorageProviderRegistry.Contract.DeactivateStorageProvider(&_StorageProviderRegistry.TransactOpts, _ownerId)
+// Solidity: function deactivateStorageProvider(uint64 _minerId) returns()
+func (_StorageProviderRegistry *StorageProviderRegistryTransactorSession) DeactivateStorageProvider(_minerId uint64) (*types.Transaction, error) {
+	return _StorageProviderRegistry.Contract.DeactivateStorageProvider(&_StorageProviderRegistry.TransactOpts, _minerId)
 }
 
 // GrantRole is a paid mutator transaction binding the contract method 0x2f2ff15d.
@@ -958,65 +1052,65 @@ func (_StorageProviderRegistry *StorageProviderRegistryTransactorSession) GrantR
 
 // IncreasePledgeRepayment is a paid mutator transaction binding the contract method 0x261d8315.
 //
-// Solidity: function increasePledgeRepayment(uint64 _ownerId, uint256 _repaidPledge) returns()
-func (_StorageProviderRegistry *StorageProviderRegistryTransactor) IncreasePledgeRepayment(opts *bind.TransactOpts, _ownerId uint64, _repaidPledge *big.Int) (*types.Transaction, error) {
-	return _StorageProviderRegistry.contract.Transact(opts, "increasePledgeRepayment", _ownerId, _repaidPledge)
+// Solidity: function increasePledgeRepayment(uint64 _minerId, uint256 _repaidPledge) returns()
+func (_StorageProviderRegistry *StorageProviderRegistryTransactor) IncreasePledgeRepayment(opts *bind.TransactOpts, _minerId uint64, _repaidPledge *big.Int) (*types.Transaction, error) {
+	return _StorageProviderRegistry.contract.Transact(opts, "increasePledgeRepayment", _minerId, _repaidPledge)
 }
 
 // IncreasePledgeRepayment is a paid mutator transaction binding the contract method 0x261d8315.
 //
-// Solidity: function increasePledgeRepayment(uint64 _ownerId, uint256 _repaidPledge) returns()
-func (_StorageProviderRegistry *StorageProviderRegistrySession) IncreasePledgeRepayment(_ownerId uint64, _repaidPledge *big.Int) (*types.Transaction, error) {
-	return _StorageProviderRegistry.Contract.IncreasePledgeRepayment(&_StorageProviderRegistry.TransactOpts, _ownerId, _repaidPledge)
+// Solidity: function increasePledgeRepayment(uint64 _minerId, uint256 _repaidPledge) returns()
+func (_StorageProviderRegistry *StorageProviderRegistrySession) IncreasePledgeRepayment(_minerId uint64, _repaidPledge *big.Int) (*types.Transaction, error) {
+	return _StorageProviderRegistry.Contract.IncreasePledgeRepayment(&_StorageProviderRegistry.TransactOpts, _minerId, _repaidPledge)
 }
 
 // IncreasePledgeRepayment is a paid mutator transaction binding the contract method 0x261d8315.
 //
-// Solidity: function increasePledgeRepayment(uint64 _ownerId, uint256 _repaidPledge) returns()
-func (_StorageProviderRegistry *StorageProviderRegistryTransactorSession) IncreasePledgeRepayment(_ownerId uint64, _repaidPledge *big.Int) (*types.Transaction, error) {
-	return _StorageProviderRegistry.Contract.IncreasePledgeRepayment(&_StorageProviderRegistry.TransactOpts, _ownerId, _repaidPledge)
+// Solidity: function increasePledgeRepayment(uint64 _minerId, uint256 _repaidPledge) returns()
+func (_StorageProviderRegistry *StorageProviderRegistryTransactorSession) IncreasePledgeRepayment(_minerId uint64, _repaidPledge *big.Int) (*types.Transaction, error) {
+	return _StorageProviderRegistry.Contract.IncreasePledgeRepayment(&_StorageProviderRegistry.TransactOpts, _minerId, _repaidPledge)
 }
 
 // IncreaseRewards is a paid mutator transaction binding the contract method 0x7f2d1a60.
 //
-// Solidity: function increaseRewards(uint64 _ownerId, uint256 _accuredRewards) returns()
-func (_StorageProviderRegistry *StorageProviderRegistryTransactor) IncreaseRewards(opts *bind.TransactOpts, _ownerId uint64, _accuredRewards *big.Int) (*types.Transaction, error) {
-	return _StorageProviderRegistry.contract.Transact(opts, "increaseRewards", _ownerId, _accuredRewards)
+// Solidity: function increaseRewards(uint64 _minerId, uint256 _accuredRewards) returns()
+func (_StorageProviderRegistry *StorageProviderRegistryTransactor) IncreaseRewards(opts *bind.TransactOpts, _minerId uint64, _accuredRewards *big.Int) (*types.Transaction, error) {
+	return _StorageProviderRegistry.contract.Transact(opts, "increaseRewards", _minerId, _accuredRewards)
 }
 
 // IncreaseRewards is a paid mutator transaction binding the contract method 0x7f2d1a60.
 //
-// Solidity: function increaseRewards(uint64 _ownerId, uint256 _accuredRewards) returns()
-func (_StorageProviderRegistry *StorageProviderRegistrySession) IncreaseRewards(_ownerId uint64, _accuredRewards *big.Int) (*types.Transaction, error) {
-	return _StorageProviderRegistry.Contract.IncreaseRewards(&_StorageProviderRegistry.TransactOpts, _ownerId, _accuredRewards)
+// Solidity: function increaseRewards(uint64 _minerId, uint256 _accuredRewards) returns()
+func (_StorageProviderRegistry *StorageProviderRegistrySession) IncreaseRewards(_minerId uint64, _accuredRewards *big.Int) (*types.Transaction, error) {
+	return _StorageProviderRegistry.Contract.IncreaseRewards(&_StorageProviderRegistry.TransactOpts, _minerId, _accuredRewards)
 }
 
 // IncreaseRewards is a paid mutator transaction binding the contract method 0x7f2d1a60.
 //
-// Solidity: function increaseRewards(uint64 _ownerId, uint256 _accuredRewards) returns()
-func (_StorageProviderRegistry *StorageProviderRegistryTransactorSession) IncreaseRewards(_ownerId uint64, _accuredRewards *big.Int) (*types.Transaction, error) {
-	return _StorageProviderRegistry.Contract.IncreaseRewards(&_StorageProviderRegistry.TransactOpts, _ownerId, _accuredRewards)
+// Solidity: function increaseRewards(uint64 _minerId, uint256 _accuredRewards) returns()
+func (_StorageProviderRegistry *StorageProviderRegistryTransactorSession) IncreaseRewards(_minerId uint64, _accuredRewards *big.Int) (*types.Transaction, error) {
+	return _StorageProviderRegistry.Contract.IncreaseRewards(&_StorageProviderRegistry.TransactOpts, _minerId, _accuredRewards)
 }
 
 // IncreaseUsedAllocation is a paid mutator transaction binding the contract method 0x4978e4b7.
 //
-// Solidity: function increaseUsedAllocation(uint64 _ownerId, uint256 _allocated, uint256 _timestamp) returns()
-func (_StorageProviderRegistry *StorageProviderRegistryTransactor) IncreaseUsedAllocation(opts *bind.TransactOpts, _ownerId uint64, _allocated *big.Int, _timestamp *big.Int) (*types.Transaction, error) {
-	return _StorageProviderRegistry.contract.Transact(opts, "increaseUsedAllocation", _ownerId, _allocated, _timestamp)
+// Solidity: function increaseUsedAllocation(uint64 _minerId, uint256 _allocated, uint256 _timestamp) returns()
+func (_StorageProviderRegistry *StorageProviderRegistryTransactor) IncreaseUsedAllocation(opts *bind.TransactOpts, _minerId uint64, _allocated *big.Int, _timestamp *big.Int) (*types.Transaction, error) {
+	return _StorageProviderRegistry.contract.Transact(opts, "increaseUsedAllocation", _minerId, _allocated, _timestamp)
 }
 
 // IncreaseUsedAllocation is a paid mutator transaction binding the contract method 0x4978e4b7.
 //
-// Solidity: function increaseUsedAllocation(uint64 _ownerId, uint256 _allocated, uint256 _timestamp) returns()
-func (_StorageProviderRegistry *StorageProviderRegistrySession) IncreaseUsedAllocation(_ownerId uint64, _allocated *big.Int, _timestamp *big.Int) (*types.Transaction, error) {
-	return _StorageProviderRegistry.Contract.IncreaseUsedAllocation(&_StorageProviderRegistry.TransactOpts, _ownerId, _allocated, _timestamp)
+// Solidity: function increaseUsedAllocation(uint64 _minerId, uint256 _allocated, uint256 _timestamp) returns()
+func (_StorageProviderRegistry *StorageProviderRegistrySession) IncreaseUsedAllocation(_minerId uint64, _allocated *big.Int, _timestamp *big.Int) (*types.Transaction, error) {
+	return _StorageProviderRegistry.Contract.IncreaseUsedAllocation(&_StorageProviderRegistry.TransactOpts, _minerId, _allocated, _timestamp)
 }
 
 // IncreaseUsedAllocation is a paid mutator transaction binding the contract method 0x4978e4b7.
 //
-// Solidity: function increaseUsedAllocation(uint64 _ownerId, uint256 _allocated, uint256 _timestamp) returns()
-func (_StorageProviderRegistry *StorageProviderRegistryTransactorSession) IncreaseUsedAllocation(_ownerId uint64, _allocated *big.Int, _timestamp *big.Int) (*types.Transaction, error) {
-	return _StorageProviderRegistry.Contract.IncreaseUsedAllocation(&_StorageProviderRegistry.TransactOpts, _ownerId, _allocated, _timestamp)
+// Solidity: function increaseUsedAllocation(uint64 _minerId, uint256 _allocated, uint256 _timestamp) returns()
+func (_StorageProviderRegistry *StorageProviderRegistryTransactorSession) IncreaseUsedAllocation(_minerId uint64, _allocated *big.Int, _timestamp *big.Int) (*types.Transaction, error) {
+	return _StorageProviderRegistry.Contract.IncreaseUsedAllocation(&_StorageProviderRegistry.TransactOpts, _minerId, _allocated, _timestamp)
 }
 
 // Initialize is a paid mutator transaction binding the contract method 0xda35a26f.
@@ -1124,25 +1218,25 @@ func (_StorageProviderRegistry *StorageProviderRegistryTransactorSession) Renoun
 	return _StorageProviderRegistry.Contract.RenounceRole(&_StorageProviderRegistry.TransactOpts, role, account)
 }
 
-// RequestAllocationLimitUpdate is a paid mutator transaction binding the contract method 0xa93fbf86.
+// RequestAllocationLimitUpdate is a paid mutator transaction binding the contract method 0x5e2b353b.
 //
-// Solidity: function requestAllocationLimitUpdate(uint256 _allocationLimit, uint256 _dailyAllocation) returns()
-func (_StorageProviderRegistry *StorageProviderRegistryTransactor) RequestAllocationLimitUpdate(opts *bind.TransactOpts, _allocationLimit *big.Int, _dailyAllocation *big.Int) (*types.Transaction, error) {
-	return _StorageProviderRegistry.contract.Transact(opts, "requestAllocationLimitUpdate", _allocationLimit, _dailyAllocation)
+// Solidity: function requestAllocationLimitUpdate(uint64 _minerId, uint256 _allocationLimit, uint256 _dailyAllocation) returns()
+func (_StorageProviderRegistry *StorageProviderRegistryTransactor) RequestAllocationLimitUpdate(opts *bind.TransactOpts, _minerId uint64, _allocationLimit *big.Int, _dailyAllocation *big.Int) (*types.Transaction, error) {
+	return _StorageProviderRegistry.contract.Transact(opts, "requestAllocationLimitUpdate", _minerId, _allocationLimit, _dailyAllocation)
 }
 
-// RequestAllocationLimitUpdate is a paid mutator transaction binding the contract method 0xa93fbf86.
+// RequestAllocationLimitUpdate is a paid mutator transaction binding the contract method 0x5e2b353b.
 //
-// Solidity: function requestAllocationLimitUpdate(uint256 _allocationLimit, uint256 _dailyAllocation) returns()
-func (_StorageProviderRegistry *StorageProviderRegistrySession) RequestAllocationLimitUpdate(_allocationLimit *big.Int, _dailyAllocation *big.Int) (*types.Transaction, error) {
-	return _StorageProviderRegistry.Contract.RequestAllocationLimitUpdate(&_StorageProviderRegistry.TransactOpts, _allocationLimit, _dailyAllocation)
+// Solidity: function requestAllocationLimitUpdate(uint64 _minerId, uint256 _allocationLimit, uint256 _dailyAllocation) returns()
+func (_StorageProviderRegistry *StorageProviderRegistrySession) RequestAllocationLimitUpdate(_minerId uint64, _allocationLimit *big.Int, _dailyAllocation *big.Int) (*types.Transaction, error) {
+	return _StorageProviderRegistry.Contract.RequestAllocationLimitUpdate(&_StorageProviderRegistry.TransactOpts, _minerId, _allocationLimit, _dailyAllocation)
 }
 
-// RequestAllocationLimitUpdate is a paid mutator transaction binding the contract method 0xa93fbf86.
+// RequestAllocationLimitUpdate is a paid mutator transaction binding the contract method 0x5e2b353b.
 //
-// Solidity: function requestAllocationLimitUpdate(uint256 _allocationLimit, uint256 _dailyAllocation) returns()
-func (_StorageProviderRegistry *StorageProviderRegistryTransactorSession) RequestAllocationLimitUpdate(_allocationLimit *big.Int, _dailyAllocation *big.Int) (*types.Transaction, error) {
-	return _StorageProviderRegistry.Contract.RequestAllocationLimitUpdate(&_StorageProviderRegistry.TransactOpts, _allocationLimit, _dailyAllocation)
+// Solidity: function requestAllocationLimitUpdate(uint64 _minerId, uint256 _allocationLimit, uint256 _dailyAllocation) returns()
+func (_StorageProviderRegistry *StorageProviderRegistryTransactorSession) RequestAllocationLimitUpdate(_minerId uint64, _allocationLimit *big.Int, _dailyAllocation *big.Int) (*types.Transaction, error) {
+	return _StorageProviderRegistry.Contract.RequestAllocationLimitUpdate(&_StorageProviderRegistry.TransactOpts, _minerId, _allocationLimit, _dailyAllocation)
 }
 
 // RevokeRole is a paid mutator transaction binding the contract method 0xd547741f.
@@ -1164,27 +1258,6 @@ func (_StorageProviderRegistry *StorageProviderRegistrySession) RevokeRole(role 
 // Solidity: function revokeRole(bytes32 role, address account) returns()
 func (_StorageProviderRegistry *StorageProviderRegistryTransactorSession) RevokeRole(role [32]byte, account common.Address) (*types.Transaction, error) {
 	return _StorageProviderRegistry.Contract.RevokeRole(&_StorageProviderRegistry.TransactOpts, role, account)
-}
-
-// SetMinerAddress is a paid mutator transaction binding the contract method 0x2d0c628a.
-//
-// Solidity: function setMinerAddress(uint64 _ownerId, uint64 _minerId) returns()
-func (_StorageProviderRegistry *StorageProviderRegistryTransactor) SetMinerAddress(opts *bind.TransactOpts, _ownerId uint64, _minerId uint64) (*types.Transaction, error) {
-	return _StorageProviderRegistry.contract.Transact(opts, "setMinerAddress", _ownerId, _minerId)
-}
-
-// SetMinerAddress is a paid mutator transaction binding the contract method 0x2d0c628a.
-//
-// Solidity: function setMinerAddress(uint64 _ownerId, uint64 _minerId) returns()
-func (_StorageProviderRegistry *StorageProviderRegistrySession) SetMinerAddress(_ownerId uint64, _minerId uint64) (*types.Transaction, error) {
-	return _StorageProviderRegistry.Contract.SetMinerAddress(&_StorageProviderRegistry.TransactOpts, _ownerId, _minerId)
-}
-
-// SetMinerAddress is a paid mutator transaction binding the contract method 0x2d0c628a.
-//
-// Solidity: function setMinerAddress(uint64 _ownerId, uint64 _minerId) returns()
-func (_StorageProviderRegistry *StorageProviderRegistryTransactorSession) SetMinerAddress(_ownerId uint64, _minerId uint64) (*types.Transaction, error) {
-	return _StorageProviderRegistry.Contract.SetMinerAddress(&_StorageProviderRegistry.TransactOpts, _ownerId, _minerId)
 }
 
 // SetRestaking is a paid mutator transaction binding the contract method 0xbe7aebcd.
@@ -1210,23 +1283,23 @@ func (_StorageProviderRegistry *StorageProviderRegistryTransactorSession) SetRes
 
 // UpdateAllocationLimit is a paid mutator transaction binding the contract method 0x7aca42fe.
 //
-// Solidity: function updateAllocationLimit(uint64 _ownerId, uint256 _allocationLimit, uint256 _dailyAllocation, uint256 _repaymentAmount) returns()
-func (_StorageProviderRegistry *StorageProviderRegistryTransactor) UpdateAllocationLimit(opts *bind.TransactOpts, _ownerId uint64, _allocationLimit *big.Int, _dailyAllocation *big.Int, _repaymentAmount *big.Int) (*types.Transaction, error) {
-	return _StorageProviderRegistry.contract.Transact(opts, "updateAllocationLimit", _ownerId, _allocationLimit, _dailyAllocation, _repaymentAmount)
+// Solidity: function updateAllocationLimit(uint64 _minerId, uint256 _allocationLimit, uint256 _dailyAllocation, uint256 _repaymentAmount) returns()
+func (_StorageProviderRegistry *StorageProviderRegistryTransactor) UpdateAllocationLimit(opts *bind.TransactOpts, _minerId uint64, _allocationLimit *big.Int, _dailyAllocation *big.Int, _repaymentAmount *big.Int) (*types.Transaction, error) {
+	return _StorageProviderRegistry.contract.Transact(opts, "updateAllocationLimit", _minerId, _allocationLimit, _dailyAllocation, _repaymentAmount)
 }
 
 // UpdateAllocationLimit is a paid mutator transaction binding the contract method 0x7aca42fe.
 //
-// Solidity: function updateAllocationLimit(uint64 _ownerId, uint256 _allocationLimit, uint256 _dailyAllocation, uint256 _repaymentAmount) returns()
-func (_StorageProviderRegistry *StorageProviderRegistrySession) UpdateAllocationLimit(_ownerId uint64, _allocationLimit *big.Int, _dailyAllocation *big.Int, _repaymentAmount *big.Int) (*types.Transaction, error) {
-	return _StorageProviderRegistry.Contract.UpdateAllocationLimit(&_StorageProviderRegistry.TransactOpts, _ownerId, _allocationLimit, _dailyAllocation, _repaymentAmount)
+// Solidity: function updateAllocationLimit(uint64 _minerId, uint256 _allocationLimit, uint256 _dailyAllocation, uint256 _repaymentAmount) returns()
+func (_StorageProviderRegistry *StorageProviderRegistrySession) UpdateAllocationLimit(_minerId uint64, _allocationLimit *big.Int, _dailyAllocation *big.Int, _repaymentAmount *big.Int) (*types.Transaction, error) {
+	return _StorageProviderRegistry.Contract.UpdateAllocationLimit(&_StorageProviderRegistry.TransactOpts, _minerId, _allocationLimit, _dailyAllocation, _repaymentAmount)
 }
 
 // UpdateAllocationLimit is a paid mutator transaction binding the contract method 0x7aca42fe.
 //
-// Solidity: function updateAllocationLimit(uint64 _ownerId, uint256 _allocationLimit, uint256 _dailyAllocation, uint256 _repaymentAmount) returns()
-func (_StorageProviderRegistry *StorageProviderRegistryTransactorSession) UpdateAllocationLimit(_ownerId uint64, _allocationLimit *big.Int, _dailyAllocation *big.Int, _repaymentAmount *big.Int) (*types.Transaction, error) {
-	return _StorageProviderRegistry.Contract.UpdateAllocationLimit(&_StorageProviderRegistry.TransactOpts, _ownerId, _allocationLimit, _dailyAllocation, _repaymentAmount)
+// Solidity: function updateAllocationLimit(uint64 _minerId, uint256 _allocationLimit, uint256 _dailyAllocation, uint256 _repaymentAmount) returns()
+func (_StorageProviderRegistry *StorageProviderRegistryTransactorSession) UpdateAllocationLimit(_minerId uint64, _allocationLimit *big.Int, _dailyAllocation *big.Int, _repaymentAmount *big.Int) (*types.Transaction, error) {
+	return _StorageProviderRegistry.Contract.UpdateAllocationLimit(&_StorageProviderRegistry.TransactOpts, _minerId, _allocationLimit, _dailyAllocation, _repaymentAmount)
 }
 
 // UpdateMaxAllocation is a paid mutator transaction binding the contract method 0x24da48a3.

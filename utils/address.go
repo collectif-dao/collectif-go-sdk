@@ -6,19 +6,17 @@ import (
 	"fmt"
 
 	"github.com/filecoin-project/go-address"
-	fAddress "github.com/filecoin-project/go-address"
 	"github.com/filecoin-project/lotus/chain/types/ethtypes"
 )
 
 // convertAddress for converting string address to bytes for Solidity interactions
-func ConvertAddress(address string) []byte {
-	addr, err := fAddress.NewFromString(address)
-
+func ConvertAddress(addr string) []byte {
+	fAddr, err := address.NewFromString(addr)
 	if err != nil {
 		panic(fmt.Sprintf("go-address is unable to initiate Address struct: %v", err))
 	}
 
-	return addr.Bytes()
+	return fAddr.Bytes()
 }
 
 func EncodePacked(address string) []byte {

@@ -257,13 +257,14 @@ func TestRequestAllocationUpdate(t *testing.T) {
 
 	allocationLimit := getAttoFilFromFIL(100000)
 	dailyAllocation := getAttoFilFromFIL(1000)
+	minerId := getMinerId(t, ctx, client)
 
-	callData, err := client.calculateCalldata("requestAllocationLimitUpdate", client.Registry.ABI, allocationLimit, dailyAllocation)
+	callData, err := client.calculateCalldata("requestAllocationLimitUpdate", client.Registry.ABI, minerId, allocationLimit, dailyAllocation)
 	if err != nil {
 		assert.Error(t, err)
 	}
 
-	res, err := client.RequestAllocationLimitUpdate(ctx, allocationLimit, dailyAllocation, false)
+	res, err := client.RequestAllocationLimitUpdate(ctx, minerId, allocationLimit, dailyAllocation, false)
 	if err != nil {
 		assert.Error(t, err)
 	}

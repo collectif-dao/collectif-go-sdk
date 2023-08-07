@@ -7,7 +7,7 @@ import (
 var StakingCmd = &cobra.Command{
 	Use:   "staking",
 	Short: "Interact with Liquid Staking contract to pledge FIL",
-	Long:  ``,
+	Long:  `This section provides functionality to interact with the Liquid Staking contract`,
 	Run: func(cmd *cobra.Command, args []string) {
 		cmd.Help()
 	},

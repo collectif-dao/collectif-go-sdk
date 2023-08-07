@@ -37,7 +37,7 @@ func list() ([]string, error) {
 var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List wallets used by SDK",
-	Long:  ``,
+	Long:  `Here is a full list of Filecoin wallets this SDK is storing in the keystore`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		if resp, err := list(); err != nil {

@@ -34,7 +34,7 @@ func setDefaultWallet(addr string) error {
 var setDefaultCmd = &cobra.Command{
 	Use:   "set-default",
 	Short: "Set default wallet for SDK",
-	Long:  ``,
+	Long:  `To set a wallet as default please provide your Filecoin address with -a flag. Make sure to import or create the wallet in the first place.`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		if err := setDefaultWallet(addr); err != nil {
