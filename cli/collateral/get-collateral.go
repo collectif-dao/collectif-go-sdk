@@ -45,8 +45,8 @@ var getCollateralCmd = &cobra.Command{
 		if collateral, err := getCollateral(address); err != nil {
 			fmt.Println(err)
 		} else {
-			fmt.Println("Available collateral: ", fvm.AttoFIL2FIL_str(collateral.AvailableCollateral))
-			fmt.Println("Locked collateral: ", fvm.AttoFIL2FIL_str(collateral.LockedCollateral))
+			fmt.Println("Available collateral: ", fvm.AttoFIL2FIL_str(collateral.AvailableCollateral), " FIL")
+			fmt.Println("Locked collateral: ", fvm.AttoFIL2FIL_str(collateral.LockedCollateral), " FIL")
 		}
 	},
 }

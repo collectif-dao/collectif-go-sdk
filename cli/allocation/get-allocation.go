@@ -37,18 +37,18 @@ var getAllocation = &cobra.Command{
 		if allocation, err := getAllocationInfo(minerAddr); err != nil {
 			fmt.Println(err)
 		} else {
-			fmt.Println("Allocation limit: ", fvm.AttoFIL2FIL_str(allocation.AllocationLimit))
-			fmt.Println("Repayment: ", fvm.AttoFIL2FIL_str(allocation.Repayment))
-			fmt.Println("Used allocation: ", fvm.AttoFIL2FIL_str(allocation.UsedAllocation))
-			fmt.Println("Daily allocation: ", fvm.AttoFIL2FIL_str(allocation.DailyAllocation))
-			fmt.Println("Accrued rewards: ", fvm.AttoFIL2FIL_str(allocation.AccruedRewards))
-			fmt.Println("Repaid pledge: ", fvm.AttoFIL2FIL_str(allocation.RepaidPledge))
+			fmt.Println("Allocation limit: ", fvm.AttoFIL2FIL_str(allocation.AllocationLimit), " FIL")
+			fmt.Println("Repayment: ", fvm.AttoFIL2FIL_str(allocation.Repayment), " FIL")
+			fmt.Println("Used allocation: ", fvm.AttoFIL2FIL_str(allocation.UsedAllocation), " FIL")
+			fmt.Println("Daily allocation: ", fvm.AttoFIL2FIL_str(allocation.DailyAllocation), " FIL")
+			fmt.Println("Accrued rewards: ", fvm.AttoFIL2FIL_str(allocation.AccruedRewards), " FIL")
+			fmt.Println("Repaid pledge: ", fvm.AttoFIL2FIL_str(allocation.RepaidPledge), " FIL")
 		}
 	},
 }
 
 func init() {
-	getAllocation.Flags().StringVarP(&minerAddr, "minerAddr", "o", "", "Miner actor address (either ID address or actor address)")
+	getAllocation.Flags().StringVarP(&minerAddr, "minerAddr", "m", "", "Miner actor address (either ID address or actor address)")
 	if err := getAllocation.MarkFlagRequired("minerAddr"); err != nil {
 		fmt.Println(err)
 	}
